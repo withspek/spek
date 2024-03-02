@@ -6,7 +6,7 @@ defmodule Routes.DevOnly do
 
   get "/" do
     conn
-    |> send_resp(200, Poison.encode!(%{"name" => "Irere", "age" => 16}))
+    |> send_resp(200, Jason.encode!(%{"name" => "Irere", "age" => 16}))
   end
 
   get "/create" do
