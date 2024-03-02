@@ -5,6 +5,7 @@ defmodule Router do
   alias Routes.GithubAuth
   alias Routes.DevOnly
 
+  plug(Plugs.Cors)
   plug(:match)
   plug(Plug.Parsers, parsers: [:json], json_decoder: Jason)
   plug(:dispatch)
