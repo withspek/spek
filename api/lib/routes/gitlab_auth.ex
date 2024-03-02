@@ -15,16 +15,30 @@ defmodule Routes.GitlabAuth do
   get "/callback" do
     code = conn.query_params["code"]
 
-    # Exchange an auth code for an access token
-    client = Gitlab.get_token!(code: code)
+    try do
+      # Exchange an auth code for an access token
+      client = Gitlab.get_token!(code: code)
 
-    # Request the user's data with the access token
-    auth_user = get_user!(client)
+      # Request the user's data with the access token
+      auth_user = get_user!(client)
 
-    {_, user} = Users.gitlab_find_or_create(auth_user)
+      {_, user} = Users.gitlab_find_or_create(auth_user)
 
-    conn
-    |> send_resp(200, Jason.encode!(%{"user" => user}))
+      conn
+      |> Redirect.redirect(
+        "http://localhost:3000" <>
+          "/?accessToken=" <>
+          Spek.AccessToken.sign!(%{"userId" => user.id}) <>
+          "&refreshToken=" <>
+          Spek.RefreshToken.sign!(%{
+            "userId" => user.id,
+            "tokenVersion" => user.tokenVersion
+          })
+      )
+    rescue
+      e in RuntimeError ->
+        Redirect.redirect(conn, "http://localhost:3000" <> "/?error=" <> URI.encode(e.message))
+    end
   end
 
   match _ do
