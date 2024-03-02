@@ -1,12 +1,15 @@
 defmodule Routes.DevOnly do
+  alias Operations.Users
   use Plug.Router
 
   plug(:match)
   plug(:dispatch)
 
   get "/" do
+    users = Users.get_users()
+
     conn
-    |> send_resp(200, Jason.encode!(%{"name" => "Irere", "age" => 16}))
+    |> send_resp(200, Jason.encode!(users))
   end
 
   get "/create" do

@@ -31,5 +31,9 @@ defmodule Spek.Repo.Migrations.General do
       add(:inserted_at, :utc_datetime_usec, null: false, default: fragment("now()"))
       add(:updated_at, :utc_datetime_usec, null: false, default: fragment("now()"))
     end
+
+    alter table(:users) do
+      add(:bio, :text, default: "")
+    end
   end
 end

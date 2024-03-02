@@ -3,6 +3,7 @@ defmodule Routes.GitlabAuth do
 
   alias Plugs.Redirect
   alias OAuth.Gitlab
+  alias Operations.Mutations.Users
 
   plug(:match)
   plug(:dispatch)
@@ -18,7 +19,9 @@ defmodule Routes.GitlabAuth do
     client = Gitlab.get_token!(code: code)
 
     # Request the user's data with the access token
-    user = get_user!(client)
+    auth_user = get_user!(client)
+
+    {_, user} = Users.gitlab_find_or_create(auth_user)
 
     conn
     |> send_resp(200, Jason.encode!(%{"user" => user}))

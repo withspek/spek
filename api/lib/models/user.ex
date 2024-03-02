@@ -1,6 +1,8 @@
 defmodule Models.User do
   use Ecto.Schema
 
+  @derive {Jason.Encoder, only: ~w(username displayName bio bannerUrl avatarUrl
+             email githubUrl online lastOnline contributions inserted_at updated_at gitlabUrl)a}
   @primary_key {:id, :binary_id, []}
   schema "users" do
     field(:username, :string)
