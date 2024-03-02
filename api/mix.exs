@@ -25,7 +25,7 @@ defmodule Spek.MixProject do
   defp deps do
     [
       {:plug_cowboy, "~> 2.7"},
-      {:poison, "~> 5.0"},
+      {:joken, "~> 2.5"},
       {:jason, "~> 1.4"},
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
