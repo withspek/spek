@@ -33,14 +33,20 @@ defmodule Spek.Utils.TokenUtils do
   def create_tokens(user) do
     %{
       accessToken:
-        Spek.AccessToken.sign!(%{
-          "userId" => user.id
-        }),
+        Spek.AccessToken.generate_and_sign!(
+          %{
+            "userId" => user.id
+          },
+          Joken.Signer.create("HS256", "secret")
+        ),
       refreshToken:
-        Spek.RefreshToken.sign!(%{
-          "userId" => user.id,
-          "tokenVersion" => user.tokenVersion
-        })
+        Spek.RefreshToken.generate_and_sign!(
+          %{
+            "userId" => user.id,
+            "tokenVersion" => user.tokenVersion
+          },
+          Joken.Signer.create("HS256", "refreshsecret")
+        )
     }
   end
 end
