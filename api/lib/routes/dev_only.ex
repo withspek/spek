@@ -15,9 +15,7 @@ defmodule Routes.DevOnly do
   end
 
   get "/test-info" do
-    env = Application.get_env(:spek, :env)
-
-    if env == :dev do
+    if Mix.env() == :dev do
       username = fetch_query_params(conn).query_params["username"]
       user = Users.get_by_username(username)
 
