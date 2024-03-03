@@ -19,8 +19,7 @@ defmodule Router do
   forward("/auth/gitlab", to: GitlabAuth)
 
   # API Routes
-  forward("/api/community/protected", to: Routes.Community.Protected)
-  forward("/api/community/public", to: Routes.Community.Public)
+  forward("/community", to: Routes.Community)
 
   match _ do
     conn

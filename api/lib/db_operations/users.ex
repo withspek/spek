@@ -4,6 +4,7 @@ defmodule Operations.Users do
 
   # ACCESS
 
+  defdelegate get_user_id(user_id), to: Operations.Access.Users
   defdelegate get_users, to: Operations.Access.Users
   defdelegate get_by_username(username), to: Operations.Access.Users
 end

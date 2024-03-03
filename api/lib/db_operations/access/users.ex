@@ -4,7 +4,7 @@ defmodule Operations.Access.Users do
   alias Models.User
 
   def get_user_id(user_id) do
-    IO.inspect(user_id)
+    from(u in User, where: u.id == ^user_id, limit: 1) |> Repo.one()
   end
 
   def get_by_username(username) do

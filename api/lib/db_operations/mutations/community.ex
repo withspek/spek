@@ -3,16 +3,13 @@ defmodule Operations.Mutations.Community do
   alias Spek.Repo
 
   def create_community(data) do
-    {:ok,
-     Repo.insert!(
-       %Community{
-         description: data["description"],
-         name: data["name"],
-         isPrivate: false,
-         owner_id: data["ownerId"],
-         website: data["website"]
-       },
-       returning: true
-     )}
+    %Community{
+      description: data["description"],
+      name: data["name"],
+      isPrivate: false,
+      ownerId: data["ownerId"]
+    }
+    |> Community.changeset(data)
+    |> Repo.insert!(returning: true)
   end
 end

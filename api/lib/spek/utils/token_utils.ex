@@ -4,7 +4,10 @@ defmodule Spek.Utils.TokenUtils do
   def tokens_to_user_id(access_token!, refresh_token) do
     access_token! = access_token! || ""
 
-    case Spek.AccessToken.verify_and_validate(access_token!) do
+    case Spek.AccessToken.verify_and_validate(
+           access_token!,
+           Joken.Signer.create("HS256", "secret")
+         ) do
       {:ok, claims} ->
         {:existing_claim, claims["userId"]}
 
@@ -16,7 +19,10 @@ defmodule Spek.Utils.TokenUtils do
   defp verify_refresh_token(refresh_token!) do
     refresh_token! = refresh_token! || ""
 
-    case Spek.RefreshToken.verify_and_validate(refresh_token!) do
+    case Spek.RefreshToken.verify_and_validate(
+           refresh_token!,
+           Joken.Signer.create("HS256", "refreshsecret")
+         ) do
       {:ok, refreshClaims} ->
         user = Spek.Repo.get(User, refreshClaims["userId"])
 
