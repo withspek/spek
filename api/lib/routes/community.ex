@@ -1,15 +1,17 @@
 defmodule Routes.Community do
   use Plug.Router
 
+  alias Operations.Communities
   alias Operations.Users
 
   plug(:match)
   plug(Plugs.CheckAuth, %{shouldThrow: false})
   plug(:dispatch)
 
-  get "/" do
-    IO.inspect(conn.assigns.user_id)
-    send_resp(conn, 200, "hello")
+  get "/all" do
+    communities = Communities.get_top_communities(50)
+
+    send_resp(conn, 200, Jason.encode!(communities))
   end
 
   post "/create" do
