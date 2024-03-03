@@ -27,7 +27,7 @@ defmodule Routes.GitlabAuth do
       conn
       |> Redirect.redirect(
         "http://localhost:3000" <>
-          "/?accessToken=" <>
+          "/login?accessToken=" <>
           Spek.AccessToken.generate_and_sign!(
             %{"userId" => user.id},
             Joken.Signer.create("HS256", "secret")
