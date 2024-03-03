@@ -1,4 +1,6 @@
 defmodule Routes.DevOnly do
+  alias Spek.Repo
+  alias Models.User
   alias Operations.Users
   use Plug.Router
 
@@ -12,9 +14,41 @@ defmodule Routes.DevOnly do
     |> send_resp(200, Jason.encode!(users))
   end
 
-  get "/create" do
-    conn
-    |> send_resp(301, "Hello world")
+  get "/test-info" do
+    env = Application.get_env(:spek, :env)
+
+    if env == :dev do
+      username = fetch_query_params(conn).query_params["username"]
+      user = Users.get_by_username(username)
+
+      conn
+      |> send_resp(
+        200,
+        Jason.encode!(
+          Spek.Utils.TokenUtils.create_tokens(
+            if is_nil(user),
+              do:
+                Repo.insert!(
+                  %User{
+                    githubId: "id:" <> username,
+                    username: username,
+                    avatarUrl: "https://placekitten.com/200/200",
+                    bannerUrl: "https://placekitten.com/1000/300",
+                    bio: "This is my bio as test user I am committed to helping to test the app",
+                    displayName: String.capitalize(username),
+                    email: "test@" <> username <> "test.com"
+                  },
+                  returning: true
+                ),
+              else: user
+          )
+        )
+      )
+    else
+      conn
+      |> put_resp_content_type("application/json")
+      |> send_resp(400, Jason.encode!(%{"error" => "no"}))
+    end
   end
 
   match _ do

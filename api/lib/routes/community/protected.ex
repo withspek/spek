@@ -14,7 +14,6 @@ defmodule Routes.Community.Protected do
 
   post "/create" do
     body = conn.body_params
-    user = conn.user
 
     {:ok, community} = Communities.create_community(body)
 

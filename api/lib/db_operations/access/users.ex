@@ -7,6 +7,10 @@ defmodule Operations.Access.Users do
     IO.inspect(user_id)
   end
 
+  def get_by_username(username) do
+    from(u in User, where: u.username == ^username, limit: 1) |> Repo.one()
+  end
+
   def get_users do
     query =
       from(u in User)
