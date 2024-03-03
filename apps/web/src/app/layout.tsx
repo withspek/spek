@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Navbar } from "@/components/navbar";
 
 export const metadata: Metadata = {
   title: "Spek",
@@ -13,7 +14,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="w-full h-full flex">
+        <div className="flex gap-3 w-full h-full">
+          <Navbar />
+          <main className="flex grow-[2] w-full">{children}</main>
+        </div>
+      </body>
     </html>
   );
 }

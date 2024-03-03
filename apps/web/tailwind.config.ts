@@ -10,6 +10,7 @@ const config: Config = {
     colors: {
       white: "#fff",
       black: "#000",
+      transparent: "transparent",
       alabaster: {
         50: "var(--alabaster-50)",
         100: "var(--alabaster-100)",
