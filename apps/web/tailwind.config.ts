@@ -7,6 +7,19 @@ const config: Config = {
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    screens: {
+      sm: "640px",
+      // => @media (min-width: 640px) { ... }
+
+      md: "800px",
+      // => @media (min-width: 800px) { ... }
+
+      lg: "1024px",
+      // => @media (min-width: 1024px) { ... }
+
+      xl: "1280px",
+      // => @media (min-width: 1280px) { ... }
+    },
     colors: {
       white: "#fff",
       black: "#000",
@@ -23,6 +36,13 @@ const config: Config = {
         800: "var(--alabaster-800)",
         900: "var(--alabaster-900)",
         950: "var(--alabaster-950)",
+      },
+    },
+    extend: {
+      spacing: {
+        md: "44rem",
+        lg: "64.0625rem",
+        xl: "75rem",
       },
     },
   },

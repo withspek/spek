@@ -18,7 +18,7 @@
 
 body {
   background-color: var(--alabaster-900);
-  color: rgb(var(--alabaster-50));
+  color: var(--alabaster-50);
 }
 
 html,
