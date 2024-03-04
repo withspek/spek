@@ -1,10 +1,7 @@
-import { Metadata } from "next";
+"use client";
+
 import { Buttons } from "./buttons";
 import { useSaveTokens } from "@/hooks/useSaveTokens";
-
-export const metadata: Metadata = {
-  title: "Login",
-};
 
 export default function LoginPage() {
   useSaveTokens();

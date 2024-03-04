@@ -1,11 +1,15 @@
 "use client";
 
 import { CompassIcon } from "@/icons";
+import { useTokenStore } from "@/stores/useTokenStore";
 import { Button } from "@/ui/button";
 import { apiUrl } from "@/utils/constants";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 export const Buttons: React.FC = () => {
+  const { push } = useRouter();
+
   return (
     <>
       <Button
@@ -24,6 +28,13 @@ export const Buttons: React.FC = () => {
           );
 
           const d = await resp.json();
+
+          useTokenStore.getState().setTokens({
+            accessToken: d.accessToken,
+            refreshToken: d.refreshToken,
+          });
+
+          push("/");
         }}
       >
         <CompassIcon />
