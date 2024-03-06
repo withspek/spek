@@ -20,6 +20,7 @@ defmodule Router do
 
   # API Routes
   forward("/community", to: Routes.Community)
+  forward("/user", to: Routes.User)
 
   match _ do
     conn
