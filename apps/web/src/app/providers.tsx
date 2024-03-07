@@ -1,5 +1,6 @@
 "use client";
 
+import { AuthContextProvider } from "@/contexts/AuthContetx";
 import { queryClient } from "@/utils/queryClient";
 import { QueryClientProvider } from "react-query";
 
@@ -10,7 +11,9 @@ interface Props {
 export const Providers: React.FC<Props> = ({ children }) => {
   return (
     <>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthContextProvider>{children}</AuthContextProvider>
+      </QueryClientProvider>
     </>
   );
 };

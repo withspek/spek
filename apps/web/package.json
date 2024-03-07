@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@artsy/fresnel": "^7.1.4",
+    "@spek/client": "workspace:*",
     "next": "14.1.1",
     "react": "^18",
     "react-dom": "^18",
