@@ -11,3 +11,21 @@ export interface User {
   inserted_at: string;
   updated_at: string;
 }
+
+export interface Community {
+  id: string;
+  name: string;
+  description: string;
+  ownerId: string;
+  inserted_at: string;
+  updated_at: string;
+}
+
+export interface Channel {
+  id: string;
+  name: string;
+  description: string;
+  communityId: string;
+  inserted_at: string;
+  updated_at: string;
+}
