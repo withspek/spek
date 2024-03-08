@@ -1,3 +1,5 @@
+import { CheckAuth } from "@/components/check-auth";
+
 export default function HomePage() {
   return (
     <div>
