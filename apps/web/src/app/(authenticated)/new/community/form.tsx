@@ -6,6 +6,7 @@ import { Form, Formik } from "formik";
 import { Button } from "@/ui/button";
 import { InputField } from "@/ui/form-field";
 import { useRouter } from "next/navigation";
+import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 
 interface FormValues {
   name: string;
@@ -14,11 +15,18 @@ interface FormValues {
 
 export const CreateCommunityForm: React.FC = () => {
   const { push } = useRouter();
+  const { mutateAsync } = useTypeSafeMutation("createCommunity");
 
   return (
     <Formik<FormValues>
       initialValues={{ description: "", name: "" }}
-      onSubmit={() => {}}
+      onSubmit={async (values) => {
+        const resp = await mutateAsync([values]);
+
+        if (resp) {
+          console.log(resp);
+        }
+      }}
     >
       {({ handleChange, handleSubmit }) => (
         <Form className="space-y-4 mt-3">
@@ -37,7 +45,9 @@ export const CreateCommunityForm: React.FC = () => {
             onChange={handleChange}
           />
           <div className="flex gap-3">
-            <Button onClick={() => handleSubmit}>Create</Button>
+            <Button onClick={() => handleSubmit} type="submit">
+              Create
+            </Button>
             <Button color="primary" onClick={() => push("/home")}>
               Cancel
             </Button>

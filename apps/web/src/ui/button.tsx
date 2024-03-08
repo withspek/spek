@@ -1,4 +1,4 @@
-import { HTMLAttributes } from "react";
+import { ButtonHTMLAttributes, DetailedHTMLProps, HTMLAttributes } from "react";
 
 const buttonColorStyles = {
   default: "bg-alabaster-500 text-white",
@@ -11,17 +11,22 @@ const sizeStyles = {
   sm: "",
   xs: "",
 };
-
-interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
-  children?: React.ReactNode;
-  color?: keyof typeof buttonColorStyles;
+export type ButtonProps = DetailedHTMLProps<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+> & {
   size?: keyof typeof sizeStyles;
-}
+  color?: keyof typeof buttonColorStyles;
+  loading?: boolean;
+  icon?: React.ReactNode;
+  transition?: boolean;
+};
 
 export const Button: React.FC<ButtonProps> = ({
   children,
   color = "default",
   size = "md",
+
   ...props
 }) => {
   return (
