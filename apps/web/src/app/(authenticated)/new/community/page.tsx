@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { CreateCommunityForm } from "./form";
 
 export const metadata: Metadata = {
   title: "New Community",
@@ -10,6 +11,7 @@ export default function NewCommunityPage() {
       <div>
         <h2 className="text-xl font-bold">Create a new community</h2>
         <p>A community is a place for you to talk and share ideas as a whole</p>
+        <CreateCommunityForm />
       </div>
     </div>
   );

@@ -3,12 +3,12 @@ import { forwardRef } from "react";
 interface InputProps extends React.ComponentPropsWithoutRef<"input"> {
   rows?: number;
   textarea?: boolean;
-  error?: boolean;
+  error?: string;
   transparent?: boolean;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ rows, textarea, error, transparent, className, ...props }, ref) => {
+  ({ textarea, error, transparent, className, ...props }, ref) => {
     const bg = transparent ? `bg-transparent` : `bg-alabaster-700`;
     const ring = error ? `ring-1 ring-secondary` : "";
     const cn = `w-full py-2 px-4 rounded-8 text-alabaster-100 placeholder-alaster-300 focus:outline-none ${bg} ${ring} ${className} `;
