@@ -1,9 +1,14 @@
-import { CheckAuth } from "@/components/check-auth";
+import { Metadata } from "next";
+import { Controller } from "./page-controller";
+
+export const metadata: Metadata = {
+  title: "Home",
+};
 
 export default function HomePage() {
   return (
     <div>
-      <p>Hello world</p>
+      <Controller />
     </div>
   );
 }

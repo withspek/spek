@@ -16,7 +16,7 @@ export const CheckAuth: React.FC<CheckAuthProps> = ({ children }) => {
   const hasTokens = useTokenStore((s) => !!(s.accessToken && s.refreshToken));
 
   useEffect(() => {
-    if (!hasTokens && !conn?.user) {
+    if ((!hasTokens && !conn?.user) || (hasTokens && !conn?.user)) {
       replace(`/?next=${pathname}`);
     }
   }, [hasTokens, conn, pathname, replace]);
