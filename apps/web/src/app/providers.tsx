@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthContextProvider } from "@/contexts/AuthContetx";
+import { AuthContextProvider } from "@/contexts/AuthContext";
 import { queryClient } from "@/utils/queryClient";
 import { QueryClientProvider } from "react-query";
 
