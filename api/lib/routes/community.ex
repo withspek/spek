@@ -11,7 +11,7 @@ defmodule Routes.Community do
   get "/all" do
     communities = Communities.get_top_communities(50)
 
-    send_resp(conn, 200, Jason.encode!(communities))
+    send_resp(conn, 200, Jason.encode!(%{"communities" => communities}))
   end
 
   post "/create" do
