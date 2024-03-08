@@ -14,6 +14,7 @@ export type Connection = {
     body?: unknown,
     opts?: unknown
   ) => Promise<any>;
+
   //   fetch: (endpoint: Endpoint, body?: unknown) => Promise<unknown>;
 };
 
@@ -41,17 +42,19 @@ export const connect = (
             "X-Refresh-Token": refreshToken,
           },
           body: body ? JSON.stringify(body) : undefined,
-        });
+        })
+          .then((resp) => resp)
+          .catch((err) => console.log(err));
       };
 
-      const user = await apiSend("/user/me", "GET")
-        .then(async (resp) => await resp.json())
+      const data = await apiSend("/user/me", "GET")
+        .then(async (user: any) => await user.json())
         .catch((err) => {
           reject(err);
         });
 
       const connection: Connection = {
-        user,
+        user: data.user,
         send: apiSend,
       };
 
