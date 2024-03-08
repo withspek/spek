@@ -10,7 +10,7 @@ export default function ErrorPage({
   reset: () => void;
 }) {
   useEffect(() => {
-    // log into the logging servince
+    // log into the logging service
     console.log(error);
   }, [error]);
   return (

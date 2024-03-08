@@ -26,7 +26,7 @@ defmodule Routes.Community do
         "description" => conn.body_params["description"]
       }
 
-      community = Operations.Communities.create_community(data)
+      {:ok, community, channel} = Operations.Communities.create_community(data)
 
       conn
       |> send_resp(200, Jason.encode!(community))

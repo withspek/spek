@@ -1,6 +1,7 @@
 defmodule Models.Channel do
   alias Models.Community
   use Ecto.Schema
+  import Ecto.Changeset
 
   @primary_key {:id, :binary_id, []}
   schema "channels" do
@@ -11,8 +12,15 @@ defmodule Models.Channel do
     field(:isDefault, :boolean)
     field(:archivedAt, :utc_datetime_usec)
 
-    belongs_to(:community, Community)
+    belongs_to(:community, Community, foreign_key: :communityId, type: :binary_id)
 
     timestamps()
+  end
+
+  def changeset(channel, params \\ %{}) do
+    channel
+    |> cast(params, [:name, :description, :isPrivate, :isDefault])
+    |> validate_required([:name, :description])
+    |> unique_constraint(:name)
   end
 end

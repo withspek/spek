@@ -20,8 +20,8 @@ defmodule Models.Community do
     timestamps()
   end
 
-  def changeset(user, params \\ %{}) do
-    user
+  def changeset(community, params \\ %{}) do
+    community
     |> cast(params, [:name, :description, :isPrivate, :ownerId])
     |> validate_required([:name, :description, :ownerId])
   end
