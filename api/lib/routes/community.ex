@@ -29,7 +29,10 @@ defmodule Routes.Community do
       {:ok, community, channel} = Operations.Communities.create_community(data)
 
       conn
-      |> send_resp(200, Jason.encode!(community))
+      |> send_resp(
+        200,
+        Jason.encode!(%{"channels" => channel, "community" => community})
+      )
     else
       conn
       |> send_resp(402, "UNAUTHORIZED")
