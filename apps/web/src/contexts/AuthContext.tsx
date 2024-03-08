@@ -23,13 +23,15 @@ interface AuthContextProviderProps {
 export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({
   children,
 }) => {
-  const { data, isLoading } = useQuery("/user/me");
+  const { data, isLoading } = useQuery<{ user: User }>("/user/me");
 
   if (isLoading) {
     return <div>loading..</div>;
   }
   return (
-    <AuthContext.Provider value={{ user: data.user as any, setUser: () => {} }}>
+    <AuthContext.Provider
+      value={{ user: data?.user as any, setUser: () => {} }}
+    >
       {children}
     </AuthContext.Provider>
   );

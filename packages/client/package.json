@@ -10,8 +10,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/isomorphic-fetch": "^0.0.39",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5"
+  },
+  "dependencies": {
+    "isomorphic-fetch": "^3.0.0"
   }
 }
