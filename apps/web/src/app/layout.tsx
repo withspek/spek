@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "./providers";
+import { CheckAuth } from "@/components/check-auth";
 
 export const metadata: Metadata = {
   title: "Spek",

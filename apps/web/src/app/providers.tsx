@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthContextProvider } from "@/contexts/AuthContext";
+import { WaitForConn } from "@/components/check-auth";
 import { ConnnectionContextProvider } from "@/contexts/ConnectionContext";
 import { queryClient } from "@/utils/queryClient";
 import { QueryClientProvider } from "react-query";
@@ -12,11 +12,11 @@ interface Props {
 export const Providers: React.FC<Props> = ({ children }) => {
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        <ConnnectionContextProvider>
-          <AuthContextProvider>{children}</AuthContextProvider>
-        </ConnnectionContextProvider>
-      </QueryClientProvider>
+      <ConnnectionContextProvider>
+        <QueryClientProvider client={queryClient}>
+          <WaitForConn>{children}</WaitForConn>
+        </QueryClientProvider>
+      </ConnnectionContextProvider>
     </>
   );
 };

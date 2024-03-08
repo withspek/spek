@@ -1,7 +1,8 @@
 "use client";
 
-import AuthContext from "@/contexts/AuthContext";
-import { useRouter } from "next/navigation";
+import ConnectionContext from "@/contexts/ConnectionContext";
+import { useTokenStore } from "@/stores/useTokenStore";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useContext, useEffect } from "react";
 
 interface CheckAuthProps {
@@ -9,13 +10,27 @@ interface CheckAuthProps {
 }
 
 export const CheckAuth: React.FC<CheckAuthProps> = ({ children }) => {
-  const { user } = useContext(AuthContext);
-  const { push } = useRouter();
+  const { conn } = useContext(ConnectionContext);
+  const { replace } = useRouter();
+  const pathname = usePathname();
+  const hasTokens = useTokenStore((s) => !!(s.accessToken && s.refreshToken));
 
   useEffect(() => {
-    if (!user) {
-      push("/login");
+    if (!hasTokens && !conn?.user) {
+      replace(`/?next=${pathname}`);
     }
-  }, [user]);
+  }, [hasTokens, conn, pathname, replace]);
+
+  return <>{children}</>;
+};
+
+export const WaitForConn: React.FC<CheckAuthProps> = ({ children }) => {
+  const { conn } = useContext(ConnectionContext);
+
+  if (!conn) {
+    // @todo make this better
+    return <div className="flex">loading...</div>;
+  }
+
   return <>{children}</>;
 };
