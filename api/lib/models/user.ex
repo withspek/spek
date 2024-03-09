@@ -1,6 +1,11 @@
 defmodule Models.User do
   use Ecto.Schema
 
+  defmodule UserPreview do
+    @derive {Jason.Encoder, only: ~w(id username displayName avatarUrl online bio)a}
+    defstruct [:id, :username, :displayName, :avatarUrl, :online, :bio]
+  end
+
   @derive {Jason.Encoder, only: ~w(username displayName bio bannerUrl avatarUrl
              email githubUrl online lastOnline contributions inserted_at updated_at gitlabUrl)a}
 

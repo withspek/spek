@@ -11,7 +11,9 @@ defmodule Routes.Community do
   get "/all" do
     communities = Communities.get_top_communities(50)
 
-    send_resp(conn, 200, Jason.encode!(%{"communities" => communities}))
+    conn
+    |> put_resp_content_type("application/json")
+    |> send_resp(200, Jason.encode!(%{communities: communities}, []))
   end
 
   get "/:id" do
@@ -41,6 +43,22 @@ defmodule Routes.Community do
       _ ->
         conn
         |> send_resp(400, Jason.encode!(%{"error" => "Invalid community id"}))
+    end
+  end
+
+  get "/:id/members" do
+    %Plug.Conn{params: %{"id" => id}} = conn
+
+    case Ecto.UUID.cast(id) do
+      {:ok, uuid} ->
+        members = Communities.get_community_members(uuid)
+
+        conn
+        |> send_resp(200, Jason.encode!(%{"members" => members}))
+
+      _ ->
+        conn
+        |> send_resp(400, Jason.encode!(%{error: "Community id is not valid"}))
     end
   end
 
