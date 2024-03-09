@@ -15,7 +15,7 @@ defmodule Models.ChannelMember do
 
   def changeset(member, params \\ %{}) do
     member
-    |> cast(params, [:role, :admin, :communityId])
-    |> validate_required([:role, :admin, :communityId])
+    |> cast(params, [:communityId, :userId])
+    |> validate_required([:communityId, :userId])
   end
 end
