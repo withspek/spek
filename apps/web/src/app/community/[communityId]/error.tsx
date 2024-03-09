@@ -18,6 +18,7 @@ export default function ErrorPage({
   }, [error]);
 
   if (error.message) {
+    console.log(error.message);
     const data = JSON.parse(error.message);
 
     return (

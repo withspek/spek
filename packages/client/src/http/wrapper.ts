@@ -9,6 +9,8 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/community/${id}`, "GET"),
     getTopCommunities: (): Promise<GetTopCommunitiesResponse> =>
       connection.send("/community/all", "GET"),
+    getCommunityMembers: (id: string): Promise<User[]> =>
+      connection.send(`/community/${id}/members`, "GET"),
   },
   mutation: {
     createCommunity: (data: {

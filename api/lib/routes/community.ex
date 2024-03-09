@@ -9,11 +9,10 @@ defmodule Routes.Community do
   plug(:dispatch)
 
   get "/all" do
-    communities = Communities.get_top_communities(50)
+    communities = Communities.get_top_communities(40)
 
     conn
-    |> put_resp_content_type("application/json")
-    |> send_resp(200, Jason.encode!(%{communities: communities}, []))
+    |> send_resp(200, Jason.encode!(%{communities: communities}))
   end
 
   get "/:id" do
@@ -54,7 +53,7 @@ defmodule Routes.Community do
         members = Communities.get_community_members(uuid)
 
         conn
-        |> send_resp(200, Jason.encode!(%{"members" => members}))
+        |> send_resp(200, Jason.encode!(members))
 
       _ ->
         conn
