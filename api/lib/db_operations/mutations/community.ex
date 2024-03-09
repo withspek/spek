@@ -1,4 +1,7 @@
 defmodule Operations.Mutations.Community do
+  import Ecto.Query, warn: false
+
+  alias Operations.Communities
   alias Models.CommunityPermissions
   alias Models.ChannelMember
   alias Models.CommunityMember
@@ -6,6 +9,7 @@ defmodule Operations.Mutations.Community do
   alias Ecto.Multi
   alias Models.Community
   alias Spek.Repo
+  alias Operations.Queries.Communities, as: Query
 
   def create_community(data) do
     multi_struct =
@@ -54,6 +58,24 @@ defmodule Operations.Mutations.Community do
 
       {:error, :channel, channel_changeset} ->
         IO.puts(channel_changeset)
+    end
+  end
+
+  def join_community(communityId, userId) do
+    community = Communities.get_community_by_id(communityId)
+
+    case community do
+      {:ok, community} ->
+        Query.start()
+        |> Query.filter_by_id(communityId)
+        |> Query.inc_member_count(1)
+        |> Repo.update_all([])
+
+        CommunityMember.changeset(%CommunityMember{communityId: community.id, userId: userId})
+        |> Repo.insert()
+
+      _ ->
+        {:error, %{error: "Not found"}}
     end
   end
 end
