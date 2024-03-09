@@ -3,7 +3,8 @@ defmodule Models.Channel do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @derive {Jason.Encoder, only: ~w(id name description communityId isPrivate isDefault)a}
+  @derive {Jason.Encoder,
+           only: ~w(id name description communityId isPrivate isDefault memberCount)a}
   @primary_key {:id, :binary_id, []}
   schema "channels" do
     field(:name, :string)

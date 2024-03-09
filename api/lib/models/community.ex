@@ -4,7 +4,7 @@ defmodule Models.Community do
 
   alias Models.User
 
-  @derive {Jason.Encoder, only: ~w(id name description coverPhoto isPrivate)a}
+  @derive {Jason.Encoder, only: ~w(id name description coverPhoto isPrivate memberCount)a}
 
   @primary_key {:id, :binary_id, []}
   schema "communities" do
