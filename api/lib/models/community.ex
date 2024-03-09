@@ -10,7 +10,7 @@ defmodule Models.Community do
   schema "communities" do
     field(:name, :string)
     field(:description, :string)
-    # field(:website, :string)
+    field(:memberCount, :integer, default: 1)
     field(:coverPhoto, :string)
     field(:isPrivate, :boolean)
 

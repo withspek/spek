@@ -10,6 +10,7 @@ defmodule Models.Channel do
     field(:description, :string)
     field(:isPrivate, :boolean)
     field(:isDefault, :boolean)
+    field(:memberCount, :integer, default: 1)
     field(:archivedAt, :utc_datetime_usec)
 
     belongs_to(:community, Community, foreign_key: :communityId, type: :binary_id)
