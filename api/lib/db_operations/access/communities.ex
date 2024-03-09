@@ -8,4 +8,10 @@ defmodule Operations.Access.Communities do
 
     Repo.all(query)
   end
+
+  def get_community_by_id(id) do
+    query = from(c in Community, limit: 1, where: c.id == ^id)
+
+    Repo.one(query)
+  end
 end

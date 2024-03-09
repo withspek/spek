@@ -4,7 +4,7 @@ import { Providers } from "./providers";
 import { CheckAuth } from "@/components/check-auth";
 
 export const metadata: Metadata = {
-  title: "Spek",
+  title: { default: "Spek", template: "%s | Spek" },
   description: "Simple public communities",
 };
 

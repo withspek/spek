@@ -14,6 +14,36 @@ defmodule Routes.Community do
     send_resp(conn, 200, Jason.encode!(%{"communities" => communities}))
   end
 
+  get "/:id" do
+    %Plug.Conn{params: %{"id" => id}} = conn
+
+    case Ecto.UUID.cast(id) do
+      {:ok, uuid} ->
+        community = Communities.get_community_by_id(uuid)
+
+        cond do
+          is_nil(community) ->
+            conn
+            |> put_resp_content_type("application/json")
+            |> send_resp(400, Jason.encode!(%{error: "room does not exist"}))
+
+          community.isPrivate ->
+            conn
+            |> put_resp_content_type("application/json")
+            |> send_resp(400, Jason.encode!(%{error: "room is not public"}))
+
+          true ->
+            conn
+            |> put_resp_content_type("application/json")
+            |> send_resp(200, Jason.encode!(community))
+        end
+
+      _ ->
+        conn
+        |> send_resp(400, Jason.encode!(%{"error" => "Invalid id"}))
+    end
+  end
+
   post "/create" do
     has_user_id = Map.has_key?(conn.assigns, :user_id)
 
