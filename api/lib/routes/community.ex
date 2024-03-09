@@ -25,12 +25,12 @@ defmodule Routes.Community do
           is_nil(community) ->
             conn
             |> put_resp_content_type("application/json")
-            |> send_resp(400, Jason.encode!(%{error: "room does not exist"}))
+            |> send_resp(400, Jason.encode!(%{error: "That community does not exist"}))
 
           community.isPrivate ->
             conn
             |> put_resp_content_type("application/json")
-            |> send_resp(400, Jason.encode!(%{error: "room is not public"}))
+            |> send_resp(400, Jason.encode!(%{error: "Community is not public"}))
 
           true ->
             conn
@@ -40,7 +40,7 @@ defmodule Routes.Community do
 
       _ ->
         conn
-        |> send_resp(400, Jason.encode!(%{"error" => "Invalid id"}))
+        |> send_resp(400, Jason.encode!(%{"error" => "Invalid community id"}))
     end
   end
 

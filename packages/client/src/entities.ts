@@ -16,6 +16,7 @@ export interface Community {
   id: string;
   name: string;
   description: string;
+  memberCount: number;
   ownerId: string;
   inserted_at: string;
   updated_at: string;
@@ -26,6 +27,7 @@ export interface Channel {
   name: string;
   description: string;
   communityId: string;
+  memberCount: number;
   inserted_at: string;
   updated_at: string;
 }

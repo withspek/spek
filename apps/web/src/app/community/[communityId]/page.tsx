@@ -1,15 +1,12 @@
+import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { baseUrl } from "@/utils/constants";
 import { defaultQueryFn } from "@/utils/defaultQueryFn";
 import { Metadata, ResolvingMetadata } from "next";
-import { redirect } from "next/navigation";
+import { CommunityPageController } from "./page-controller";
 
 type Props = {
   params: { communityId: string };
 };
-
-async function getCommunity(id: string) {
-  return await defaultQueryFn({ queryKey: `community/${id}` });
-}
 
 export async function generateMetadata(
   { params }: Props,
@@ -19,7 +16,8 @@ export async function generateMetadata(
   const id = params.communityId;
 
   // fetch data
-  const community = await getCommunity(id);
+
+  const community = await defaultQueryFn({ queryKey: `community/${id}` });
 
   return {
     title: community.name,
@@ -43,10 +41,9 @@ export async function generateMetadata(
 }
 
 export default async function CommunityPage({ params }: Props) {
-  const data = await getCommunity(params.communityId);
   return (
-    <div>
-      <p>Hello</p>
-    </div>
+    <>
+      <CommunityPageController id={params.communityId} />
+    </>
   );
 }

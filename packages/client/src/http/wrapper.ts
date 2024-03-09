@@ -5,6 +5,8 @@ import { GetTopCommunitiesResponse } from "./responses";
 export const wrap = (connection: Connection) => ({
   query: {
     getUsers: (): Promise<User[]> => connection.send("/dev", "GET"),
+    getCommunity: (id: string): Promise<Community> =>
+      connection.send(`/community/${id}`, "GET"),
     getTopCommunities: (): Promise<GetTopCommunitiesResponse> =>
       connection.send("/community/all", "GET"),
   },
