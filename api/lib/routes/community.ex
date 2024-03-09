@@ -61,6 +61,37 @@ defmodule Routes.Community do
     end
   end
 
+  get "/:id/permissions" do
+    %Plug.Conn{params: %{"id" => id}} = conn
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    cond do
+      has_user_id ->
+        permissions = Communities.get_community_permissions(id, conn.assigns.user_id)
+
+        if not is_nil(permissions) do
+          conn
+          |> send_resp(200, Jason.encode!(permissions))
+        else
+          conn
+          |> send_resp(
+            200,
+            Jason.encode!(%{isAdmin: false, isMember: false, isMod: false, isBlocked: false})
+          )
+        end
+
+      true ->
+        conn
+        |> send_resp(
+          200,
+          Jason.encode!(%{isAdmin: false, isMember: false, isMod: false, isBlocked: false})
+        )
+    end
+
+    conn
+    |> send_resp(200, Jason.encode!(%{"comm" => 23}))
+  end
+
   post "/create" do
     has_user_id = Map.has_key?(conn.assigns, :user_id)
 

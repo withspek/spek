@@ -50,6 +50,7 @@ defmodule Operations.Mutations.Community do
           communityId: community.id,
           isAdmin: true,
           isMod: true,
+          isMember: true,
           userId: data["ownerId"]
         })
         |> Repo.insert()

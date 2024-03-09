@@ -3,6 +3,7 @@ defmodule Operations.Communities do
   defdelegate get_top_communities(limit), to: Operations.Access.Communities
   defdelegate get_community_by_id(id), to: Operations.Access.Communities
   defdelegate get_community_members(communityId), to: Operations.Access.Communities
+  defdelegate get_community_permissions(communityId, userId), to: Operations.Access.Communities
 
   # MUTATIONS
   defdelegate create_community(data), to: Operations.Mutations.Community
