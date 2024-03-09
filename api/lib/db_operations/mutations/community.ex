@@ -39,7 +39,7 @@ defmodule Operations.Mutations.Community do
         })
         |> Repo.insert()
 
-        ChannelMember.changeset(%ChannelMember{community: community.id, userId: data["ownerId"]})
+        ChannelMember.changeset(%ChannelMember{channel: channel.id, userId: data["ownerId"]})
         |> Repo.insert()
 
         CommunityPermissions.changeset(%CommunityPermissions{
