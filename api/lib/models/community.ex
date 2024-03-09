@@ -4,7 +4,7 @@ defmodule Models.Community do
 
   alias Models.User
 
-  @derive {Jason.Encoder, only: ~w(id name description coverPhoto isPrivate memberCount)a}
+  @derive {Jason.Encoder, only: ~w(id name description coverPhoto isPrivate)a}
 
   @primary_key {:id, :binary_id, []}
   schema "communities" do
@@ -13,7 +13,6 @@ defmodule Models.Community do
     # field(:website, :string)
     field(:coverPhoto, :string)
     field(:isPrivate, :boolean)
-    field(:memberCount, :integer)
 
     belongs_to(:owner, User, foreign_key: :ownerId, type: :binary_id)
 
