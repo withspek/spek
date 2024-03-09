@@ -17,7 +17,7 @@ defmodule Models.CommunityPermissions do
 
   def changeset(permission, params \\ %{}) do
     permission
-    |> cast(params, [:idAdmin, :isMod, :userId, :communityId])
+    |> cast(params, [:isAdmin, :isMod, :userId, :communityId])
     |> validate_required([:isAdmin, :isMod, :userId, :communityId])
   end
 end
