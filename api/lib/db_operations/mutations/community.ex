@@ -1,6 +1,7 @@
 defmodule Operations.Mutations.Community do
   import Ecto.Query, warn: false
 
+  alias Models.Thread
   alias Operations.Communities
   alias Models.CommunityPermissions
   alias Models.ChannelMember
@@ -78,5 +79,14 @@ defmodule Operations.Mutations.Community do
       _ ->
         {:error, %{error: "Not found"}}
     end
+  end
+
+  def create_thread(data) do
+    Thread.changeset(%Thread{
+      channelId: data.channelId,
+      creatorId: data.creatorId,
+      name: data.name
+    })
+    |> Repo.insert!(returning: true)
   end
 end

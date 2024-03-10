@@ -1,6 +1,8 @@
 defmodule Routes.Threads do
-  alias Operations.Channels
   use Plug.Router
+
+  alias Operations.Users
+  alias Operations.Channels
 
   plug(:match)
   plug(Plugs.CheckAuth, %{shouldThrow: false})
@@ -28,6 +30,31 @@ defmodule Routes.Threads do
       _ ->
         conn
         |> send_resp(400, Jason.encode!(%{"error" => "Invalid channel id"}))
+    end
+  end
+
+  post "/create" do
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    if has_user_id do
+      user = Users.get_user_id(conn.assigns.user_id)
+
+      data = %{
+        :creatorId => user.id,
+        :channelId => conn.body_params["channelId"],
+        :name => conn.body_params["name"]
+      }
+
+      thread = Operations.Communities.create_thread(data)
+
+      conn
+      |> send_resp(
+        200,
+        Jason.encode!(thread)
+      )
+    else
+      conn
+      |> send_resp(402, "UNAUTHORIZED")
     end
   end
 end

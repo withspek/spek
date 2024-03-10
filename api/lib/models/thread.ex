@@ -18,7 +18,7 @@ defmodule Models.Thread do
 
   def changeset(thread, params \\ %{}) do
     thread
-    |> cast(params, [:name, :ownerId, :channelId])
-    |> validate_required([:channelId, :ownerId, :name])
+    |> cast(params, [:name, :creatorId, :channelId])
+    |> validate_required([:channelId, :creatorId, :name])
   end
 end
