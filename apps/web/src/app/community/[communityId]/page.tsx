@@ -1,4 +1,3 @@
-import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { baseUrl } from "@/utils/constants";
 import { defaultQueryFn } from "@/utils/defaultQueryFn";
 import { Metadata, ResolvingMetadata } from "next";

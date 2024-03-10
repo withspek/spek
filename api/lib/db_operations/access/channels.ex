@@ -18,7 +18,13 @@ defmodule Operations.Access.Channels do
     |> Repo.all()
   end
 
+  ####################### THREADS ###################
+
   def get_threads_by_channel_id(id) do
     from(th in Thread, where: th.channelId == ^id, order_by: [desc: th.inserted_at]) |> Repo.all()
+  end
+
+  def get_thread_by_id(id) do
+    from(th in Thread, where: th.id == ^id) |> Repo.one()
   end
 end

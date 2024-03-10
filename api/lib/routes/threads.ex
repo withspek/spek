@@ -8,7 +8,32 @@ defmodule Routes.Threads do
   plug(Plugs.CheckAuth, %{shouldThrow: false})
   plug(:dispatch)
 
-  get "/:channelId" do
+  get "/:id" do
+    %Plug.Conn{params: %{"id" => id}} = conn
+
+    case Ecto.UUID.cast(id) do
+      {:ok, uuid} ->
+        thread = Channels.get_thread_by_id(uuid)
+
+        cond do
+          is_nil(thread) ->
+            conn
+            |> put_resp_content_type("application/json")
+            |> send_resp(400, Jason.encode!(%{error: "That thread does not exist"}))
+
+          true ->
+            conn
+            |> put_resp_content_type("application/json")
+            |> send_resp(200, Jason.encode!(thread))
+        end
+
+      _ ->
+        conn
+        |> send_resp(400, Jason.encode!(%{"error" => "Invalid thread id"}))
+    end
+  end
+
+  get "/all/:channelId" do
     %Plug.Conn{params: %{"channelId" => channelId}} = conn
 
     case Ecto.UUID.cast(channelId) do
