@@ -3,6 +3,9 @@
 import { useConn } from "@/hooks/useConn";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { JoinButton } from "./join-button";
+import Tabs from "@/ui/tabs";
+import { ThreadsFeed } from "@/components/community/threads-feed";
+import { MembersList } from "@/components/community/members-list";
 
 interface Props {
   id: string;
@@ -15,13 +18,8 @@ export const CommunityPageController: React.FC<Props> = ({ id }: Props) => {
     {},
     [id]
   );
-  const { data: members, isLoading: loading } = useTypeSafeQuery(
-    ["getCommunityMembers", id],
-    {},
-    [id]
-  );
 
-  if (isLoading || loading) {
+  if (isLoading) {
     return <div>loading...</div>;
   }
 
@@ -33,16 +31,28 @@ export const CommunityPageController: React.FC<Props> = ({ id }: Props) => {
         <p>{community?.memberCount}</p>
       </div>
       <JoinButton communityId={id} />
-      <h3 className="text-alabaster-600">Members</h3>
-      {members?.map((m) => (
-        <ul key={m.id}>
-          <li>
-            {m.displayName} <span>@{m.username}</span>
-          </li>
-
-          <li>{m.bio}</li>
-        </ul>
-      ))}
+      <div>
+        <Tabs>
+          <Tabs.Titles titles={["Threads", "Members"]} />
+          <Tabs.Contents
+            items={[
+              {
+                content: (
+                  <ThreadsFeed
+                    communityId={id}
+                    isAdmin={true}
+                    isMember={true}
+                    currentUser={user}
+                  />
+                ),
+              },
+              {
+                content: <MembersList communityId={id} />,
+              },
+            ]}
+          />
+        </Tabs>
+      </div>
     </div>
   );
 };

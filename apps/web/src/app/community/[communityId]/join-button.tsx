@@ -12,7 +12,7 @@ export const JoinButton: React.FC<JoinButtonProps> = ({ communityId }) => {
   const { push } = useRouter();
   const { data, isLoading } = useTypeSafeQuery(
     ["getCommunityPermissions", communityId],
-    {},
+    { refetchOnWindowFocus: false },
     [communityId]
   );
 
