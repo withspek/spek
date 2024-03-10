@@ -13,27 +13,25 @@ interface Props {
 
 export const CommunityPageController: React.FC<Props> = ({ id }: Props) => {
   const { user } = useConn();
-  const { data: community, isLoading } = useTypeSafeQuery(
-    ["getCommunity", id],
-    {},
-    [id]
-  );
+  const { data, isLoading } = useTypeSafeQuery(["getCommunity", id], {}, [id]);
 
   if (isLoading) {
     return <div>loading...</div>;
   }
 
+  const channel = data?.channels.find((c) => c.isDefault == true);
+
   return (
     <div className="w-md">
       <div className="bg-alabaster-500 mb-3 px-3">
-        <h1 className="text-xl">{community?.name}</h1>
-        <p>{community?.description}</p>
-        <p>{community?.memberCount}</p>
+        <h1 className="text-xl">{data?.community.name}</h1>
+        <p>{data?.community.description}</p>
+        <p>{data?.community.memberCount}</p>
       </div>
       <JoinButton communityId={id} />
       <div>
         <Tabs>
-          <Tabs.Titles titles={["Threads", "Members"]} />
+          <Tabs.Titles titles={["Threads", "Members", "Channels"]} />
           <Tabs.Contents
             items={[
               {
@@ -43,11 +41,24 @@ export const CommunityPageController: React.FC<Props> = ({ id }: Props) => {
                     isAdmin={true}
                     isMember={true}
                     currentUser={user}
+                    channel={channel}
                   />
                 ),
               },
               {
                 content: <MembersList communityId={id} />,
+              },
+              {
+                content: (
+                  <>
+                    {data?.channels.map((c) => (
+                      <div key={c.id}>
+                        <p>ID: {c.id}</p>
+                        <p>Name: {c.name}</p>
+                      </div>
+                    ))}
+                  </>
+                ),
               },
             ]}
           />

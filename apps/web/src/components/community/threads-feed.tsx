@@ -1,11 +1,12 @@
 import { Input } from "@/ui/input";
-import { User } from "@spek/client";
+import { Channel, User } from "@spek/client";
 
 interface ThreadsFeedProps {
   communityId: string;
   isMember: boolean;
   isAdmin: boolean;
   currentUser: User;
+  channel: Channel | undefined;
 }
 
 export const ThreadsFeed: React.FC<ThreadsFeedProps> = ({

@@ -26,6 +26,8 @@ export interface Channel {
   id: string;
   name: string;
   description: string;
+  isDefault: boolean;
+  isPrivate: boolean;
   communityId: string;
   memberCount: number;
   inserted_at: string;

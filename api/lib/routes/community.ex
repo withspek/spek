@@ -1,6 +1,7 @@
 defmodule Routes.Community do
   use Plug.Router
 
+  alias Operations.Channels
   alias Operations.Communities
   alias Operations.Users
 
@@ -12,7 +13,7 @@ defmodule Routes.Community do
     communities = Communities.get_top_communities(40)
 
     conn
-    |> send_resp(200, Jason.encode!(%{communities: communities}))
+    |> send_resp(200, Jason.encode!(%{"communities" => communities}))
   end
 
   get "/:id" do
@@ -34,9 +35,11 @@ defmodule Routes.Community do
             |> send_resp(400, Jason.encode!(%{error: "Community is not public"}))
 
           true ->
+            channels = Channels.get_channels_by_community_id(uuid)
+
             conn
             |> put_resp_content_type("application/json")
-            |> send_resp(200, Jason.encode!(community))
+            |> send_resp(200, Jason.encode!(%{community: community, channels: channels}))
         end
 
       _ ->
@@ -54,6 +57,20 @@ defmodule Routes.Community do
 
         conn
         |> send_resp(200, Jason.encode!(members))
+
+      _ ->
+        conn
+        |> send_resp(400, Jason.encode!(%{error: "Community id is not valid"}))
+    end
+  end
+
+  get "/:id/threads" do
+    %Plug.Conn{params: %{"id" => id}} = conn
+
+    case Ecto.UUID.cast(id) do
+      {:ok, uuid} ->
+        conn
+        |> send_resp(200, Jason.encode!(uuid))
 
       _ ->
         conn
