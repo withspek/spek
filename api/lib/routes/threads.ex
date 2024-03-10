@@ -1,6 +1,7 @@
 defmodule Routes.Threads do
   use Plug.Router
 
+  alias Operations.Messages
   alias Operations.Users
   alias Operations.Channels
 
@@ -25,6 +26,31 @@ defmodule Routes.Threads do
             conn
             |> put_resp_content_type("application/json")
             |> send_resp(200, Jason.encode!(thread))
+        end
+
+      _ ->
+        conn
+        |> send_resp(400, Jason.encode!(%{"error" => "Invalid thread id"}))
+    end
+  end
+
+  get "/:id/messages" do
+    %Plug.Conn{params: %{"id" => threadId}} = conn
+
+    case Ecto.UUID.cast(threadId) do
+      {:ok, uuid} ->
+        messages = Messages.get_thread_messages(uuid)
+
+        cond do
+          is_nil(messages) ->
+            conn
+            |> put_resp_content_type("application/json")
+            |> send_resp(400, Jason.encode!(%{error: "That thread does not exist"}))
+
+          true ->
+            conn
+            |> put_resp_content_type("application/json")
+            |> send_resp(200, Jason.encode!(messages))
         end
 
       _ ->
