@@ -3,6 +3,7 @@
 import { useConn } from "@/hooks/useConn";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { Button } from "@/ui/button";
+import { JoinButton } from "./join-button";
 
 interface Props {
   id: string;
@@ -32,16 +33,16 @@ export const CommunityPageController: React.FC<Props> = ({ id }: Props) => {
         <p>{community?.description}</p>
         <p>{community?.memberCount}</p>
       </div>
-      {user ? <Button>join</Button> : null}
+      <JoinButton communityId={id} />
       <h3 className="text-alabaster-600">Members</h3>
       {members?.map((m) => (
-        <div key={m.id}>
-          <p>
+        <ul key={m.id}>
+          <li>
             {m.displayName} <span>@{m.username}</span>
-          </p>
+          </li>
 
-          <p>{m.bio}</p>
-        </div>
+          <li>{m.bio}</li>
+        </ul>
       ))}
     </div>
   );

@@ -31,3 +31,10 @@ export interface Channel {
   inserted_at: string;
   updated_at: string;
 }
+
+export type CommunityPermissions = {
+  isAdmin: boolean;
+  isMember: boolean;
+  isBlocked: boolean;
+  isMod: boolean;
+};

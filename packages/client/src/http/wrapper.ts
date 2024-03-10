@@ -1,4 +1,4 @@
-import { Community, User } from "../entities";
+import { Community, CommunityPermissions, User } from "../entities";
 import { Connection } from "./raw";
 import { GetTopCommunitiesResponse } from "./responses";
 
@@ -11,6 +11,8 @@ export const wrap = (connection: Connection) => ({
       connection.send("/community/all", "GET"),
     getCommunityMembers: (id: string): Promise<User[]> =>
       connection.send(`/community/${id}/members`, "GET"),
+    getCommunityPermissions: (id: string): Promise<CommunityPermissions> =>
+      connection.send(`/community/${id}/permissions`, "GET"),
   },
   mutation: {
     createCommunity: (data: {
