@@ -9,7 +9,7 @@ interface MembersListProps {
 export const MembersList: React.FC<MembersListProps> = ({ communityId }) => {
   const { data, isLoading } = useTypeSafeQuery(
     ["getCommunityMembers", communityId],
-    {},
+    { refetchOnMount: false },
     [communityId]
   );
 
