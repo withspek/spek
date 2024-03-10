@@ -1,4 +1,4 @@
-import { CompassIcon, InfinityIcon } from "@/icons";
+import { CompassIcon, HomeIcon, InfinityIcon } from "@/icons";
 import { BoxedIcon } from "@/ui/boxed-icon";
 import React from "react";
 
@@ -9,7 +9,7 @@ export const Navbar: React.FC = () => {
         <InfinityIcon />
       </BoxedIcon>
       <BoxedIcon>
-        <CompassIcon />
+        <HomeIcon />
       </BoxedIcon>
     </div>
   );
