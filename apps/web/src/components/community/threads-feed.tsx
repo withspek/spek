@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { Input } from "@/ui/input";
 import { Channel, User } from "@spek/client";
+import { CreateInput } from "./create-input";
 
 interface ThreadsFeedProps {
   communityId: string;
@@ -32,17 +33,10 @@ export const ThreadsFeed: React.FC<ThreadsFeedProps> = ({
 
   return (
     <div className="flex flex-col gap-4">
-      {isAdmin || isMember ? (
-        <>
-          <Input placeholder="Start a conversation" name="name" autoFocus />
-        </>
-      ) : null}
+      {isAdmin || isMember ? <CreateInput channelId={channel?.id!} /> : null}
       {data?.map((thread) => (
-        <Link href={`/thread/${thread.id}`}>
-          <div
-            key={thread.id}
-            className="bg-alabaster-950 border-alabaster-500 border px-3 py-5"
-          >
+        <Link href={`/thread/${thread.id}`} key={thread.id}>
+          <div className="bg-alabaster-950 border-alabaster-500 border px-3 py-5">
             <p>{thread.name}</p>
             <p>{format(thread.inserted_at, "MMMM d, hh:mm a")}</p>
           </div>

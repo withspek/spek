@@ -30,7 +30,10 @@ export const wrap = (connection: Connection) => ({
       description: string;
     }): Promise<Community> =>
       connection.send("/community/create", "POST", { ...data }),
-    createThread: (data: { name: string; channelId: string }) =>
+    createThread: (data: {
+      name: string;
+      channelId: string;
+    }): Promise<Thread> =>
       connection.send(`/threads/create`, "POST", { ...data }),
   },
 });
