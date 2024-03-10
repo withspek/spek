@@ -1,5 +1,4 @@
 import { Navbar } from "@/components/navbar";
-import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 
 export default function Home() {
   return (

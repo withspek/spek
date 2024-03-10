@@ -23,6 +23,8 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/community/${id}/permissions`, "GET"),
     getChannelThreads: (channelId: string): Promise<Thread[]> =>
       connection.send(`/threads/all/${channelId}`, "GET"),
+    getThread: (threadId: string): Promise<Thread> =>
+      connection.send(`/threads/${threadId}`, "GET"),
   },
   mutation: {
     createCommunity: (data: {
