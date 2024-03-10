@@ -40,3 +40,10 @@ export type CommunityPermissions = {
   isBlocked: boolean;
   isMod: boolean;
 };
+
+export type Thread = {
+  id: string;
+  name: string;
+  inserted_at: string;
+  updated_at: string;
+};

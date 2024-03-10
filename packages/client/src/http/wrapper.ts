@@ -1,4 +1,10 @@
-import { Channel, Community, CommunityPermissions, User } from "../entities";
+import {
+  Channel,
+  Community,
+  CommunityPermissions,
+  Thread,
+  User,
+} from "../entities";
 import { Connection } from "./raw";
 import { GetTopCommunitiesResponse } from "./responses";
 
@@ -15,6 +21,8 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/community/${id}/members`, "GET"),
     getCommunityPermissions: (id: string): Promise<CommunityPermissions> =>
       connection.send(`/community/${id}/permissions`, "GET"),
+    getChannelThreads: (channelId: string): Promise<Thread[]> =>
+      connection.send(`/threads/${channelId}`, "GET"),
   },
   mutation: {
     createCommunity: (data: {
@@ -22,5 +30,7 @@ export const wrap = (connection: Connection) => ({
       description: string;
     }): Promise<Community> =>
       connection.send("/community/create", "POST", { ...data }),
+    createThread: (data: { name: string; channelId: string }) =>
+      connection.send(`/threads/create`, "POST", { ...data }),
   },
 });
