@@ -2,7 +2,6 @@
 
 import { useConn } from "@/hooks/useConn";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
-import { Button } from "@/ui/button";
 import { JoinButton } from "./join-button";
 
 interface Props {

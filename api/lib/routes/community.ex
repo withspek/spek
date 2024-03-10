@@ -87,9 +87,6 @@ defmodule Routes.Community do
           Jason.encode!(%{isAdmin: false, isMember: false, isMod: false, isBlocked: false})
         )
     end
-
-    conn
-    |> send_resp(200, Jason.encode!(%{"comm" => 23}))
   end
 
   post "/create" do
