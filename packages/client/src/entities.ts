@@ -47,3 +47,12 @@ export type Thread = {
   inserted_at: string;
   updated_at: string;
 };
+
+export type Message = {
+  id: string;
+  text: string;
+  userId: string;
+  threadId: string;
+  inserted_at: string;
+  updated_at: string;
+};

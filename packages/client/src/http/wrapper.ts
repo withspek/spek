@@ -2,6 +2,7 @@ import {
   Channel,
   Community,
   CommunityPermissions,
+  Message,
   Thread,
   User,
 } from "../entities";
@@ -24,6 +25,8 @@ export const wrap = (connection: Connection) => ({
     getChannelThreads: (channelId: string): Promise<Thread[]> =>
       connection.send(`/threads/all/${channelId}`, "GET"),
     getThread: (threadId: string): Promise<Thread> =>
+      connection.send(`/threads/${threadId}`, "GET"),
+    getThreadMessages: (threadId: string): Promise<Message[]> =>
       connection.send(`/threads/${threadId}`, "GET"),
   },
   mutation: {
