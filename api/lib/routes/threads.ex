@@ -69,11 +69,11 @@ defmodule Routes.Threads do
         {:ok, uuid} ->
           data = %{
             "threadId" => uuid,
-            "userId" => conn.body_params.userId,
-            "text" => conn.body_params.text
+            "userId" => conn.body_params["userId"],
+            "text" => conn.body_params["text"]
           }
 
-          {:ok, message} = Messages.create_thread_message(data)
+          message = Messages.create_thread_message(data)
 
           conn
           |> send_resp(200, Jason.encode!(message))

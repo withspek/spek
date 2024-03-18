@@ -45,6 +45,6 @@ export const wrap = (connection: Connection) => ({
       userId: string;
       text: string;
     }): Promise<Message> =>
-      connection.send(`/threads/${data.threadId}`, "POST", { ...data }),
+      connection.send(`/threads/${data.threadId}/message`, "POST", { ...data }),
   },
 });
