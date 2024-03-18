@@ -59,6 +59,35 @@ defmodule Routes.Threads do
     end
   end
 
+  post "/:id/message" do
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    if has_user_id do
+      %Plug.Conn{params: %{"id" => threadId}} = conn
+
+      case Ecto.UUID.cast(threadId) do
+        {:ok, uuid} ->
+          data = %{
+            "threadId" => uuid,
+            "userId" => conn.body_params.userId,
+            "text" => conn.body_params.text
+          }
+
+          {:ok, message} = Messages.create_thread_message(data)
+
+          conn
+          |> send_resp(200, Jason.encode!(message))
+
+        _ ->
+          conn
+          |> send_resp(200, Jason.encode!(%{"error" => "Invalid thread id"}))
+      end
+    else
+      conn
+      |> send_resp(200, Jason.encode!(%{"error" => "NOT AUTHORIZED"}))
+    end
+  end
+
   get "/all/:channelId" do
     %Plug.Conn{params: %{"channelId" => channelId}} = conn
 
