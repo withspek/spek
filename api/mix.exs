@@ -31,6 +31,7 @@ defmodule Spek.MixProject do
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
       {:lettuce, "~> 0.3.0", only: :dev},
+      {:poison, "~> 5.0"},
       {:oauth2, "~> 2.0"}
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]

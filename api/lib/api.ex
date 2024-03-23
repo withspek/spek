@@ -4,7 +4,7 @@ defmodule Spek do
   def start(_type, _args) do
     children = [
       Spek.Supervisors.UserSession,
-      Spek.Repo,
+      {Spek.Repo, []},
       Plug.Cowboy.child_spec(
         scheme: :http,
         plug: Router,

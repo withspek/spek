@@ -1,5 +1,6 @@
 "use client";
 
+import { WebSocketWrapper } from "@/components/WebSocketWrapper";
 import { WaitForConn } from "@/components/check-auth";
 import { ConnnectionContextProvider } from "@/contexts/ConnectionContext";
 import { queryClient } from "@/utils/queryClient";
@@ -14,7 +15,9 @@ export const Providers: React.FC<Props> = ({ children }) => {
     <>
       <ConnnectionContextProvider>
         <QueryClientProvider client={queryClient}>
-          <WaitForConn>{children}</WaitForConn>
+          <WaitForConn>
+            <WebSocketWrapper>{children}</WebSocketWrapper>
+          </WaitForConn>
         </QueryClientProvider>
       </ConnnectionContextProvider>
     </>

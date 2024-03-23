@@ -1,15 +1,18 @@
 defmodule Spek.UserSession do
-  use GenServer
+  use GenServer, restart: :temporary
 
   defmodule State do
     defstruct user_id: nil,
-              pid: nil
+              muted: false,
+              pid: nil,
+              username: nil,
+              avatar_url: nil
   end
 
   #################################################################################
   # REGISTRY AND SUPERVISION BOILERPLATE
 
-  defp via(user_id), do: {:via, Registry, {Spek.UserSesionRegistery, user_id}}
+  defp via(user_id), do: {:via, Registry, {Spek.UserSessionRegistry, user_id}}
 
   defp cast(user_id, params), do: GenServer.cast(via(user_id), params)
   defp call(user_id, params), do: GenServer.call(via(user_id), params)
@@ -18,7 +21,7 @@ defmodule Spek.UserSession do
     callers = [self() | Process.get(:"$callers", [])]
 
     case DynamicSupervisor.start_child(
-           Spek.UserSesionDynamicSupervisor,
+           Spek.UserSessionDynamicSupervisor,
            {__MODULE__, Keyword.merge(initial_values, callers: callers)}
          ) do
       {:error, {:already_started, pid}} -> {:ignored, pid}
@@ -28,7 +31,7 @@ defmodule Spek.UserSession do
 
   def child_spec(init), do: %{super(init) | id: Keyword.get(init, :user_id)}
 
-  def count, do: Registry.count(Spek.UserSesionRegistery)
+  def count, do: Registry.count(Spek.UserSessionRegistery)
 
   ###############################################################################
   ## INITIALIZATION BOILERPLATE
@@ -79,13 +82,17 @@ defmodule Spek.UserSession do
     {:reply, Map.get(state, key), state}
   end
 
-  def set_pid(user_id, pid), do: call(user_id, {:set_pid, pid})
+  # temporary function that exists so that each user can only have
+  # one tenant websocket.
+  def set_active_ws(user_id, pid), do: call(user_id, {:set_active_ws, pid})
 
-  defp set_pid(pid, _reply, state) do
+  defp set_active_ws(pid, _reply, state) do
     if state.pid do
-      send(state.pid, {:kill})
+      # terminates another websocket that happened to have been
+      # running.
+      Process.exit(state.pid, :normal)
     else
-      # TODO: SET ONLINE STATUS
+      # SET ONLINE
     end
 
     Process.monitor(pid)
@@ -113,7 +120,7 @@ defmodule Spek.UserSession do
   def handle_cast({:set_state, info}, state), do: set_state_impl(info, state)
 
   def handle_call({:get, key}, reply, state), do: get_impl(key, reply, state)
-  def handle_call({:set_pid, pid}, reply, state), do: set_pid(pid, reply, state)
+  def handle_call({:set_active_ws, pid}, reply, state), do: set_active_ws(pid, reply, state)
 
   def handle_info({:DOWN, _ref, :process, pid, _reason}, state), do: handle_disconnect(pid, state)
 end

@@ -88,7 +88,7 @@ defmodule SocketHandler do
   end
 
   def websocket_handle({:text, json}, state) do
-    with {:ok, json} <- Jason.decode(json) do
+    with {:ok, json} <- Poison.decode(json) do
       case json["op"] do
         "auth" ->
           %{
@@ -110,12 +110,20 @@ defmodule SocketHandler do
               if user do
                 # note that this will start the session and will be ignored if the
                 # session is already running.
-                UserSession.start_supervised(user_id: user_id)
+                UserSession.start_supervised(
+                  user_id: user_id,
+                  username: user.username,
+                  avatar_url: user.avatarUrl,
+                  display_name: user.displayName
+                )
 
-                UserSession.set_pid(user_id, self())
+                # currently we only allow one active websocket connection per-user
+                # at some point soon we're going to make this multi-connection, and we
+                # won't have to do this.
+                UserSession.set_active_ws(user.id, self())
 
                 if tokens do
-                  UserSession.new_tokens(user_id, tokens)
+                  UserSession.new_tokens(user.id, tokens)
                 end
 
                 {:reply,

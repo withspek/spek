@@ -16,6 +16,8 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "isomorphic-fetch": "^3.0.0"
+    "isomorphic-fetch": "^3.0.0",
+    "isomorphic-ws": "^5.0.0",
+    "reconnecting-websocket": "^4.4.0"
   }
 }

@@ -8,8 +8,8 @@ defmodule Spek.Supervisors.UserSession do
   @impl true
   def init(_init_arg) do
     children = [
-      {Registry, keys: :unique, name: Spek.UserSesionRegistry},
-      {DynamicSupervisor, name: Onion.UserSesionDynamicSupervisor, start: :one_for_one}
+      {Registry, keys: :unique, name: Spek.UserSessionRegistry},
+      {DynamicSupervisor, name: Spek.UserSessionDynamicSupervisor, strategy: :one_for_one}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

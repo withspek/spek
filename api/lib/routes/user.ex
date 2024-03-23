@@ -15,6 +15,8 @@ defmodule Routes.User do
       conn
       |> send_resp(200, Jason.encode!(%{"user" => user}))
     else
+      IO.inspect(conn.assigns)
+
       conn
       |> send_resp(200, Jason.encode!(%{"user" => nil}))
     end
