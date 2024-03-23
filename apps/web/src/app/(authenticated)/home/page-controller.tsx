@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 
 interface ControllerProps {}
 
-export const Controller: React.FC<ControllerProps> = () => {
+export const HomeController: React.FC<ControllerProps> = () => {
   const { user } = useConn();
   const { push } = useRouter();
   const { data, isLoading } = useTypeSafeQuery("getTopCommunities");
