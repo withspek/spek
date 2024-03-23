@@ -67,17 +67,31 @@ defmodule Operations.Mutations.Community do
     community = Communities.get_community_by_id(communityId)
 
     case community do
-      {:ok, community} ->
-        Query.start()
-        |> Query.filter_by_id(communityId)
-        |> Query.inc_member_count(1)
-        |> Repo.update_all([])
+      community ->
+        member = Communities.is_member?(communityId, userId)
+        IO.inspect(member)
 
-        CommunityMember.changeset(%CommunityMember{communityId: community.id, userId: userId})
-        |> Repo.insert()
+        if not member do
+          Query.start()
+          |> Query.filter_by_id(communityId)
+          |> Query.inc_member_count(1)
+          |> Repo.update_all([])
 
-      _ ->
-        {:error, %{error: "Not found"}}
+          CommunityMember.changeset(%CommunityMember{communityId: community.id, userId: userId})
+          |> Repo.insert()
+
+          CommunityPermissions.changeset(%CommunityPermissions{
+            communityId: communityId,
+            isMember: true,
+            isAdmin: false,
+            isBlocked: false,
+            isMod: false,
+            userId: userId
+          })
+          |> Repo.insert()
+        end
+
+        {:ok, true}
     end
   end
 

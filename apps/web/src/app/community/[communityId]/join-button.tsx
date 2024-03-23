@@ -1,4 +1,5 @@
 import { useConn } from "@/hooks/useConn";
+import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { Button } from "@/ui/button";
 import { useRouter } from "next/navigation";
@@ -10,6 +11,7 @@ interface JoinButtonProps {
 export const JoinButton: React.FC<JoinButtonProps> = ({ communityId }) => {
   const { user } = useConn();
   const { push } = useRouter();
+  const { mutateAsync } = useTypeSafeMutation("joinCommunity");
   const { data, isLoading } = useTypeSafeQuery(
     ["getCommunityPermissions", communityId],
     { refetchOnWindowFocus: false },
@@ -28,9 +30,9 @@ export const JoinButton: React.FC<JoinButtonProps> = ({ communityId }) => {
         <p>You are a member</p>
       ) : (
         <Button
-          onClick={() => {
+          onClick={async () => {
             if (user) {
-              push("/home");
+              await mutateAsync([{ communityId, userId: user.id }]);
             } else {
               push("/login");
             }

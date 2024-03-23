@@ -18,6 +18,19 @@ defmodule Operations.Access.Communities do
     from(c in Community, limit: 1, where: c.id == ^id) |> Repo.one()
   end
 
+  def is_member?(userId, communityId) do
+    query =
+      from(c in CommunityMember, where: c.communityId == ^communityId and c.userId == ^userId)
+
+    member = Repo.one(query)
+
+    if is_nil(member) do
+      false
+    else
+      true
+    end
+  end
+
   def get_community_members(communityId) do
     query =
       from(c in CommunityMember,

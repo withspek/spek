@@ -1,6 +1,7 @@
 defmodule Routes.Community do
   use Plug.Router
 
+  alias Spek.UserSession
   alias Operations.Channels
   alias Operations.Communities
   alias Operations.Users
@@ -135,8 +136,18 @@ defmodule Routes.Community do
     has_user_id = Map.has_key?(conn.assigns, :user_id)
 
     if has_user_id do
+      communityId = conn.body_params["communityId"]
+      userId = conn.body_params["userId"]
+
+      {:ok, resp} = Operations.Communities.join_community(communityId, userId)
+
+      UserSession.send_ws(userId, nil, %{
+        op: "new_community_join",
+        d: %{success: true, communityId: communityId}
+      })
+
       conn
-      |> send_resp(200, Jason.encode!("Hellow orld"))
+      |> send_resp(200, Jason.encode!(%{ok: resp}))
     else
       conn
       |> send_resp(401, Jason.encode!(%{error: "Not authorized"}))
