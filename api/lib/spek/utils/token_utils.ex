@@ -1,38 +1,31 @@
 defmodule Spek.Utils.TokenUtils do
   alias Models.User
 
-  def tokens_to_user_id(access_token!, refresh_token) do
-    access_token! = access_token! || ""
+  def tokens_to_user_id(accessToken, refreshToken) do
+    accessToken = if is_nil(accessToken), do: "", else: accessToken
+    refreshToken = if is_nil(refreshToken), do: "", else: refreshToken
 
     case Spek.AccessToken.verify_and_validate(
-           access_token!,
+           accessToken,
            Joken.Signer.create("HS256", "secret")
          ) do
       {:ok, claims} ->
-        {:existing_claim, claims["userId"]}
+        {claims["userId"], nil}
 
       _ ->
-        verify_refresh_token(refresh_token)
-    end
-  end
+        case Spek.RefreshToken.verify_and_validate(refreshToken) do
+          {:ok, refreshClaims} ->
+            user = User |> Spek.Repo.get(refreshClaims["userId"])
 
-  defp verify_refresh_token(refresh_token!) do
-    refresh_token! = refresh_token! || ""
+            if is_nil(user) or user.tokenVersion != refreshClaims["tokenVersion"] do
+              {nil, nil}
+            else
+              {user.id, create_tokens(user), user}
+            end
 
-    case Spek.RefreshToken.verify_and_validate(
-           refresh_token!,
-           Joken.Signer.create("HS256", "refreshsecret")
-         ) do
-      {:ok, refreshClaims} ->
-        user = Spek.Repo.get(User, refreshClaims["userId"])
-
-        if user &&
-             user.tokenVersion == refreshClaims["tokenVersion"] do
-          {:new_tokens, user.id, create_tokens(user), user}
+          _ ->
+            {nil, nil}
         end
-
-      _ ->
-        nil
     end
   end
 

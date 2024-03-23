@@ -1,4 +1,4 @@
-defmodule Spek.UserSesion do
+defmodule Spek.UserSession do
   use GenServer
 
   defmodule State do

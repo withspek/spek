@@ -5,48 +5,56 @@ defmodule Plugs.CheckAuth do
     opts
   end
 
-  def call(conn = %{req_headers: req_headers}, opts) do
-    access_token = :proplists.get_value("x-access-token", req_headers, nil)
-    refresh_token = :proplists.get_value("x-refresh-token", req_headers, nil)
+  def call(conn, opts) do
+    shouldThrow = if opts, do: opts[:shouldThrow], else: true
 
-    if access_token && refresh_token do
-      assign_tokens(conn, access_token, refresh_token, opts)
-    else
-      auth_error(conn, opts)
+    do_error = fn ->
+      if shouldThrow,
+        do:
+          conn
+          |> send_resp(400, "Not authenticated")
+          |> halt,
+        else: conn
     end
-  end
 
-  defp assign_tokens(conn, access_token, refresh_token, opts) do
-    case Spek.Utils.TokenUtils.tokens_to_user_id(access_token, refresh_token) do
-      nil ->
-        auth_error(conn, opts)
+    tokens =
+      Enum.reduce(
+        conn.req_headers,
+        %{},
+        fn {key, value}, acc ->
+          case key do
+            "x-access-token" -> Map.merge(acc, %{accessToken: value})
+            "x-refresh-token" -> Map.merge(acc, %{refreshToken: value})
+            _ -> acc
+          end
+        end
+      )
 
-      {:existing_claim, user_id} ->
-        assign(conn, :user_id, user_id)
+    case tokens do
+      %{accessToken: accessToken, refreshToken: refreshToken} ->
+        case Spek.Utils.TokenUtils.tokens_to_user_id(accessToken, refreshToken) do
+          {nil, nil} ->
+            do_error.()
 
-      {:new_tokens, user_id, %{accessToken: new_access_token, refreshToken: new_refresh_token},
-       user} ->
-        conn
-        |> put_resp_header(
-          "X-Access-Token",
-          new_access_token
-        )
-        |> put_resp_header(
-          "X-Refresh-Token",
-          new_refresh_token
-        )
-        |> assign(:user_id, user_id)
-        |> assign(:user, user)
-    end
-  end
+          {userId, nil} ->
+            conn |> assign(:user_id, userId)
 
-  defp auth_error(conn, opts) do
-    if opts[:shouldThrow] do
-      conn
-      |> send_resp(400, "Not authenticated")
-      |> halt
-    else
-      conn
+          {userId, %{accessToken: newAccessToken, refreshToken: newRefreshToken}, user} ->
+            conn
+            |> put_resp_header(
+              "X-Access-Token",
+              newAccessToken
+            )
+            |> put_resp_header(
+              "X-Refresh-Token",
+              newRefreshToken
+            )
+            |> assign(:user_id, userId)
+            |> assign(:user, user)
+        end
+
+      _ ->
+        do_error.()
     end
   end
 end
