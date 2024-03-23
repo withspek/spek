@@ -13,7 +13,10 @@ defmodule Spek.Utils.TokenUtils do
         {claims["userId"], nil}
 
       _ ->
-        case Spek.RefreshToken.verify_and_validate(refreshToken) do
+        case Spek.RefreshToken.verify_and_validate(
+               refreshToken,
+               Joken.Signer.create("HS256", "refreshsecret")
+             ) do
           {:ok, refreshClaims} ->
             user = User |> Spek.Repo.get(refreshClaims["userId"])
 

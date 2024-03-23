@@ -131,6 +131,18 @@ defmodule Routes.Community do
     end
   end
 
+  post "/join" do
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    if has_user_id do
+      conn
+      |> send_resp(200, Jason.encode!("Hellow orld"))
+    else
+      conn
+      |> send_resp(401, Jason.encode!(%{error: "Not authorized"}))
+    end
+  end
+
   match _ do
     conn
     |> send_resp(404, "Not found")
