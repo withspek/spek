@@ -75,11 +75,11 @@ defmodule Routes.Threads do
           }
 
           message = Messages.create_thread_message(data)
-          thread = Operations.Channels.get_thread_by_id(uuid)
-          usersDB = Operations.Channels.get_channel_members(thread.channelId)
-          users = Enum.map(usersDB, fn u -> u.id end)
+          data = Operations.Communities.get_community_id_by_thread_id(uuid)
 
-          CommunitySession.ws_fan(users, %{
+          IO.inspect(data)
+
+          CommunitySession.broadcast_ws(data.communityId, %{
             op: "new_thread_message",
             d: %{message: message, type: "new-message", threadId: uuid}
           })

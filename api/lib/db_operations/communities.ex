@@ -5,6 +5,7 @@ defmodule Operations.Communities do
   defdelegate get_community_by_id(id), to: Operations.Access.Communities
   defdelegate get_community_members(communityId), to: Operations.Access.Communities
   defdelegate get_community_permissions(communityId, userId), to: Operations.Access.Communities
+  defdelegate get_community_id_by_thread_id(thread_id), to: Operations.Access.Communities
   defdelegate is_member?(communityId, userId), to: Operations.Access.Communities
 
   # MUTATIONS

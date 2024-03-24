@@ -43,9 +43,13 @@ defmodule Spek do
 
   defp start_communities() do
     Enum.each(Operations.Communities.all_communities(), fn community ->
+      members = Operations.Communities.get_community_members(community.id)
+      users = Enum.map(members, fn x -> x.id end)
+
       Spek.CommunitySession.start_supervised(
         community_id: community.id,
-        community_creator_id: community.ownerId
+        community_creator_id: community.ownerId,
+        users: users
       )
     end)
   end

@@ -1,6 +1,8 @@
 defmodule Operations.Access.Communities do
   import Ecto.Query
 
+  alias Models.Channel
+  alias Models.Thread
   alias Models.CommunityPermissions
   alias Models.User.UserPreview
   alias Models.CommunityMember
@@ -59,6 +61,21 @@ defmodule Operations.Access.Communities do
     query =
       from(cp in CommunityPermissions,
         where: cp.communityId == ^communityId and cp.userId == ^userId
+      )
+
+    Repo.one(query)
+  end
+
+  def get_community_id_by_thread_id(thread_id) do
+    query =
+      from(c in Channel,
+        join: t in Thread,
+        on: c.id == t.channelId,
+        where: t.id == ^thread_id,
+        select: %{
+          communityId: c.communityId
+        },
+        limit: 1
       )
 
     Repo.one(query)

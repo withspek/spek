@@ -4,6 +4,11 @@ defmodule Models.Community do
 
   alias Models.User
 
+  defmodule CommunityPreview do
+    @derive {Jason.Encoder, only: ~w(id name description createdAt)a}
+    defstruct [:id, :name, :description, :createdAt]
+  end
+
   @derive {Jason.Encoder, only: ~w(id name description coverPhoto isPrivate memberCount)a}
 
   @primary_key {:id, :binary_id, []}

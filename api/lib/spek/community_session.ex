@@ -70,6 +70,7 @@ defmodule Spek.CommunitySession do
   def broadcast_ws(community_id, msg), do: cast(community_id, {:broadcast_ws, msg})
 
   defp broadcast_ws_impl(msg, state) do
+    IO.inspect(state.users)
     ws_fan(state.users, msg)
     {:noreply, state}
   end
