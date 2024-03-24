@@ -4,6 +4,7 @@ defmodule Spek do
   def start(_type, _args) do
     children = [
       Spek.Supervisors.UserSession,
+      Spek.Supervisors.CommunitySession,
       {Spek.Repo, []},
       Plug.Cowboy.child_spec(
         scheme: :http,

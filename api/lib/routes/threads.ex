@@ -1,6 +1,7 @@
 defmodule Routes.Threads do
   use Plug.Router
 
+  alias Operations.Access.Communities
   alias Operations.Messages
   alias Operations.Users
   alias Operations.Channels
@@ -74,6 +75,8 @@ defmodule Routes.Threads do
           }
 
           message = Messages.create_thread_message(data)
+
+          members_to_notify = Communities.get_community_members()
 
           conn
           |> send_resp(200, Jason.encode!(message))
