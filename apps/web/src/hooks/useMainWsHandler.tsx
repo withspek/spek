@@ -28,6 +28,10 @@ export const useMainWsHandler = () => {
           }
         }
       ),
+
+      conn.addListener<any>("new_thread_message", ({ threadId, message }) => {
+        updateQuery(["getThreadMessages", threadId], (x) => [message, ...x]);
+      }),
     ];
 
     return () => {

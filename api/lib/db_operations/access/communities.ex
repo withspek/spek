@@ -8,6 +8,11 @@ defmodule Operations.Access.Communities do
   alias Spek.Repo
   alias Models.Community
 
+  def all_communities do
+    query = from(c in Community, order_by: c.memberCount)
+    Repo.all(query)
+  end
+
   def get_top_communities(limit) do
     query = from(c in Community, limit: ^limit, order_by: c.memberCount)
 

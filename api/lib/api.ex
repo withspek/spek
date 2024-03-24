@@ -19,7 +19,16 @@ defmodule Spek do
 
     opts = [strategy: :one_for_one, name: Spek.Supervisor]
 
-    Supervisor.start_link(children, opts)
+    # TODO: make these into tasks
+
+    case Supervisor.start_link(children, opts) do
+      {:ok, pid} ->
+        start_communities()
+        {:ok, pid}
+
+      error ->
+        error
+    end
   end
 
   defp dispatch do
@@ -30,5 +39,14 @@ defmodule Spek do
          {:_, Plug.Cowboy.Handler, {Router, []}}
        ]}
     ]
+  end
+
+  defp start_communities() do
+    Enum.each(Operations.Communities.all_communities(), fn community ->
+      Spek.CommunitySession.start_supervised(
+        community_id: community.id,
+        community_creator_id: community.ownerId
+      )
+    end)
   end
 end

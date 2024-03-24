@@ -1,7 +1,7 @@
 defmodule Routes.Threads do
   use Plug.Router
 
-  alias Operations.Access.Communities
+  alias Spek.CommunitySession
   alias Operations.Messages
   alias Operations.Users
   alias Operations.Channels
@@ -75,8 +75,14 @@ defmodule Routes.Threads do
           }
 
           message = Messages.create_thread_message(data)
+          thread = Operations.Channels.get_thread_by_id(uuid)
+          usersDB = Operations.Channels.get_channel_members(thread.channelId)
+          users = Enum.map(usersDB, fn u -> u.id end)
 
-          members_to_notify = Communities.get_community_members()
+          CommunitySession.ws_fan(users, %{
+            op: "new_thread_message",
+            d: %{message: message, type: "new-message", threadId: uuid}
+          })
 
           conn
           |> send_resp(200, Jason.encode!(message))

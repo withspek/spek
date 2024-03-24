@@ -1,6 +1,9 @@
 defmodule Operations.Access.Channels do
   import Ecto.Query, warn: false
 
+  alias Models.User.UserPreview
+  alias Models.User
+  alias Models.ChannelMember
   alias Models.Thread
   alias Operations.Queries.Channels, as: Query
   alias Spek.Repo
@@ -16,6 +19,25 @@ defmodule Operations.Access.Channels do
     Query.start()
     |> Query.filter_by_community_id(id)
     |> Repo.all()
+  end
+
+  def get_channel_members(channelId) do
+    query =
+      from(c in ChannelMember,
+        join: u in User,
+        on: u.id == c.userId,
+        select: %UserPreview{
+          avatarUrl: u.avatarUrl,
+          displayName: u.displayName,
+          id: u.id,
+          online: u.online,
+          username: u.username,
+          bio: u.bio
+        },
+        where: c.channelId == ^channelId
+      )
+
+    Repo.all(query, [])
   end
 
   ####################### THREADS ###################
