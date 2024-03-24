@@ -5,6 +5,8 @@ import React from "react";
 import { useConn } from "@/hooks/useConn";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { useRouter } from "next/navigation";
+import { InboxIcon, NotificationIcon, UserSharingIcon } from "@/icons";
+import { Button } from "@/ui/button";
 
 interface ControllerProps {}
 
@@ -18,10 +20,16 @@ export const HomeController: React.FC<ControllerProps> = () => {
   }
 
   return (
-    <div>
-      <h2 className="text-xl">{user.displayName}</h2>
-      <p>{user.gitlabUrl}</p>
-      <img src={user.avatarUrl} alt={user.displayName} />
+    <div className="w-md">
+      <div className="flex gap-3 justify-between">
+        <InboxIcon />
+        <NotificationIcon />
+        <UserSharingIcon />
+        <div className="flex justify-end">
+          <Button color="primary">Create</Button>
+        </div>
+      </div>
+
       <div className="flex flex-col gap-4 mt-3">
         {data?.communities.map((c) => (
           <div
