@@ -21,4 +21,25 @@ defmodule Routes.User do
       |> send_resp(200, Jason.encode!(%{"user" => nil}))
     end
   end
+
+  get "/:id" do
+    %Plug.Conn{params: %{"id" => id}} = conn
+
+    case Ecto.UUID.cast(id) do
+      {:ok, uuid} ->
+        user = Users.get_user_id(uuid)
+
+        if is_nil(user) do
+          conn
+          |> send_resp(200, Jason.encode!(%{error: "user with this id does not exist"}))
+        else
+          conn
+          |> send_resp(200, Jason.encode!(%{user: user}))
+        end
+
+      _ ->
+        conn
+        |> send_resp(200, Jason.encode!(%{error: "invalid user id"}))
+    end
+  end
 end

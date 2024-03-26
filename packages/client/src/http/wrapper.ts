@@ -28,6 +28,8 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/threads/${threadId}`, "GET"),
     getThreadMessages: (threadId: string): Promise<Message[]> =>
       connection.send(`/threads/${threadId}/messages`, "GET"),
+    getUserProfile: (userId: string): Promise<{ user: User }> =>
+      connection.send(`/user/${userId}`, "GET"),
   },
   mutation: {
     createCommunity: (data: {
