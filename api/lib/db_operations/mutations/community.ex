@@ -1,7 +1,6 @@
 defmodule Operations.Mutations.Community do
   import Ecto.Query, warn: false
 
-  alias Models.User.UserPreview
   alias Operations.Access.Users
   alias Models.Thread
   alias Operations.Communities
@@ -105,7 +104,7 @@ defmodule Operations.Mutations.Community do
     user = Users.get_user_id(data.creatorId)
 
     previewList = [
-      %UserPreview{
+      %{
         avatarUrl: user.avatarUrl,
         id: user.id,
         bio: user.bio,

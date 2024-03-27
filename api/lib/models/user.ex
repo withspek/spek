@@ -1,9 +1,21 @@
 defmodule Models.User do
   use Ecto.Schema
 
-  defmodule UserPreview do
-    @derive {Jason.Encoder, only: ~w(id username displayName avatarUrl online bio)a}
-    defstruct [:id, :username, :displayName, :avatarUrl, :online, :bio]
+  defmodule Preview do
+    use Ecto.Schema
+
+    # TODO: Make this a separate Schema that sees the same table.
+
+    @derive {Jason.Encoder, only: ~w(id displayName bio avatarUrl)a}
+    @primary_key false
+    embedded_schema do
+      # does User.Preview really need an id?
+      field(:id, :binary_id)
+
+      field(:displayName, :string)
+      field(:bio, :string)
+      field(:avatarUrl, :string)
+    end
   end
 
   @derive {Jason.Encoder, only: ~w(id username displayName bio bannerUrl avatarUrl

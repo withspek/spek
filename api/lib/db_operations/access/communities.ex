@@ -4,7 +4,6 @@ defmodule Operations.Access.Communities do
   alias Models.Channel
   alias Models.Thread
   alias Models.CommunityPermissions
-  alias Models.User.UserPreview
   alias Models.CommunityMember
   alias Models.User
   alias Spek.Repo
@@ -43,12 +42,10 @@ defmodule Operations.Access.Communities do
       from(c in CommunityMember,
         join: u in User,
         on: u.id == c.userId,
-        select: %UserPreview{
+        select: %User.Preview{
           avatarUrl: u.avatarUrl,
           displayName: u.displayName,
           id: u.id,
-          online: u.online,
-          username: u.username,
           bio: u.bio
         },
         where: c.communityId == ^communityId

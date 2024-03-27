@@ -2,7 +2,6 @@ defmodule Models.Community do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias Models.User.UserPreview
   alias Models.User
 
   defmodule CommunityPreview do
@@ -23,7 +22,7 @@ defmodule Models.Community do
 
     belongs_to(:owner, User, foreign_key: :ownerId, type: :binary_id)
 
-    embeds_many(:peoplePreviewList, UserPreview)
+    embeds_many(:peoplePreviewList, User.Preview)
 
     timestamps()
   end

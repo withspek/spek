@@ -1,7 +1,7 @@
 defmodule Operations.Access.Channels do
   import Ecto.Query, warn: false
 
-  alias Models.User.UserPreview
+  alias Models.User
   alias Models.User
   alias Models.ChannelMember
   alias Models.Thread
@@ -26,12 +26,10 @@ defmodule Operations.Access.Channels do
       from(c in ChannelMember,
         join: u in User,
         on: u.id == c.userId,
-        select: %UserPreview{
+        select: %User.Preview{
           avatarUrl: u.avatarUrl,
           displayName: u.displayName,
           id: u.id,
-          online: u.online,
-          username: u.username,
           bio: u.bio
         },
         where: c.channelId == ^channelId
