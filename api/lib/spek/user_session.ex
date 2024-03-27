@@ -3,7 +3,6 @@ defmodule Spek.UserSession do
 
   defmodule State do
     defstruct user_id: nil,
-              muted: false,
               pid: nil,
               username: nil,
               avatar_url: nil

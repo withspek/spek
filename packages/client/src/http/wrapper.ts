@@ -32,6 +32,11 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/user/${userId}`, "GET"),
   },
   mutation: {
+    updateProfile: (data: {
+      username: string;
+      displayName: string;
+      bio: string;
+    }): Promise<any> => connection.send(`/user/update`, "PUT", { ...data }),
     createCommunity: (data: {
       name: string;
       description: string;

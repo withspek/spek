@@ -42,4 +42,33 @@ defmodule Routes.User do
         |> send_resp(200, Jason.encode!(%{error: "invalid user id"}))
     end
   end
+
+  put "/update" do
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    if has_user_id do
+      user_id = conn.assigns.user_id
+
+      data = %{
+        "displayName" => conn.body_params["displayName"],
+        "bio" => conn.body_params["bio"],
+        "username" => conn.body_params["username"]
+      }
+
+      result = Users.update_profile(user_id, data)
+
+      case result do
+        {:ok, user} ->
+          Spek.UserSession.send_ws(user.id, nil, %{op: "profile_update", d: %{user: user}})
+          conn |> send_resp(200, Jason.encode!(user))
+
+        {:error, %Ecto.Changeset{errors: [username: {"has already been taken, _"}]}} ->
+          conn
+          |> send_resp(200, Jason.encode!(%{error: "that username is taken"}))
+      end
+    else
+      conn
+      |> send_resp(401, Jason.encode!(%{error: "UNAUTHORIZED"}))
+    end
+  end
 end

@@ -5,6 +5,13 @@ defmodule Operations.Mutations.Users do
   alias Models.User
   alias Operations.Queries.Users, as: Query
 
+  def update_profile(user_id, data) do
+    user_id
+    |> Operations.Users.get_user_id()
+    |> User.edit_changeset(data)
+    |> Repo.update()
+  end
+
   def set_online(user_id) do
     Query.start()
     |> Query.filter_by_id(user_id)
