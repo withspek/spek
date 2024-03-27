@@ -1,5 +1,6 @@
 "use client";
 
+import { PlusIcon } from "@/icons";
 import React from "react";
 import ReactModal from "react-modal";
 
@@ -74,7 +75,7 @@ export const Modal: React.FC<
             onClick={(e) => props?.onRequestClose?.(e)}
             data-testid="close-modal"
           >
-            close
+            <PlusIcon className="rotate-45 transform" />
           </button>
         </div>
         <div
