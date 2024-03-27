@@ -1,4 +1,6 @@
 import { Metadata } from "next";
+import { DirectMessagePageController } from "./controller";
+import { Header } from "@/components/Header";
 
 export const metadata: Metadata = {
   title: "Direct",
@@ -6,8 +8,9 @@ export const metadata: Metadata = {
 
 export default function DirectMessagesPage() {
   return (
-    <div>
-      <p>Direct messages</p>
-    </div>
+    <>
+      <Header />
+      <DirectMessagePageController />
+    </>
   );
 }

@@ -13,7 +13,7 @@ export const Header: React.FC = () => {
   const { user } = useConn();
 
   return (
-    <header className="flex gap-4 justify-between py-3">
+    <header className="flex gap-4 justify-between py-3 w-full">
       <Link href={`/home`}>
         <HomeIcon />
       </Link>

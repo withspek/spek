@@ -4,7 +4,7 @@ interface Props {
 
 export const CenterLayout: React.FC<Props> = ({ children }) => {
   return (
-    <div className="flex flex-col mx-auto max-w-screen-md relative px-2">
+    <div className="flex max-w-screen-sm mx-auto w-full h-full flex-col relative">
       {children}
     </div>
   );
