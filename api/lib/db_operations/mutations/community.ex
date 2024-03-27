@@ -1,6 +1,8 @@
 defmodule Operations.Mutations.Community do
   import Ecto.Query, warn: false
 
+  alias Models.User.UserPreview
+  alias Operations.Access.Users
   alias Models.Thread
   alias Operations.Communities
   alias Models.CommunityPermissions
@@ -95,11 +97,27 @@ defmodule Operations.Mutations.Community do
     end
   end
 
+  @spec create_thread(
+          atom()
+          | %{:channelId => any(), :creatorId => any(), :name => any(), optional(any()) => any()}
+        ) :: any()
   def create_thread(data) do
+    user = Users.get_user_id(data.creatorId)
+
+    previewList = [
+      %UserPreview{
+        avatarUrl: user.avatarUrl,
+        id: user.id,
+        bio: user.bio,
+        displayName: user.displayName
+      }
+    ]
+
     Thread.changeset(%Thread{
       channelId: data.channelId,
       creatorId: data.creatorId,
-      name: data.name
+      name: data.name,
+      peoplePreviewList: previewList
     })
     |> Repo.insert!(returning: true)
   end
