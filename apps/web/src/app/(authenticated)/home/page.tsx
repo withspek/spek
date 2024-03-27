@@ -1,5 +1,6 @@
 import { Metadata } from "next";
-import { HomeController } from "./page-controller";
+import { HomeController } from "./controller";
+import { Header } from "@/components/Header";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -7,8 +8,9 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <div>
+    <>
+      <Header />
       <HomeController />
-    </div>
+    </>
   );
 }
