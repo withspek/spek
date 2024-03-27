@@ -2,6 +2,7 @@ defmodule Models.Thread do
   import Ecto.Changeset
   use Ecto.Schema
 
+  alias Models.User.UserPreview
   alias Models.Channel
   alias Models.User
 
@@ -12,6 +13,8 @@ defmodule Models.Thread do
 
     belongs_to(:creator, User, foreign_key: :creatorId, type: :binary_id)
     belongs_to(:channel, Channel, foreign_key: :channelId, type: :binary_id)
+
+    embeds_many(:peoplePreviewList, UserPreview)
 
     timestamps()
   end

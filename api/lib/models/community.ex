@@ -2,14 +2,16 @@ defmodule Models.Community do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Models.User.UserPreview
   alias Models.User
 
   defmodule CommunityPreview do
-    @derive {Jason.Encoder, only: ~w(id name description createdAt)a}
-    defstruct [:id, :name, :description, :createdAt]
+    @derive {Jason.Encoder, only: ~w(id name description createdAt peoplePreviewList)a}
+    defstruct [:id, :name, :description, :createdAt, :peoplePreviewList]
   end
 
-  @derive {Jason.Encoder, only: ~w(id name description coverPhoto isPrivate memberCount)a}
+  @derive {Jason.Encoder,
+           only: ~w(id name description coverPhoto isPrivate memberCount peoplePreviewList)a}
 
   @primary_key {:id, :binary_id, []}
   schema "communities" do
@@ -20,6 +22,8 @@ defmodule Models.Community do
     field(:isPrivate, :boolean)
 
     belongs_to(:owner, User, foreign_key: :ownerId, type: :binary_id)
+
+    embeds_many(:peoplePreviewList, UserPreview)
 
     timestamps()
   end
