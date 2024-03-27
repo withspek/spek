@@ -3,6 +3,8 @@ import { useTokenStore } from "@/stores/useTokenStore";
 import { Button } from "@/ui/button";
 import { User } from "@spek/client";
 import { Avatar } from "@/ui/avatar";
+import { useState } from "react";
+import { EditProfileModal } from "./EditProfileModal";
 
 export type UserProfileWrapperProps = {
   isCurrentUser: boolean;
@@ -13,6 +15,7 @@ export const UserProfileWrapper: React.FC<UserProfileWrapperProps> = ({
   isCurrentUser,
   user,
 }) => {
+  const [openEditModal, setOpenEditModal] = useState<boolean>(false);
   const { push } = useRouter();
 
   return (
@@ -26,7 +29,9 @@ export const UserProfileWrapper: React.FC<UserProfileWrapperProps> = ({
       <p>{user.bio}</p>
       {isCurrentUser ? (
         <div className="flex gap-4">
-          <Button>Edit profile</Button>
+          <Button onClick={() => setOpenEditModal(!openEditModal)}>
+            Edit profile
+          </Button>
           <Button
             onClick={() => {
               useTokenStore
@@ -38,6 +43,12 @@ export const UserProfileWrapper: React.FC<UserProfileWrapperProps> = ({
             Logout
           </Button>
         </div>
+      ) : null}
+      {openEditModal ? (
+        <EditProfileModal
+          isOpen={openEditModal}
+          onRequestClose={() => setOpenEditModal(false)}
+        />
       ) : null}
     </div>
   );
