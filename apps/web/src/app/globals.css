@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1rem;
+}
+
 :root {
   --alabaster-50: #f9f9f9;
   --alabaster-100: #efefef;
