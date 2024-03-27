@@ -39,6 +39,9 @@ export const ThreadsFeed: React.FC<ThreadsFeedProps> = ({
           <div className="bg-alabaster-950 border-alabaster-500 border px-3 py-5 rounded-lg">
             <p>{thread.name}</p>
             <p>{format(thread.inserted_at, "MMMM d, hh:mm a")}</p>
+            {thread.peoplePreviewList.map((p) => (
+              <p key={p.id}>{p.displayName}</p>
+            ))}
           </div>
         </Link>
       ))}

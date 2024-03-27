@@ -12,6 +12,13 @@ export interface User {
   updated_at: string;
 }
 
+export type UserPreview = {
+  id: string;
+  displayName: string;
+  avatarUrl: string;
+  bio: string;
+};
+
 export interface Community {
   id: string;
   name: string;
@@ -44,6 +51,7 @@ export type CommunityPermissions = {
 export type Thread = {
   id: string;
   name: string;
+  peoplePreviewList: UserPreview[];
   inserted_at: string;
   updated_at: string;
 };
