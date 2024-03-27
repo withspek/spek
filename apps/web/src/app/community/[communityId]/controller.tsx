@@ -22,11 +22,11 @@ export const CommunityPageController: React.FC<Props> = ({ id }: Props) => {
   const channel = data?.channels.find((c) => c.isDefault == true);
 
   return (
-    <div className="w-md">
-      <div className="bg-alabaster-500 mb-3 px-3">
+    <div className="mt-2">
+      <div className="bg-alabaster-500 mb-3 px-3 rounded-lg py-2">
         <h1 className="text-xl">{data?.community.name}</h1>
         <p>{data?.community.description}</p>
-        <p>{data?.community.memberCount}</p>
+        <p>{data?.community.memberCount} members</p>
       </div>
       <JoinButton communityId={id} />
       <div>

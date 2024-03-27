@@ -1,7 +1,8 @@
 import { baseUrl } from "@/utils/constants";
 import { defaultQueryFn } from "@/utils/defaultQueryFn";
 import { Metadata, ResolvingMetadata } from "next";
-import { CommunityPageController } from "./page-controller";
+import { CommunityPageController } from "./controller";
+import { Header } from "@/components/Header";
 
 type Props = {
   params: { communityId: string };
@@ -42,6 +43,7 @@ export async function generateMetadata(
 export default async function CommunityPage({ params }: Props) {
   return (
     <>
+      <Header />
       <CommunityPageController id={params.communityId} />
     </>
   );

@@ -33,10 +33,10 @@ export const ThreadsFeed: React.FC<ThreadsFeedProps> = ({
 
   return (
     <div className="flex flex-col gap-4">
-      {isAdmin || isMember ? <CreateInput channelId={channel?.id!} /> : null}
+      {currentUser ? <CreateInput channelId={channel?.id!} /> : null}
       {data?.map((thread) => (
         <Link href={`/thread/${thread.id}`} key={thread.id}>
-          <div className="bg-alabaster-950 border-alabaster-500 border px-3 py-5">
+          <div className="bg-alabaster-950 border-alabaster-500 border px-3 py-5 rounded-lg">
             <p>{thread.name}</p>
             <p>{format(thread.inserted_at, "MMMM d, hh:mm a")}</p>
           </div>

@@ -8,7 +8,7 @@ const buttonColorStyles = {
 const sizeStyles = {
   lg: "",
   md: "px-4 py-2 rounded w-56",
-  sm: "",
+  sm: "px-3 py-2 rounded",
   xs: "",
 };
 export type ButtonProps = DetailedHTMLProps<
