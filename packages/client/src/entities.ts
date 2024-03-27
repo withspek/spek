@@ -7,6 +7,8 @@ export interface User {
   bannerUrl: string;
   avatarUrl: string;
   githubUrl: string;
+  online: boolean;
+  lastOnline: string;
   gitlabUrl: string;
   inserted_at: string;
   updated_at: string;
