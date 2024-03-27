@@ -1,6 +1,8 @@
 defmodule Operations.Users do
   # MUTATIONS
   defdelegate gitlab_find_or_create(user), to: Operations.Mutations.Users
+  defdelegate set_offline(user_id), to: Operations.Mutations.Users
+  defdelegate set_online(user_id), to: Operations.Mutations.Users
 
   # ACCESS
 

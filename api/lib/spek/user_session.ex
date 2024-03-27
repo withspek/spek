@@ -92,7 +92,7 @@ defmodule Spek.UserSession do
       # running.
       Process.exit(state.pid, :normal)
     else
-      # SET ONLINE
+      Operations.Users.set_online(state.user_id)
     end
 
     Process.monitor(pid)
@@ -103,7 +103,7 @@ defmodule Spek.UserSession do
   ## MESSAGING API.
 
   defp handle_disconnect(pid, state = %{pid: pid}) do
-    # TODO: SET OFFLINE STATUS
+    Operations.Users.set_offline(state.user_id)
 
     {:stop, :normal, state}
   end

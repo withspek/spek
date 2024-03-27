@@ -1,8 +1,24 @@
 defmodule Operations.Mutations.Users do
+  import Ecto.Query, warn: false
+
   alias Spek.Repo
   alias Models.User
-  alias Ecto.Query
-  import Query
+  alias Operations.Queries.Users, as: Query
+
+  def set_online(user_id) do
+    Query.start()
+    |> Query.filter_by_id(user_id)
+    |> Query.update_set_online_true()
+    |> Repo.update_all([])
+  end
+
+  def set_offline(user_id) do
+    Query.start()
+    |> Query.filter_by_id(user_id)
+    |> Query.update_set_online_false()
+    |> Query.update_set_last_online_to_now()
+    |> Repo.update_all([])
+  end
 
   def gitlab_find_or_create(user) do
     gitlabId = Integer.to_string(user["id"])
