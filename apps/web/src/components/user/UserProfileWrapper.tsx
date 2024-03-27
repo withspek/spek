@@ -1,3 +1,5 @@
+import { useRouter } from "next/navigation";
+import { useTokenStore } from "@/stores/useTokenStore";
 import { Button } from "@/ui/button";
 import { User } from "@spek/client";
 
@@ -10,6 +12,8 @@ export const UserProfileWrapper: React.FC<UserProfileWrapperProps> = ({
   isCurrentUser,
   user,
 }) => {
+  const { push } = useRouter();
+
   return (
     <div>
       <p className="text-xl font-bold">{user.displayName}</p>
@@ -17,7 +21,16 @@ export const UserProfileWrapper: React.FC<UserProfileWrapperProps> = ({
       {isCurrentUser ? (
         <div className="flex gap-4">
           <Button>Edit profile</Button>
-          <Button>Logout</Button>
+          <Button
+            onClick={() => {
+              useTokenStore
+                .getState()
+                .setTokens({ accessToken: "", refreshToken: "" });
+              push("/logout");
+            }}
+          >
+            Logout
+          </Button>
         </div>
       ) : null}
     </div>

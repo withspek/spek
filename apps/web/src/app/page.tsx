@@ -1,6 +1,5 @@
 "use client";
 
-import { useSaveTokens } from "@/hooks/useSaveTokens";
 import { Buttons } from "./login/buttons";
 import { useConn } from "@/hooks/useConn";
 import { useRouter } from "next/navigation";
@@ -8,16 +7,15 @@ import { useTokenStore } from "@/stores/useTokenStore";
 import { useEffect } from "react";
 
 export default function Home() {
-  useSaveTokens();
   const conn = useConn();
   const { push } = useRouter();
   const hasTokens = useTokenStore((s) => !!(s.accessToken && s.refreshToken));
 
   useEffect(() => {
-    if (hasTokens || conn.user) {
+    if (hasTokens) {
       push("/home");
     }
-  }, [hasTokens, conn]);
+  }, [hasTokens]);
 
   return (
     <main className="flex flex-col gap-3 w-full h-full">
