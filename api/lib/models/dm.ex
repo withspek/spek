@@ -4,6 +4,25 @@ defmodule Models.Dm do
   use Ecto.Schema
   import Ecto.Changeset
 
+  defmodule Reply do
+    use Ecto.Schema
+
+    @derive {Jason.Encoder,
+             only: ~w(id blocked read1 read2 displayName lastMessage online inserted_at)a}
+    @primary_key false
+    embedded_schema do
+      field(:id, :binary_id)
+      field(:blocked, :boolean)
+      field(:read1, :boolean)
+      field(:read2, :boolean)
+      field(:displayName, :string)
+      field(:lastMessage, :string)
+      field(:online, :boolean)
+      field(:inserted_at, :utc_datetime_usec)
+    end
+  end
+
+  @derive {Jason.Encoder, only: ~w(id blocked read1 read2 inserted_at updated_at)a}
   @primary_key {:id, :binary_id, []}
   schema "dms" do
     field(:blocked, :boolean, default: false)

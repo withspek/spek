@@ -1,5 +1,5 @@
 defmodule Spek.Supervisors.CommunitySession do
-  use Supervisor
+  @behaviour Supervisor
 
   def start_link(init_arg) do
     Supervisor.start_link(__MODULE__, init_arg)
