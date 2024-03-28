@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { Thread } from "@spek/client";
 
 import { defaultQueryFn } from "@/utils/defaultQueryFn";
-import { ThreadPageController } from "./page-controller";
+import { ThreadPageController } from "./controller";
 
 type Props = {
   params: { id: string };
@@ -26,8 +26,8 @@ export default async function ThreadPage({ params }: Props) {
   const thread = await getThreadData(params.id);
 
   return (
-    <div className="w-md">
+    <>
       <ThreadPageController thread={thread} />
-    </div>
+    </>
   );
 }

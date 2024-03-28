@@ -9,5 +9,6 @@ defmodule Operations.Mutations.Messages do
       userId: data["userId"]
     })
     |> Repo.insert!(returning: true)
+    |> Repo.preload(:user)
   end
 end

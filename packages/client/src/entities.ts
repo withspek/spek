@@ -61,7 +61,7 @@ export type Thread = {
 export type Message = {
   id: string;
   text: string;
-  userId: string;
+  user: User;
   threadId: string;
   inserted_at: string;
   updated_at: string;

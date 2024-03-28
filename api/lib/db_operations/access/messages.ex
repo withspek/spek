@@ -6,5 +6,6 @@ defmodule Operations.Access.Messages do
     Query.start()
     |> Query.filter_by_thread_id(threadId)
     |> Repo.all()
+    |> Repo.preload(:user)
   end
 end
