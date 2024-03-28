@@ -22,13 +22,13 @@ config :spek, OAuth.Github,
     System.get_env("GITHUB_APP_ID") ||
       raise("""
       environment variable GITHUB_APP_ID not set.
-      Create an oauth application on gitlab to get one
+      Create an oauth application on github to get one
       """),
   client_secret:
     System.get_env("GITHUB_APP_SECRET") ||
       raise("""
       environment variable GITLAB_APP_SECRET not set.
-      Create an oauth application on gitlab to get one
+      Create an oauth application on github to get one
       """),
   redirect_uri:
     System.get_env("GITHUB_REDIRECT_URI") ||
