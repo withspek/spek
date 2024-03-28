@@ -19,15 +19,15 @@ config :spek, OAuth.Gitlab,
 
 config :spek, OAuth.Github,
   client_id:
-    System.get_env("GITHUB_APP_ID") ||
+    System.get_env("GITHUB_CLIENT_ID") ||
       raise("""
-      environment variable GITHUB_APP_ID not set.
+      environment variable GITHUB_CLIENT_ID not set.
       Create an oauth application on github to get one
       """),
   client_secret:
-    System.get_env("GITHUB_APP_SECRET") ||
+    System.get_env("GITHUB_CLIENT_SECRET") ||
       raise("""
-      environment variable GITLAB_APP_SECRET not set.
+      environment variable GITLAB_CLIENT_SECRET not set.
       Create an oauth application on github to get one
       """),
   redirect_uri:
