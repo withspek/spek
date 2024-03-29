@@ -5,20 +5,20 @@ defmodule Models.DmMessage do
   alias Models.User
   alias Models.Dm
 
+  @derive {Jason.Encoder, only: [:dm_id, :user_id, :text, :inserted_at]}
   @primary_key {:id, :binary_id, []}
   schema "dm_messages" do
     field(:text, :string)
 
-    belongs_to(:dm, Dm, foreign_key: :dmId, type: :binary_id)
-
-    belongs_to(:recipient, User, foreign_key: :recipientId, type: :binary_id)
-    belongs_to(:sender, User, foreign_key: :senderId, type: :binary_id)
+    belongs_to(:dm, Dm, foreign_key: :dm_id, type: :binary_id)
+    belongs_to(:user, User, foreign_key: :user_id, type: :binary_id)
 
     timestamps()
   end
 
   def changeset(message, attrs) do
     message
-    |> cast(attrs, [:dmId, :text, :senderId, :recipientId])
+    |> cast(attrs, [:dm_id, :text, :user_id])
+    |> validate_required([:dm_id, :text, :user_id])
   end
 end

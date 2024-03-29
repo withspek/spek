@@ -28,13 +28,8 @@ defmodule Routes.Dms do
 
     case has_user_id do
       true ->
-        user_id_1 = conn.body_params["userId1"]
-        user_id_2 = conn.body_params["userId2"]
-
-        dm = Dms.create_dm(user_id_1, user_id_2)
-
         conn
-        |> send_resp(200, Jason.encode!(dm))
+        |> send_resp(200, Jason.encode!("dm"))
 
       false ->
         conn

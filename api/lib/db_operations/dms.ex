@@ -4,5 +4,4 @@ defmodule Operations.Dms do
   defdelegate get_user_dms(user_id), to: Operations.Access.Dms
 
   # MUTATIONS
-  defdelegate create_dm(user_id_1, user_id_2), to: Operations.Mutations.Dms
 end
