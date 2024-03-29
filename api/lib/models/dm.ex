@@ -7,25 +7,22 @@ defmodule Models.Dm do
   defmodule Reply do
     use Ecto.Schema
 
-    @derive {Jason.Encoder,
-             only: ~w(id blocked read1 read2 displayName lastMessage online inserted_at)a}
+    @derive {Jason.Encoder, only: ~w(id read displayName avatarUrl message online inserted_at)a}
     @primary_key false
     embedded_schema do
       field(:id, :binary_id)
-      field(:blocked, :boolean)
-      field(:read1, :boolean)
-      field(:read2, :boolean)
+      field(:read, :boolean)
       field(:displayName, :string)
-      field(:lastMessage, :string)
+      field(:avatarUrl, :string)
+      field(:message, :string)
       field(:online, :boolean)
       field(:inserted_at, :utc_datetime_usec)
     end
   end
 
-  @derive {Jason.Encoder, only: ~w(id blocked read1 read2 inserted_at updated_at)a}
+  @derive {Jason.Encoder, only: ~w(id read1 read2 inserted_at updated_at)a}
   @primary_key {:id, :binary_id, []}
   schema "dms" do
-    field(:blocked, :boolean, default: false)
     field(:read1, :boolean, default: false)
     field(:read2, :boolean, default: false)
 
@@ -37,7 +34,7 @@ defmodule Models.Dm do
 
   def changeset(dm, attrs) do
     dm
-    |> cast(attrs, [:blocked, :read1, :read2])
-    |> validate_required([:blocked, :read1, :read2])
+    |> cast(attrs, [:read1, :read2])
+    |> validate_required([:read1, :read2])
   end
 end

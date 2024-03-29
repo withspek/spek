@@ -1,8 +1,6 @@
 import Config
 
-database_url =
-  System.get_env("DATABASE_URL") ||
-    "postgres://postgres:postgres@localhost/spek_repo"
+database_url = "postgres://postgres:postgres@localhost/spek_repo"
 
 config :spek, Spek.Repo, url: database_url
 
