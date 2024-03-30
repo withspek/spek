@@ -68,6 +68,8 @@ defmodule Routes.Threads do
 
       case Ecto.UUID.cast(threadId) do
         {:ok, uuid} ->
+          communityId = conn.body_params["communityId"]
+
           data = %{
             "threadId" => uuid,
             "userId" => conn.body_params["userId"],
@@ -75,11 +77,8 @@ defmodule Routes.Threads do
           }
 
           message = Messages.create_thread_message(data)
-          data = Operations.Communities.get_community_id_by_thread_id(uuid)
 
-          IO.inspect(data)
-
-          CommunitySession.broadcast_ws(data.communityId, %{
+          CommunitySession.broadcast_ws(communityId, %{
             op: "new_thread_message",
             d: %{message: message, type: "new-message", threadId: uuid}
           })
@@ -131,6 +130,7 @@ defmodule Routes.Threads do
       data = %{
         :creatorId => user.id,
         :channelId => conn.body_params["channelId"],
+        :communityId => conn.body_params["communityId"],
         :name => conn.body_params["name"]
       }
 

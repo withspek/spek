@@ -53,6 +53,9 @@ export type CommunityPermissions = {
 export type Thread = {
   id: string;
   name: string;
+  userId: string;
+  communityId: string;
+  channelId: string;
   peoplePreviewList: UserPreview[];
   inserted_at: string;
   updated_at: string;

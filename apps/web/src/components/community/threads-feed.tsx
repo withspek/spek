@@ -2,7 +2,6 @@ import Link from "next/link";
 import { format } from "date-fns";
 
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
-import { Input } from "@/ui/input";
 import { Channel, User } from "@spek/client";
 import { CreateInput } from "./create-input";
 import { AvatarGroup } from "@/ui/avatar-group";
@@ -34,7 +33,9 @@ export const ThreadsFeed: React.FC<ThreadsFeedProps> = ({
 
   return (
     <div className="flex flex-col gap-4">
-      {currentUser ? <CreateInput channelId={channel?.id!} /> : null}
+      {currentUser ? (
+        <CreateInput channelId={channel?.id!} communityId={communityId} />
+      ) : null}
       {data?.map((thread) => {
         const avatarSrc = thread.peoplePreviewList.map((p) => p.avatarUrl);
         return (

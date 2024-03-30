@@ -49,9 +49,11 @@ export const wrap = (connection: Connection) => ({
     createThread: (data: {
       name: string;
       channelId: string;
+      communityId: string;
     }): Promise<Thread> =>
       connection.send(`/threads/create`, "POST", { ...data }),
     createThreadMessage: (data: {
+      communityId: string;
       threadId: string;
       userId: string;
       text: string;

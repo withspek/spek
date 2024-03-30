@@ -23,6 +23,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
     const data = {
       text,
       threadId: thread.id,
+      communityId: thread.communityId,
       userId: currentUser.id,
     };
 

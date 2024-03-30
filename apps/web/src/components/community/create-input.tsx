@@ -5,9 +5,13 @@ import { Form, Formik } from "formik";
 
 interface CreateInputProps {
   channelId: string;
+  communityId: string;
 }
 
-export const CreateInput: React.FC<CreateInputProps> = ({ channelId }) => {
+export const CreateInput: React.FC<CreateInputProps> = ({
+  channelId,
+  communityId,
+}) => {
   const { mutateAsync } = useTypeSafeMutation("createThread");
   const update = useTypeSafeUpdateQuery();
 
@@ -15,7 +19,7 @@ export const CreateInput: React.FC<CreateInputProps> = ({ channelId }) => {
     <Formik<{ name: string }>
       initialValues={{ name: "" }}
       onSubmit={async ({ name }, { setFieldValue }) => {
-        const resp = await mutateAsync([{ name, channelId }]);
+        const resp = await mutateAsync([{ name, channelId, communityId }]);
 
         if (resp.id) {
           update(["getChannelThreads", channelId], (oldData) => [

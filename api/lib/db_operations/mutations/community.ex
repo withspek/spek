@@ -115,6 +115,7 @@ defmodule Operations.Mutations.Community do
     Thread.changeset(%Thread{
       channelId: data.channelId,
       creatorId: data.creatorId,
+      communityId: data.communityId,
       name: data.name,
       peoplePreviewList: previewList
     })
