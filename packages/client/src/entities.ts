@@ -69,3 +69,10 @@ export type Message = {
   inserted_at: string;
   updated_at: string;
 };
+
+export type UserDm = {
+  id: string;
+  peoplePreviewList: UserPreview[];
+  inserted_at: string;
+  updated_at: string;
+};

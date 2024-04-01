@@ -5,6 +5,7 @@ import {
   Message,
   Thread,
   User,
+  UserDm,
 } from "../entities";
 import { Connection } from "./raw";
 import { GetTopCommunitiesResponse } from "./responses";
@@ -30,6 +31,7 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/threads/${threadId}/messages`, "GET"),
     getUserProfile: (userId: string): Promise<{ user: User }> =>
       connection.send(`/user/${userId}`, "GET"),
+    getUserDms: (): Promise<UserDm[]> => connection.send(`/dms`, "GET"),
   },
   mutation: {
     updateProfile: (data: {
@@ -52,6 +54,8 @@ export const wrap = (connection: Connection) => ({
       communityId: string;
     }): Promise<Thread> =>
       connection.send(`/threads/create`, "POST", { ...data }),
+    createDirectMessage: (userIds: string[]): Promise<Thread> =>
+      connection.send(`/dms/create`, "POST", { userIds }),
     createThreadMessage: (data: {
       communityId: string;
       threadId: string;

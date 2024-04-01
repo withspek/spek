@@ -28,7 +28,7 @@ defmodule Routes.Dms do
 
     case has_user_id do
       true ->
-        user_ids = conn.body_params["user_ids"]
+        user_ids = conn.body_params["userIds"]
 
         # TODO: Support more 2 people dm
         dm = Dms.get_dm_by_user_ids(Enum.at(user_ids, 0), Enum.at(user_ids, 1))
