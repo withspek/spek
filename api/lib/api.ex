@@ -4,7 +4,7 @@ defmodule Spek do
   def start(_type, _args) do
     children = [
       Spek.Supervisors.UserSession,
-      Spek.Supervisors.CommunitySession,
+      Spek.Supervisors.ThreadSession,
       Spek.Supervisors.DmSession,
       {Spek.Repo, []},
       Plug.Cowboy.child_spec(
@@ -25,7 +25,7 @@ defmodule Spek do
     case Supervisor.start_link(children, opts) do
       {:ok, pid} ->
         start_dms()
-        start_communities()
+        start_threads()
         {:ok, pid}
 
       error ->
@@ -49,16 +49,9 @@ defmodule Spek do
     end)
   end
 
-  defp start_communities() do
-    Enum.each(Operations.Communities.all_communities(), fn community ->
-      members = Operations.Communities.get_community_members(community.id)
-      users = Enum.map(members, fn x -> x.id end)
-
-      Spek.CommunitySession.start_supervised(
-        community_id: community.id,
-        community_creator_id: community.ownerId,
-        users: users
-      )
+  defp start_threads() do
+    Enum.each(Operations.Communities.all_threads_ids(), fn id ->
+      Spek.ThreadSession.start_supervised(thread_id: id)
     end)
   end
 end

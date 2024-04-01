@@ -1,16 +1,17 @@
-defmodule Spek.CommunitySession do
+defmodule Spek.ThreadSession do
   use GenServer, restart: :temporary
 
   defmodule State do
-    defstruct community_id: "",
-              community_creator_id: "",
+    defstruct thread_id: "",
+              active: true,
+              lastMessage: nil,
               users: []
   end
 
   #################################################################################
   # REGISTRY AND SUPERVISION BOILERPLATE
 
-  defp via(user_id), do: {:via, Registry, {Spek.CommunitySessionRegistry, user_id}}
+  defp via(user_id), do: {:via, Registry, {Spek.ThreadSessionRegistry, user_id}}
 
   defp cast(user_id, params), do: GenServer.cast(via(user_id), params)
   defp call(user_id, params), do: GenServer.call(via(user_id), params)
@@ -19,7 +20,7 @@ defmodule Spek.CommunitySession do
     callers = [self() | Process.get(:"$callers", [])]
 
     case DynamicSupervisor.start_child(
-           Spek.CommunitySessionDynamicSupervisor,
+           Spek.ThreadSessionDynamicSupervisor,
            {__MODULE__, Keyword.merge(initial_values, callers: callers)}
          ) do
       {:error, {:already_started, pid}} -> {:ignored, pid}
@@ -27,16 +28,16 @@ defmodule Spek.CommunitySession do
     end
   end
 
-  def child_spec(init), do: %{super(init) | id: Keyword.get(init, :community_id)}
+  def child_spec(init), do: %{super(init) | id: Keyword.get(init, :thread_id)}
 
-  def count, do: Registry.count(Spek.CommunitySessionRegistry)
-  def lookup(community_id), do: Registry.lookup(Spek.CommunitySessionRegistry, community_id)
+  def count, do: Registry.count(Spek.ThreadSessionRegistry)
+  def lookup(thread_id), do: Registry.lookup(Spek.ThreadSessionRegistry, thread_id)
 
   ###############################################################################
   ## INITIALIZATION BOILERPLATE
 
   def start_link(init) do
-    GenServer.start_link(__MODULE__, init, name: via(init[:community_id]))
+    GenServer.start_link(__MODULE__, init, name: via(init[:thread_id]))
   end
 
   def init(init) do
@@ -55,7 +56,7 @@ defmodule Spek.CommunitySession do
     end)
   end
 
-  def get(community_id, key), do: call(community_id, {:get, key})
+  def get(thread_id, key), do: call(thread_id, {:get, key})
 
   defp get_impl(key, _reply, state) do
     {:reply, Map.get(state, key), state}
@@ -67,24 +68,24 @@ defmodule Spek.CommunitySession do
     {:noreply, Map.put(state, key, value)}
   end
 
-  def broadcast_ws(community_id, msg), do: cast(community_id, {:broadcast_ws, msg})
+  def broadcast_ws(thread_id, msg), do: cast(thread_id, {:broadcast_ws, msg})
 
   defp broadcast_ws_impl(msg, state) do
     ws_fan(state.users, msg)
     {:noreply, state}
   end
 
-  def join_community(community_id, user_id, opts \\ []) do
-    cast(community_id, {:join_community, user_id, opts})
+  def join_thread(thread_id, user_id, opts \\ []) do
+    cast(thread_id, {:join_thread, user_id, opts})
   end
 
-  defp join_community_impl(user_id, opts, state) do
+  defp join_thread_impl(user_id, opts, state) do
     unless opts[:no_fan] do
       ws_fan(state.users, %{
-        op: "new_user_join_community",
+        op: "new_user_join_thread",
         d: %{
           user: Operations.Users.get_user_id(user_id),
-          communityId: state.community_id
+          threadId: state.thread_id
         }
       })
     end
@@ -100,27 +101,27 @@ defmodule Spek.CommunitySession do
      }}
   end
 
-  def destroy(community_id, user_id), do: cast(community_id, {:destroy, user_id})
+  def destroy(thread_id, user_id), do: cast(thread_id, {:destroy, user_id})
 
   defp destroy_impl(user_id, state) do
     users = Enum.filter(state.users, fn uid -> uid != user_id end)
 
     ws_fan(users, %{
-      op: "community_destroyed",
-      d: %{communityId: state.community_id}
+      op: "thread_destroyed",
+      d: %{threadId: state.thread_id}
     })
 
     {:stop, :normal, state}
   end
 
-  def leave_community(community_id, user_id), do: cast(community_id, {:leave_community, user_id})
+  def leave_thread(thread_id, user_id), do: cast(thread_id, {:leave_thread, user_id})
 
-  defp leave_community_impl(user_id, state) do
+  defp leave_thread_impl(user_id, state) do
     users = Enum.reject(state.users, &(&1 == user_id))
 
     ws_fan(users, %{
-      op: "user_left_community",
-      d: %{userId: user_id, communityId: state.community_id}
+      op: "user_left_thread",
+      d: %{userId: user_id, threadId: state.thread_id}
     })
 
     new_state = %{
@@ -128,7 +129,7 @@ defmodule Spek.CommunitySession do
       | users: users
     }
 
-    # terminate community if it's empty
+    # terminate thread if it's empty
     case new_state.users do
       [] ->
         {:stop, :normal, new_state}
@@ -149,15 +150,15 @@ defmodule Spek.CommunitySession do
     broadcast_ws_impl(msg, state)
   end
 
-  def handle_cast({:join_community, user_id, opts}, state) do
-    join_community_impl(user_id, opts, state)
+  def handle_cast({:join_thread, user_id, opts}, state) do
+    join_thread_impl(user_id, opts, state)
   end
 
   def handle_cast({:destroy, user_id}, state) do
     destroy_impl(user_id, state)
   end
 
-  def handle_cast({:leave_community, user_id}, state) do
-    leave_community_impl(user_id, state)
+  def handle_cast({:leave_thread, user_id}, state) do
+    leave_thread_impl(user_id, state)
   end
 end

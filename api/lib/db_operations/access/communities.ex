@@ -14,6 +14,11 @@ defmodule Operations.Access.Communities do
     Repo.all(query)
   end
 
+  def all_threads_ids() do
+    from(t in Thread, select: t.id)
+    |> Repo.all()
+  end
+
   def get_top_communities(limit) do
     query = from(c in Community, limit: ^limit, order_by: c.memberCount)
 

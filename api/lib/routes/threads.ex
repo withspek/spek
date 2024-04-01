@@ -1,10 +1,9 @@
 defmodule Routes.Threads do
   use Plug.Router
 
-  alias Spek.CommunitySession
   alias Operations.Messages
-  alias Operations.Users
   alias Operations.Channels
+  alias Spek.ThreadSession
 
   plug(:match)
   plug(Plugs.CheckAuth, %{shouldThrow: false})
@@ -68,8 +67,6 @@ defmodule Routes.Threads do
 
       case Ecto.UUID.cast(threadId) do
         {:ok, uuid} ->
-          communityId = conn.body_params["communityId"]
-
           data = %{
             "threadId" => uuid,
             "userId" => conn.body_params["userId"],
@@ -78,9 +75,9 @@ defmodule Routes.Threads do
 
           message = Messages.create_thread_message(data)
 
-          CommunitySession.broadcast_ws(communityId, %{
+          ThreadSession.broadcast_ws(uuid, %{
             op: "new_thread_message",
-            d: %{message: message, type: "new-message", threadId: uuid}
+            d: %{message: message, threadId: uuid}
           })
 
           conn
@@ -125,16 +122,19 @@ defmodule Routes.Threads do
     has_user_id = Map.has_key?(conn.assigns, :user_id)
 
     if has_user_id do
-      user = Users.get_user_id(conn.assigns.user_id)
+      user_id = conn.assigns.user_id
 
       data = %{
-        :creatorId => user.id,
+        :creatorId => user_id,
         :channelId => conn.body_params["channelId"],
         :communityId => conn.body_params["communityId"],
         :name => conn.body_params["name"]
       }
 
       thread = Operations.Communities.create_thread(data)
+
+      ThreadSession.start_supervised(thread_id: thread.id)
+      ThreadSession.join_thread(thread.id, user_id)
 
       conn
       |> send_resp(
