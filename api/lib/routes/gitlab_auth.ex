@@ -14,6 +14,8 @@ defmodule Routes.GitlabAuth do
 
   get "/callback" do
     code = conn.query_params["code"]
+    {:ok, access_token_secret} = Application.fetch_env(:spek, :access_token_secret)
+    {:ok, refresh_token_secret} = Application.fetch_env(:spek, :refresh_token_secret)
 
     try do
       # Exchange an auth code for an access token
@@ -30,7 +32,7 @@ defmodule Routes.GitlabAuth do
           "/login?accessToken=" <>
           Spek.AccessToken.generate_and_sign!(
             %{"userId" => user.id},
-            Joken.Signer.create("HS256", "secret")
+            Joken.Signer.create("HS256", access_token_secret)
           ) <>
           "&refreshToken=" <>
           Spek.RefreshToken.generate_and_sign!(
@@ -38,7 +40,7 @@ defmodule Routes.GitlabAuth do
               "userId" => user.id,
               "tokenVersion" => user.tokenVersion
             },
-            Joken.Signer.create("HS256", "refreshsecret")
+            Joken.Signer.create("HS256", refresh_token_secret)
           )
       )
     rescue
