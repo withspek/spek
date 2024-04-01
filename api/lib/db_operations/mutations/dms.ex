@@ -1,4 +1,5 @@
 defmodule Operations.Mutations.Dms do
+  alias Spek.DmSession
   alias Models.DmMessage
   alias Spek.Repo
   alias Operations.Users
@@ -40,6 +41,12 @@ defmodule Operations.Mutations.Dms do
             userId: user_id
           })
           |> Repo.insert!()
+        end)
+
+        DmSession.start_supervised(dm_id: dm.id)
+
+        Enum.each(user_ids, fn user_id ->
+          DmSession.join_dm(dm.id, user_id)
         end)
 
         dm
