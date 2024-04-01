@@ -22,21 +22,11 @@ export const useTypeSafeMutation = <K extends Keys>(
     Await<ReturnType<ReturnType<typeof wrap>["mutation"][K]>>,
     any,
     Parameters<ReturnType<typeof wrap>["mutation"][K]>
-  >(async (params) => {
-    const resp = await (
-      wrap(conn!).mutation[typeof key === "string" ? key : key[0]] as any
-    )(...params);
-    // TODO: remove get and setting token store here
-    const _accessToken = resp.headers.get("access-token");
-    const _refreshToken = resp.headers.get("refresh-token");
-
-    if (_accessToken && _refreshToken) {
-      useTokenStore.getState().setTokens({
-        accessToken: _accessToken,
-        refreshToken: _refreshToken,
-      });
-    }
-
-    return resp.json();
-  }, opts);
+  >(
+    async (params) =>
+      await (
+        wrap(conn!).mutation[typeof key === "string" ? key : key[0]] as any
+      )(...params),
+    opts
+  );
 };

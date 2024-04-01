@@ -24,7 +24,7 @@ export const CreateCommunityForm: React.FC = () => {
         const resp = await mutateAsync([values]);
 
         if (resp) {
-          console.log(resp);
+          push(`/community/${resp.id}`);
         }
       }}
     >

@@ -1,7 +1,7 @@
 import fetch from "isomorphic-fetch";
 import { User } from "../entities";
 
-const apiUrl = "https://api.speck.app";
+const apiUrl = "https://api.spek.app";
 
 type Endpoint = string;
 type Token = string;
@@ -14,8 +14,6 @@ export type Connection = {
     body?: unknown,
     opts?: unknown
   ) => Promise<any>;
-
-  //   fetch: (endpoint: Endpoint, body?: unknown) => Promise<unknown>;
 };
 
 export const connect = (
@@ -43,12 +41,12 @@ export const connect = (
           },
           body: body ? JSON.stringify(body) : undefined,
         })
-          .then((resp) => resp)
+          .then((resp) => resp.json())
           .catch((err) => console.log(err));
       };
 
       const data = await apiSend("/user/me", "GET")
-        .then(async (user: any) => await user.json())
+        .then((user: any) => user)
         .catch((err) => {
           reject(err);
         });

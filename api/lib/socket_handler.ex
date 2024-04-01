@@ -128,8 +128,7 @@ defmodule SocketHandler do
 
                 {:reply,
                  construct_socket_msg(state.encoding, state.compression, %{
-                   op: "auth-good",
-                   d: %{user: user}
+                   op: "auth-good"
                  }), %{state | user_id: user_id, awaiting_init: false}}
               else
                 {:reply, {:close, 4001, "invalid_authentication"}, state}

@@ -22,22 +22,8 @@ export const useTypeSafePrefetch = () => {
         key,
         async () => {
           const fn = conn!.query[typeof key === "string" ? key : key[0]] as any;
-          const resp = await fn(...(params || []));
-
-          // TODO: remove get and setting token store here
-          const _accessToken = resp.headers.get("access-token");
-          const _refreshToken = resp.headers.get("refresh-token");
-
-          if (_accessToken && _refreshToken) {
-            useTokenStore.getState().setTokens({
-              accessToken: _accessToken,
-              refreshToken: _refreshToken,
-            });
-          }
-
-          return resp.json();
+          return await fn(...(params || []));
         },
-
         { staleTime: 0 }
       ),
     [conn, client]

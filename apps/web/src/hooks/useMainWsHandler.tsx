@@ -15,7 +15,6 @@ export const useMainWsHandler = () => {
 
     const unsubs = [
       conn.addListener<any>("profile_update", ({ user }) => {
-        console.log(user);
         updateQuery(["getUserProfile", user.id], () => ({
           user: {
             ...user,
