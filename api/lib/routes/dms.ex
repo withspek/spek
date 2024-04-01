@@ -94,6 +94,46 @@ defmodule Routes.Dms do
     end
   end
 
+  get "/:id/messages" do
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    case has_user_id do
+      true ->
+        dm_id = conn.params["id"]
+
+        messages = Dms.get_dm_messages(dm_id)
+
+        conn
+        |> send_resp(200, Jason.encode!(%{messages: messages}))
+
+      false ->
+        conn
+        |> send_resp(401, Jason.encode!(%{error: "UNAUTHORIZED"}))
+    end
+  end
+
+  post "/:id/message" do
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    case has_user_id do
+      true ->
+        dm_id = conn.params["id"]
+        text = conn.body_params["text"]
+        user_id = conn.assigns.user_id
+
+        message = Dms.create_dm_message(dm_id, user_id, text)
+
+        DmSession.broadcast_ws(dm_id, %{op: "new_dm_message", d: %{message: message}})
+
+        conn
+        |> send_resp(200, Jason.encode!(message))
+
+      false ->
+        conn
+        |> send_resp(401, Jason.encode!(%{error: "UNAUTHORIZED"}))
+    end
+  end
+
   match _ do
     conn
     |> send_resp(404, "not found")

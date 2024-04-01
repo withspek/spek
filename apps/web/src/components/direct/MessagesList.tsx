@@ -1,9 +1,26 @@
-interface MessagesListProps {}
+import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 
-export const MessagesList: React.FC<MessagesListProps> = () => {
+interface MessagesListProps {
+  dmId: string;
+}
+
+export const MessagesList: React.FC<MessagesListProps> = ({ dmId }) => {
+  const { data, isLoading } = useTypeSafeQuery(["getDmMessages", dmId], {}, [
+    dmId,
+  ]);
+
+  if (isLoading) {
+    return <div>loading..</div>;
+  }
+
   return (
     <div>
-      <p>Messages</p>
+      {data?.messages.map((message) => (
+        <p key={message.id}>
+          <span className="font-bold">~{message.user.displayName}: </span>
+          {message.text}
+        </p>
+      ))}
     </div>
   );
 };

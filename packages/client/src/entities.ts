@@ -76,3 +76,12 @@ export type UserDm = {
   inserted_at: string;
   updated_at: string;
 };
+
+export type DmMessage = {
+  id: string;
+  text: string;
+  user: User;
+  dmId: string;
+  inserted_at: string;
+  updated_at: string;
+};

@@ -4,7 +4,9 @@ defmodule Operations.Dms do
   defdelegate get_user_dms(user_id), to: Operations.Access.Dms
   defdelegate all_dms_ids(), to: Operations.Access.Dms
   defdelegate get_dm_by_id(dm_id), to: Operations.Access.Dms
+  defdelegate get_dm_messages(dm_id), to: Operations.Access.Dms
 
   # MUTATIONS
   defdelegate create_dm(user_ids), to: Operations.Mutations.Dms
+  defdelegate create_dm_message(dm_id, user_id, text), to: Operations.Mutations.Dms
 end

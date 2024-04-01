@@ -53,10 +53,10 @@ export const DmPageController: React.FC<Props> = ({ dmId }) => {
         </button>
       </div>
       <div className="flex flex-col flex-1 justify-end">
-        <MessagesList />
+        <MessagesList dmId={dmId} />
       </div>
       <div className="mb-3">
-        <MessageInput />
+        <MessageInput dmId={dmId} />
       </div>
     </div>
   );

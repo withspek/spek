@@ -2,6 +2,7 @@ import {
   Channel,
   Community,
   CommunityPermissions,
+  DmMessage,
   Message,
   Thread,
   User,
@@ -34,6 +35,8 @@ export const wrap = (connection: Connection) => ({
     getUserProfile: (userId: string): Promise<{ user: User }> =>
       connection.send(`/user/${userId}`, "GET"),
     getUserDms: (): Promise<UserDm[]> => connection.send(`/dms`, "GET"),
+    getDmMessages: (dmId: string): Promise<{ messages: DmMessage[] }> =>
+      connection.send(`/dms/${dmId}/messages`, "GET"),
     joinDmAndGetInfo: (dmId: string): Promise<UserDm> =>
       connection.send("/dms/join-info", "POST", { dmId }),
   },
@@ -58,8 +61,14 @@ export const wrap = (connection: Connection) => ({
       communityId: string;
     }): Promise<Thread> =>
       connection.send(`/threads/create`, "POST", { ...data }),
-    createDirectMessage: (userIds: string[]): Promise<Thread> =>
+    createDM: (userIds: string[]): Promise<UserDm> =>
       connection.send(`/dms/create`, "POST", { userIds }),
+
+    createDirectMessage: (data: {
+      dmId: string;
+      text: string;
+    }): Promise<DmMessage> =>
+      connection.send(`/dms/${data.dmId}/message`, "POST", { ...data }),
     createThreadMessage: (data: {
       communityId: string;
       threadId: string;

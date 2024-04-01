@@ -1,4 +1,5 @@
 defmodule Operations.Mutations.Dms do
+  alias Models.DmMessage
   alias Spek.Repo
   alias Operations.Users
   alias Models.DmUser
@@ -46,5 +47,11 @@ defmodule Operations.Mutations.Dms do
       {:error, changeset} ->
         IO.inspect(changeset)
     end
+  end
+
+  def create_dm_message(dm_id, user_id, text) do
+    DmMessage.changeset(%DmMessage{dmId: dm_id, userId: user_id, text: text})
+    |> Repo.insert!()
+    |> Repo.preload(:user)
   end
 end

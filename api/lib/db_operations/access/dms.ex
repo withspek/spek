@@ -1,6 +1,7 @@
 defmodule Operations.Access.Dms do
   import Ecto.Query, warn: false
 
+  alias Models.DmMessage
   alias Models.DmUser
   alias Models.Dm
   alias Spek.Repo
@@ -37,5 +38,12 @@ defmodule Operations.Access.Dms do
       )
 
     Repo.one(query)
+  end
+
+  def get_dm_messages(dm_id) do
+    query =
+      from(m in DmMessage, where: m.dmId == ^dm_id, limit: 60)
+
+    Repo.all(query) |> Repo.preload(:user)
   end
 end
