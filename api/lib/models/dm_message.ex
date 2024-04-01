@@ -16,7 +16,7 @@ defmodule Models.DmMessage do
     timestamps()
   end
 
-  def changeset(message, attrs) do
+  def changeset(message, attrs \\ %{}) do
     message
     |> cast(attrs, [:dm_id, :text, :user_id])
     |> validate_required([:dm_id, :text, :user_id])

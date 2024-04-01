@@ -13,7 +13,7 @@ defmodule Models.DmUser do
     timestamps()
   end
 
-  def changeset(user, attrs) do
+  def changeset(user, attrs \\ %{}) do
     user
     |> cast(attrs, [:dm_id, :user_id])
     |> validate_required([:dm_id, :user_id])

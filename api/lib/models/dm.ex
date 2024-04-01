@@ -1,18 +1,19 @@
 defmodule Models.Dm do
+  alias Models.User
   use Ecto.Schema
   import Ecto.Changeset
 
-  @derive {Jason.Encoder, only: ~w(id name)a}
+  @derive {Jason.Encoder, only: ~w(id peoplePreviewList)a}
   @primary_key {:id, :binary_id, []}
   schema "dms" do
-    field(:name, :string, virtual: true)
+    embeds_many(:peoplePreviewList, User.Preview)
 
     timestamps()
   end
 
-  def changeset(dm, attrs) do
+  def changeset(dm, attrs \\ %{}) do
     dm
-    |> cast(attrs, [:name])
-    |> validate_required([])
+    |> cast(attrs, [:peoplePreviewList])
+    |> validate_required([:peoplePreviewList])
   end
 end

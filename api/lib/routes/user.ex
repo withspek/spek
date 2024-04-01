@@ -6,6 +6,14 @@ defmodule Routes.User do
   plug(:match)
   plug(:dispatch)
 
+  if Mix.env() == :dev do
+    get "/all" do
+      users = Users.get_users()
+
+      conn |> send_resp(200, Jason.encode!(users))
+    end
+  end
+
   get "/me" do
     has_user_id = Map.has_key?(conn.assigns, :user_id)
 

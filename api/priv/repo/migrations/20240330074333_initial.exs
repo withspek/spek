@@ -136,6 +136,7 @@ defmodule Spek.Repo.Migrations.Initial do
       add(:id, :uuid, primary_key: true, default: fragment("uuid_generate_v4()"))
 
       add(:userId, references(:users, on_delete: :delete_all, type: :uuid), null: false)
+      add(:peoplePreviewList, {:array, :map}, default: [])
 
       add(:inserted_at, :utc_datetime_usec, null: false, default: fragment("now()"))
       add(:updated_at, :utc_datetime_usec, null: false, default: fragment("now()"))
