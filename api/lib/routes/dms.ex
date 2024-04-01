@@ -24,6 +24,22 @@ defmodule Routes.Dms do
     end
   end
 
+  get "/:id" do
+    dm_id = conn.params["id"]
+
+    case Ecto.UUID.cast(dm_id) do
+      {:ok, uuid} ->
+        dm = Dms.get_dm_by_id(uuid)
+
+        conn
+        |> send_resp(200, Jason.encode!(dm))
+
+      _ ->
+        conn
+        |> send_resp(401, Jason.encode!(%{error: "invalid id"}))
+    end
+  end
+
   post "/join-info" do
     has_user_id = Map.has_key?(conn.assigns, :user_id)
 

@@ -27,12 +27,14 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/threads/all/${channelId}`, "GET"),
     getThread: (threadId: string): Promise<Thread> =>
       connection.send(`/threads/${threadId}`, "GET"),
+    getDm: (dmId: string): Promise<UserDm> =>
+      connection.send(`/dms/${dmId}`, "GET"),
     getThreadMessages: (threadId: string): Promise<Message[]> =>
       connection.send(`/threads/${threadId}/messages`, "GET"),
     getUserProfile: (userId: string): Promise<{ user: User }> =>
       connection.send(`/user/${userId}`, "GET"),
     getUserDms: (): Promise<UserDm[]> => connection.send(`/dms`, "GET"),
-    joinDmAndGetInfo: (dmId: string) =>
+    joinDmAndGetInfo: (dmId: string): Promise<UserDm> =>
       connection.send("/dms/join-info", "POST", { dmId }),
   },
   mutation: {
