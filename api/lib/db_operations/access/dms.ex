@@ -5,6 +5,16 @@ defmodule Operations.Access.Dms do
   alias Models.Dm
   alias Spek.Repo
 
+  def all_dms_ids() do
+    from(d in Dm, select: d.id)
+    |> Repo.all()
+  end
+
+  def get_dm_by_id(dm_id) do
+    query = from(dm in Dm, where: dm.id == ^dm_id, limit: 1)
+    Repo.one(query)
+  end
+
   def get_user_dms(user_id) do
     query =
       from(dm in Dm,

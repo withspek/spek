@@ -5,6 +5,7 @@ defmodule Spek do
     children = [
       Spek.Supervisors.UserSession,
       Spek.Supervisors.CommunitySession,
+      Spek.Supervisors.DmSession,
       {Spek.Repo, []},
       Plug.Cowboy.child_spec(
         scheme: :http,
@@ -23,6 +24,7 @@ defmodule Spek do
 
     case Supervisor.start_link(children, opts) do
       {:ok, pid} ->
+        start_dms()
         start_communities()
         {:ok, pid}
 
@@ -39,6 +41,12 @@ defmodule Spek do
          {:_, Plug.Cowboy.Handler, {Router, []}}
        ]}
     ]
+  end
+
+  defp start_dms() do
+    Enum.each(Operations.Dms.all_dms_ids(), fn id ->
+      Spek.DmSession.start_supervised(dm_id: id)
+    end)
   end
 
   defp start_communities() do
