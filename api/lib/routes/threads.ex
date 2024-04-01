@@ -146,4 +146,32 @@ defmodule Routes.Threads do
       |> send_resp(402, "UNAUTHORIZED")
     end
   end
+
+  post "/join-info" do
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    if has_user_id do
+      user_id = conn.assigns.user_id
+      thread_id = conn.body_params["threadId"]
+
+      case Ecto.UUID.cast(thread_id) do
+        {:ok, uuid} ->
+          thread = Channels.get_thread_by_id(uuid)
+
+          if not is_nil(thread) do
+            ThreadSession.join_thread(thread.id, user_id)
+          end
+
+          conn
+          |> send_resp(200, Jason.encode!(thread))
+
+        _ ->
+          conn
+          |> send_resp(401, Jason.encode!(%{error: "invalid id"}))
+      end
+    else
+      conn
+      |> send_resp(401, Jason.encode!(%{error: "UNAUTHORIZED"}))
+    end
+  end
 end

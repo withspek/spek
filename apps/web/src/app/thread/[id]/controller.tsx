@@ -8,51 +8,43 @@ import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { useConn } from "@/hooks/useConn";
 import { MessageInput } from "@/components/thread/MessageInput";
 import { Avatar } from "@/ui/avatar";
+import { MessagesList } from "@/components/thread/MessagesList";
 
 interface ThreadPageControllerProps {
-  thread: Thread;
+  threadId: string;
 }
 
 export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
-  thread,
+  threadId,
 }) => {
   const { user } = useConn();
   const { data, isLoading } = useTypeSafeQuery(
-    ["getThreadMessages", thread.id],
+    ["joinThreadAndGetInfo", threadId],
     {},
-    [thread.id]
+    [threadId]
   );
 
   if (isLoading) {
+    // TODO: make this better
     return <div>loading...</div>;
   }
-
-  const dt = new Date(thread.inserted_at);
+  const dt = new Date(data?.inserted_at!);
 
   return (
     <div className="flex flex-col gap-3 h-full">
       <div className="bg-alabaster-600 px-4 py-2 rounded-b-md">
-        <p>{thread.name}</p>
+        <p>{data?.name}</p>
         <p>Started at {format(dt, "MMM dd hh:MM a")}</p>
       </div>
       <div className="flex flex-1 flex-col gap-4">
-        {data?.map((m) => (
-          <div
-            key={m.id}
-            className={`flex gap-4 bg-alabaster-800 px-3 py-4 ${
-              user.id == m.user.id ? "bg-alabaster-500" : ""
-            } `}
-          >
-            <Avatar src={m.user.avatarUrl} size="xs" isOnline={user.online} />
-            <div>
-              <p>{m.user.displayName}</p>
-              <p>{m.text}</p>
-            </div>
-          </div>
-        ))}
+        <MessagesList threadId={data?.id!} currentUser={user} />
       </div>
       <div className="mb-3">
-        <MessageInput currentUser={user} thread={thread} />
+        <MessageInput
+          currentUser={user}
+          threadId={data?.id!}
+          communityId={data?.communityId!}
+        />
       </div>
     </div>
   );

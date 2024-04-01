@@ -8,14 +8,12 @@ type Props = {
   params: { id: string };
 };
 
-async function getThreadData(id: string) {
-  return await defaultQueryFn({ queryKey: `/threads/${id}` });
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id;
 
-  const thread: Thread = await getThreadData(id);
+  const thread: Thread = await await defaultQueryFn({
+    queryKey: `/threads/${id}`,
+  });
 
   return {
     title: thread.name,
@@ -23,11 +21,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ThreadPage({ params }: Props) {
-  const thread = await getThreadData(params.id);
-
   return (
     <>
-      <ThreadPageController thread={thread} />
+      <ThreadPageController threadId={params.id} />
     </>
   );
 }

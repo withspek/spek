@@ -39,6 +39,8 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/dms/${dmId}/messages`, "GET"),
     joinDmAndGetInfo: (dmId: string): Promise<UserDm> =>
       connection.send("/dms/join-info", "POST", { dmId }),
+    joinThreadAndGetInfo: (threadId: string): Promise<Thread> =>
+      connection.send("/threads/join-info", "POST", { threadId }),
   },
   mutation: {
     updateProfile: (data: {

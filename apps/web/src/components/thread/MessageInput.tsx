@@ -1,17 +1,19 @@
 import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 import { Input } from "@/ui/input";
-import { Thread, User } from "@spek/client";
+import { User } from "@spek/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface MessageInputProps {
-  thread: Thread;
+  threadId: string;
+  communityId: string;
   currentUser: User;
 }
 
 export const MessageInput: React.FC<MessageInputProps> = ({
   currentUser,
-  thread,
+  threadId,
+  communityId,
 }) => {
   const [text, setText] = useState<string>("");
   const { push } = useRouter();
@@ -22,12 +24,10 @@ export const MessageInput: React.FC<MessageInputProps> = ({
 
     const data = {
       text,
-      threadId: thread.id,
-      communityId: thread.communityId,
+      threadId: threadId,
+      communityId: communityId,
       userId: currentUser.id,
     };
-
-    console.log(currentUser);
 
     await mutateAsync([data]);
 
