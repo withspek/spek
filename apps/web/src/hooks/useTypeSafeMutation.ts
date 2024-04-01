@@ -26,7 +26,7 @@ export const useTypeSafeMutation = <K extends Keys>(
     const resp = await (
       wrap(conn!).mutation[typeof key === "string" ? key : key[0]] as any
     )(...params);
-
+    // TODO: remove get and setting token store here
     const _accessToken = resp.headers.get("access-token");
     const _refreshToken = resp.headers.get("refresh-token");
 
