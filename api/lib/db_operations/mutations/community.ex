@@ -1,6 +1,7 @@
 defmodule Operations.Mutations.Community do
   import Ecto.Query, warn: false
 
+  alias Spek.CommunitySession
   alias Operations.Access.Users
   alias Models.Thread
   alias Operations.Communities
@@ -14,6 +15,8 @@ defmodule Operations.Mutations.Community do
   alias Operations.Queries.Communities, as: Query
 
   def create_community(data) do
+    user_id = data["ownerId"]
+
     multi_struct =
       Multi.new()
       |> Multi.insert(
@@ -22,7 +25,7 @@ defmodule Operations.Mutations.Community do
           id: Ecto.UUID.autogenerate(),
           name: data["name"],
           isPrivate: false,
-          ownerId: data["ownerId"],
+          ownerId: user_id,
           description: data["description"]
         })
       )
@@ -41,11 +44,11 @@ defmodule Operations.Mutations.Community do
       {:ok, %{community: community, channel: channel}} ->
         CommunityMember.changeset(%CommunityMember{
           communityId: community.id,
-          userId: data["ownerId"]
+          userId: user_id
         })
         |> Repo.insert()
 
-        ChannelMember.changeset(%ChannelMember{channelId: channel.id, userId: data["ownerId"]})
+        ChannelMember.changeset(%ChannelMember{channelId: channel.id, userId: user_id})
         |> Repo.insert()
 
         CommunityPermissions.changeset(%CommunityPermissions{
@@ -53,9 +56,11 @@ defmodule Operations.Mutations.Community do
           isAdmin: true,
           isMod: true,
           isMember: true,
-          userId: data["ownerId"]
+          userId: user_id
         })
         |> Repo.insert()
+
+        CommunitySession.join_community(community.id, user_id)
 
         {:ok, community, channel}
 
@@ -90,6 +95,8 @@ defmodule Operations.Mutations.Community do
             userId: userId
           })
           |> Repo.insert()
+
+          CommunitySession.join_community(communityId, userId)
         end
 
         {:ok, true}
