@@ -30,10 +30,18 @@ defmodule Routes.Dms do
       true ->
         user_ids = conn.body_params["user_ids"]
 
-        Dms.create_dm(user_ids)
+        # TODO: Support more 2 people dm
+        dm = Dms.get_dm_by_user_ids(Enum.at(user_ids, 0), Enum.at(user_ids, 1))
 
-        conn
-        |> send_resp(200, Jason.encode!("dm"))
+        if is_nil(dm) do
+          dm = Dms.create_dm(user_ids)
+
+          conn
+          |> send_resp(200, Jason.encode!(dm))
+        else
+          conn
+          |> send_resp(200, Jason.encode!(dm))
+        end
 
       false ->
         conn

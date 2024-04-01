@@ -7,12 +7,17 @@ defmodule Operations.Mutations.Dms do
   import Ecto.Query, warn: false
 
   def create_dm(user_ids) do
-    peoplePreviewList = []
+    peoplePreviewList =
+      Enum.map(user_ids, fn id ->
+        user = Users.get_user_id(id)
 
-    Enum.each(user_ids, fn id ->
-      user = Users.get_user_id(id)
-      peoplePreviewList ++ user
-    end)
+        %{
+          id: user.id,
+          avatarUrl: user.avatarUrl,
+          bio: user.bio,
+          displayName: user.displayName
+        }
+      end)
 
     multi_struct =
       Multi.new()
@@ -23,20 +28,20 @@ defmodule Operations.Mutations.Dms do
           peoplePreviewList: peoplePreviewList
         })
       )
-      |> Multi.insert(:user, fn %{dm: dm} ->
-        Enum.each(user_ids, fn user_id ->
-          %DmUser{
-            id: Ecto.UUID.autogenerate(),
-            dm_id: dm.id,
-            user_id: user_id
-          }
-        end)
-      end)
 
+    # TODO: REMOVE THE TRANSACTION
     case Repo.transaction(multi_struct) do
-      {:ok, %{dm: dm, user: dm_user}} ->
-        IO.inspect(dm)
-        IO.inspect(dm_user)
+      {:ok, %{dm: dm}} ->
+        Enum.each(user_ids, fn user_id ->
+          DmUser.changeset(%DmUser{
+            id: Ecto.UUID.autogenerate(),
+            dmId: dm.id,
+            userId: user_id
+          })
+          |> Repo.insert!()
+        end)
+
+        dm
 
       {:error, changeset} ->
         IO.inspect(changeset)

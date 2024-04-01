@@ -13,7 +13,7 @@ defmodule Models.Dm do
 
   def changeset(dm, attrs \\ %{}) do
     dm
-    |> cast(attrs, [:peoplePreviewList])
-    |> validate_required([:peoplePreviewList])
+    |> cast(attrs, [])
+    |> cast_embed(:peoplePreviewList, required: true)
   end
 end
