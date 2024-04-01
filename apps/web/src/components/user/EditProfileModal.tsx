@@ -53,14 +53,6 @@ export const EditProfileModal: React.FC<EditProfileProps> = ({
                   bio: values.bio.trim(),
                   displayName: values.displayName.trim(),
                 });
-                updateQuery(["getUserProfile", conn.user.id], (data) => ({
-                  user: {
-                    ...conn.user,
-                    ...values,
-                    bio: values.bio.trim(),
-                    displayName: values.displayName.trim(),
-                  },
-                }));
                 onRequestClose();
               }
             }

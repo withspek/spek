@@ -67,7 +67,11 @@ defmodule Routes.User do
 
       case result do
         {:ok, user} ->
-          Spek.UserSession.send_ws(user.id, nil, %{op: "profile_update", d: %{user: user}})
+          Spek.UserSession.send_ws(user.id, nil, %{
+            op: "profile_update",
+            d: %{user: user}
+          })
+
           conn |> send_resp(200, Jason.encode!(user))
 
         {:error, %Ecto.Changeset{errors: [username: {"has already been taken, _"}]}} ->

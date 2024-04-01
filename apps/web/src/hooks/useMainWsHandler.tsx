@@ -14,7 +14,14 @@ export const useMainWsHandler = () => {
     }
 
     const unsubs = [
-      conn.addListener<any>("new_details", () => {}),
+      conn.addListener<any>("profile_update", ({ user }) => {
+        console.log(user);
+        updateQuery(["getUserProfile", user.id], () => ({
+          user: {
+            ...user,
+          },
+        }));
+      }),
       conn.addListener<any>(
         "new_community_join",
         ({ communityId, success }) => {
