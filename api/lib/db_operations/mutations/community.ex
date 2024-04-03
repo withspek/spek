@@ -1,7 +1,6 @@
 defmodule Operations.Mutations.Community do
   import Ecto.Query, warn: false
 
-  alias Spek.CommunitySession
   alias Operations.Access.Users
   alias Models.Thread
   alias Operations.Communities
@@ -60,8 +59,6 @@ defmodule Operations.Mutations.Community do
         })
         |> Repo.insert()
 
-        CommunitySession.join_community(community.id, user_id)
-
         {:ok, community, channel}
 
       {:error, :channel, channel_changeset} ->
@@ -95,8 +92,6 @@ defmodule Operations.Mutations.Community do
             userId: userId
           })
           |> Repo.insert()
-
-          CommunitySession.join_community(communityId, userId)
         end
 
         {:ok, true}

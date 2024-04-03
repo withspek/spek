@@ -5,17 +5,19 @@ import { User } from "@spek/client";
 import { Avatar } from "@/ui/avatar";
 import { useState } from "react";
 import { EditProfileModal } from "./EditProfileModal";
+import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 
 export type UserProfileWrapperProps = {
-  isCurrentUser: boolean;
+  currentUser: User;
   user: User;
 };
 
 export const UserProfileWrapper: React.FC<UserProfileWrapperProps> = ({
-  isCurrentUser,
+  currentUser,
   user,
 }) => {
   const [openEditModal, setOpenEditModal] = useState<boolean>(false);
+  const { isLoading, mutateAsync } = useTypeSafeMutation("createDM");
   const { push } = useRouter();
 
   return (
@@ -27,7 +29,7 @@ export const UserProfileWrapper: React.FC<UserProfileWrapperProps> = ({
       />
       <p className="text-xl font-bold">{user.displayName}</p>
       <p>{user.bio}</p>
-      {isCurrentUser ? (
+      {currentUser.id === user.id ? (
         <div className="flex gap-4">
           <Button onClick={() => setOpenEditModal(!openEditModal)}>
             Edit profile
@@ -43,7 +45,25 @@ export const UserProfileWrapper: React.FC<UserProfileWrapperProps> = ({
             Logout
           </Button>
         </div>
-      ) : null}
+      ) : (
+        <div>
+          <Button
+            disabled={isLoading}
+            onClick={async () => {
+              const userIds = [user.id, currentUser.id];
+              const dm = await mutateAsync([userIds]);
+
+              console.log(dm);
+
+              if (dm) {
+                push(`/direct/${dm.id}`);
+              }
+            }}
+          >
+            Message
+          </Button>
+        </div>
+      )}
       {openEditModal ? (
         <EditProfileModal
           isOpen={openEditModal}

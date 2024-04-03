@@ -24,10 +24,7 @@ export const UserProfileController: React.FC<UserProfileControllerProps> = ({
   return (
     <>
       <Header />
-      <UserProfileWrapper
-        user={data?.user!}
-        isCurrentUser={user.id === data?.user.id}
-      />
+      <UserProfileWrapper user={data?.user!} currentUser={user} />
     </>
   );
 };
