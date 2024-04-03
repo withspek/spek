@@ -27,9 +27,8 @@ export const DmPageController: React.FC<Props> = ({ dmId }) => {
         <div className="flex gap-3 items-center">
           <div className="flex -space-x-4 rtl:space-x-reverse">
             {data?.peoplePreviewList.map((p) => (
-              <div className="relative">
+              <div className="relative" key={p.id}>
                 <img
-                  key={p.id}
                   className="w-10 h-10 border-2 border-alabaster-300 rounded-full"
                   src={p.avatarUrl}
                   alt={p.displayName}

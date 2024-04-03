@@ -53,8 +53,6 @@ export const UserProfileWrapper: React.FC<UserProfileWrapperProps> = ({
               const userIds = [user.id, currentUser.id];
               const dm = await mutateAsync([userIds]);
 
-              console.log(dm);
-
               if (dm) {
                 push(`/direct/${dm.id}`);
               }

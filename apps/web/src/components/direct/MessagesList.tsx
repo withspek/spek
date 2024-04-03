@@ -15,8 +15,8 @@ export const MessagesList: React.FC<MessagesListProps> = ({ dmId }) => {
 
   return (
     <div>
-      {data?.messages.map((message) => (
-        <p key={message.id}>
+      {data?.messages.map((message, idx) => (
+        <p key={idx}>
           <span className="font-bold">~{message.user.displayName}: </span>
           {message.text}
         </p>
