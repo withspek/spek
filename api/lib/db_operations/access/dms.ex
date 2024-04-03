@@ -1,4 +1,6 @@
 defmodule Operations.Access.Dms do
+  @fetch_limit 21
+
   import Ecto.Query, warn: false
 
   alias Models.DmMessage
@@ -58,10 +60,18 @@ defmodule Operations.Access.Dms do
     Repo.one(query)
   end
 
-  def get_dm_messages(dm_id) do
-    query =
-      from(m in DmMessage, where: m.dmId == ^dm_id, limit: 60)
+  def get_dm_messages(dm_id, offset \\ 20) do
+    messages =
+      from(m in DmMessage,
+        where: m.dmId == ^dm_id,
+        limit: ^@fetch_limit,
+        offset: ^offset,
+        order_by: [asc: m.inserted_at]
+      )
+      |> Repo.all()
+      |> Repo.preload(:user)
 
-    Repo.all(query) |> Repo.preload(:user)
+    {Enum.slice(messages, 0, -1 + @fetch_limit),
+     if(length(messages) == @fetch_limit, do: -1 + offset + @fetch_limit, else: nil)}
   end
 end

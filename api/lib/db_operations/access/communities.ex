@@ -20,7 +20,11 @@ defmodule Operations.Access.Communities do
   end
 
   def get_top_communities(limit) do
-    query = from(c in Community, limit: ^limit, order_by: c.memberCount)
+    query =
+      from(c in Community,
+        limit: ^limit,
+        order_by: c.memberCount
+      )
 
     Repo.all(query)
   end

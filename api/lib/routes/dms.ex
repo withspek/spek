@@ -102,11 +102,15 @@ defmodule Routes.Dms do
     case has_user_id do
       true ->
         dm_id = conn.params["id"]
+        cursor = String.to_integer(conn.params["cursor"])
 
-        messages = Dms.get_dm_messages(dm_id)
+        {messages, next_cursor} = Dms.get_dm_messages(dm_id, cursor)
 
         conn
-        |> send_resp(200, Jason.encode!(%{messages: messages}))
+        |> send_resp(
+          200,
+          Jason.encode!(%{messages: messages, nextCursor: next_cursor, initial: cursor == 0})
+        )
 
       false ->
         conn

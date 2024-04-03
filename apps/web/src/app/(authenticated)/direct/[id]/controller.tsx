@@ -23,7 +23,7 @@ export const DmPageController: React.FC<Props> = ({ dmId }) => {
 
   return (
     <div className="flex flex-col gap-3 mt-3 h-full">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center sticky top-0 py-3 bg-alabaster-900">
         <div className="flex gap-3 items-center">
           <div className="flex -space-x-4 rtl:space-x-reverse">
             {data?.peoplePreviewList.map((p) => (
@@ -54,7 +54,7 @@ export const DmPageController: React.FC<Props> = ({ dmId }) => {
       <div className="flex flex-col flex-1 justify-end">
         <MessagesList dmId={dmId} />
       </div>
-      <div className="mb-3">
+      <div className="mb-3 sticky bottom-0">
         <MessageInput dmId={dmId} />
       </div>
     </div>

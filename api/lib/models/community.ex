@@ -10,13 +10,15 @@ defmodule Models.Community do
   end
 
   @derive {Jason.Encoder,
-           only: ~w(id name description coverPhoto isPrivate memberCount peoplePreviewList)a}
+           only:
+             ~w(id name description coverPhoto isPrivate memberCount membersOnlineCount peoplePreviewList)a}
 
   @primary_key {:id, :binary_id, []}
   schema "communities" do
     field(:name, :string)
     field(:description, :string)
     field(:memberCount, :integer, default: 1)
+    field(:membersOnlineCount, :integer, virtual: true)
     field(:coverPhoto, :string)
     field(:isPrivate, :boolean)
 
