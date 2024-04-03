@@ -8,6 +8,7 @@ defmodule Operations.Access.Communities do
   alias Models.User
   alias Spek.Repo
   alias Models.Community
+  alias Operations.Queries.Communities, as: Query
 
   def all_communities do
     query = from(c in Community, order_by: c.memberCount)
@@ -29,8 +30,13 @@ defmodule Operations.Access.Communities do
     Repo.all(query)
   end
 
-  def get_community_by_id(id) do
-    from(c in Community, limit: 1, where: c.id == ^id) |> Repo.one()
+  def get_community_by_id(id, user_id) do
+    Query.start()
+    |> Query.filter_by_id(id)
+    |> select([c], c)
+    |> Query.perms_them_info(user_id)
+    |> Query.limit_one()
+    |> Repo.one()
   end
 
   def is_member?(userId, communityId) do

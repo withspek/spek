@@ -28,7 +28,7 @@ export const CommunityPageController: React.FC<Props> = ({ id }: Props) => {
         <p>{data?.community.description}</p>
         <p>{data?.community.memberCount} members</p>
       </div>
-      <JoinButton communityId={id} />
+      <JoinButton community={data?.community!} />
       <div>
         <Tabs>
           <Tabs.Titles titles={["Threads", "Members", "Channels"]} />

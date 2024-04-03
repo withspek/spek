@@ -1,13 +1,11 @@
 "use client";
 
 import React from "react";
-import { Thread } from "@spek/client";
 import { format } from "date-fns";
 
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { useConn } from "@/hooks/useConn";
 import { MessageInput } from "@/components/thread/MessageInput";
-import { Avatar } from "@/ui/avatar";
 import { MessagesList } from "@/components/thread/MessagesList";
 
 interface ThreadPageControllerProps {

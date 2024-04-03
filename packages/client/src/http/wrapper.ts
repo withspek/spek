@@ -2,6 +2,7 @@ import {
   Channel,
   Community,
   CommunityPermissions,
+  CommunityWithPermissions,
   DmMessage,
   Message,
   Thread,
@@ -16,7 +17,7 @@ export const wrap = (connection: Connection) => ({
     getUsers: (): Promise<User[]> => connection.send("/dev", "GET"),
     getCommunity: (
       id: string
-    ): Promise<{ community: Community; channels: Channel[] }> =>
+    ): Promise<{ community: CommunityWithPermissions; channels: Channel[] }> =>
       connection.send(`/community/${id}`, "GET"),
     getTopCommunities: (): Promise<GetTopCommunitiesResponse> =>
       connection.send("/community/all", "GET"),

@@ -20,9 +20,14 @@ defmodule Routes.Community do
   get "/:id" do
     %Plug.Conn{params: %{"id" => id}} = conn
 
+    user_id =
+      if not Map.has_key?(conn.assigns, :user_id),
+        do: Ecto.UUID.autogenerate(),
+        else: conn.assigns.user_id
+
     case Ecto.UUID.cast(id) do
       {:ok, uuid} ->
-        community = Communities.get_community_by_id(uuid)
+        community = Communities.get_community_by_id(uuid, user_id)
 
         cond do
           is_nil(community) ->
@@ -76,34 +81,6 @@ defmodule Routes.Community do
       _ ->
         conn
         |> send_resp(400, Jason.encode!(%{error: "Community id is not valid"}))
-    end
-  end
-
-  get "/:id/permissions" do
-    %Plug.Conn{params: %{"id" => id}} = conn
-    has_user_id = Map.has_key?(conn.assigns, :user_id)
-
-    cond do
-      has_user_id ->
-        permissions = Communities.get_community_permissions(id, conn.assigns.user_id)
-
-        if not is_nil(permissions) do
-          conn
-          |> send_resp(200, Jason.encode!(permissions))
-        else
-          conn
-          |> send_resp(
-            200,
-            Jason.encode!(%{isAdmin: false, isMember: false, isMod: false, isBlocked: false})
-          )
-        end
-
-      true ->
-        conn
-        |> send_resp(
-          200,
-          Jason.encode!(%{isAdmin: false, isMember: false, isMod: false, isBlocked: false})
-        )
     end
   end
 

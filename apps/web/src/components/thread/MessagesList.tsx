@@ -29,7 +29,7 @@ export const MessagesList: React.FC<MessagesListProps> = ({
         <div
           key={m.id}
           className={`flex gap-4 bg-alabaster-800 px-3 py-4 ${
-            currentUser.id == m.user.id ? "bg-alabaster-500" : ""
+            currentUser && currentUser.id == m.user.id ? "bg-alabaster-500" : ""
           } `}
         >
           <Avatar src={m.user.avatarUrl} size="xs" isOnline={m.user.online} />

@@ -67,7 +67,7 @@ defmodule Operations.Mutations.Community do
   end
 
   def join_community(communityId, userId) do
-    community = Communities.get_community_by_id(communityId)
+    community = Communities.get_community_by_id(communityId, userId)
 
     case community do
       community ->

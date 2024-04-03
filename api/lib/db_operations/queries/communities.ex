@@ -1,4 +1,5 @@
 defmodule Operations.Queries.Communities do
+  alias Models.CommunityPermissions
   alias Models.Community
   import Ecto.Query
 
@@ -16,5 +17,23 @@ defmodule Operations.Queries.Communities do
         memberCount: ^n
       ]
     )
+  end
+
+  def perms_them_info(query, me_id) do
+    query
+    |> join(:left, [c], up in CommunityPermissions,
+      as: :permissions,
+      on: up.communityId == c.id and up.userId == ^me_id
+    )
+    |> select_merge([permissions: up], %{
+      isAdmin: up.isAdmin,
+      isMember: up.isMember,
+      isMod: up.isMod,
+      isBlocked: up.isBlocked
+    })
+  end
+
+  def limit_one(query) do
+    limit(query, [], 1)
   end
 end

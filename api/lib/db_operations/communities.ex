@@ -2,7 +2,7 @@ defmodule Operations.Communities do
   # ACCESS
   defdelegate get_top_communities(limit), to: Operations.Access.Communities
   defdelegate all_communities(), to: Operations.Access.Communities
-  defdelegate get_community_by_id(id), to: Operations.Access.Communities
+  defdelegate get_community_by_id(id, user_id), to: Operations.Access.Communities
   defdelegate get_community_members(communityId), to: Operations.Access.Communities
   defdelegate get_community_permissions(communityId, userId), to: Operations.Access.Communities
 

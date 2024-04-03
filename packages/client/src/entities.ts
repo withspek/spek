@@ -50,6 +50,8 @@ export type CommunityPermissions = {
   isMod: boolean;
 };
 
+export type CommunityWithPermissions = Community & CommunityPermissions;
+
 export type Thread = {
   id: string;
   name: string;

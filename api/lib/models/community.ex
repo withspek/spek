@@ -11,7 +11,7 @@ defmodule Models.Community do
 
   @derive {Jason.Encoder,
            only:
-             ~w(id name description coverPhoto isPrivate memberCount membersOnlineCount peoplePreviewList)a}
+             ~w(id name description coverPhoto isAdmin isMod isMember isBlocked isPrivate memberCount membersOnlineCount peoplePreviewList)a}
 
   @primary_key {:id, :binary_id, []}
   schema "communities" do
@@ -21,6 +21,10 @@ defmodule Models.Community do
     field(:membersOnlineCount, :integer, virtual: true)
     field(:coverPhoto, :string)
     field(:isPrivate, :boolean)
+    field(:isAdmin, :boolean, default: false, virtual: true)
+    field(:isMember, :boolean, default: false, virtual: true)
+    field(:isBlocked, :boolean, default: false, virtual: true)
+    field(:isMod, :boolean, default: false, virtual: true)
 
     belongs_to(:owner, User, foreign_key: :ownerId, type: :binary_id)
 

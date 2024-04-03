@@ -1,28 +1,20 @@
 import { useConn } from "@/hooks/useConn";
 import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
-import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { Button } from "@/ui/button";
+import { CommunityWithPermissions } from "@spek/client";
 import { useRouter } from "next/navigation";
 
 interface JoinButtonProps {
-  communityId: string;
+  community: CommunityWithPermissions;
 }
 
-export const JoinButton: React.FC<JoinButtonProps> = ({ communityId }) => {
+export const JoinButton: React.FC<JoinButtonProps> = ({ community }) => {
   const { user } = useConn();
   const { push } = useRouter();
   const { mutateAsync } = useTypeSafeMutation("joinCommunity");
-  const { data, isLoading } = useTypeSafeQuery(
-    ["getCommunityPermissions", communityId],
-    { refetchOnWindowFocus: false },
-    [communityId]
-  );
 
-  if (isLoading) {
-    return null;
-  }
-
-  const isTeamMember = data?.isAdmin || data?.isMember || data?.isMod;
+  const isTeamMember =
+    community.isAdmin || community.isMember || community.isMod;
 
   return (
     <>
@@ -32,7 +24,9 @@ export const JoinButton: React.FC<JoinButtonProps> = ({ communityId }) => {
         <Button
           onClick={async () => {
             if (user) {
-              await mutateAsync([{ communityId, userId: user.id }]);
+              await mutateAsync([
+                { communityId: community.id, userId: user.id },
+              ]);
             } else {
               push("/login");
             }
