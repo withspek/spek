@@ -61,4 +61,49 @@ defmodule Operations.Mutations.Users do
        )}
     end
   end
+
+  def github_find_or_create(user, _github_access_token) do
+    githubId = Integer.to_string(user["id"])
+
+    db_user =
+      from(u in User,
+        where: u.githubId == ^githubId,
+        limit: 1
+      )
+      |> Repo.one()
+
+    if db_user do
+      if is_nil(db_user.githubId) do
+        from(u in User,
+          where: u.id == ^db_user.id,
+          update: [
+            set: [
+              githubId: ^githubId
+            ]
+          ]
+        )
+        |> Repo.update_all([])
+      end
+
+      {:find, db_user}
+    else
+      {:create,
+       Repo.insert!(
+         %User{
+           username: Spek.Utils.Random.big_ascii_id(),
+           githubId: githubId,
+           email: if(user["email"] == "", do: nil, else: user["email"]),
+           avatarUrl: user["avatar_url"],
+           bannerUrl: user["banner_url"],
+           displayName:
+             if(is_nil(user["name"]) or String.trim(user["name"]) == "",
+               do: "Novice",
+               else: user["name"]
+             ),
+           bio: user["bio"]
+         },
+         returning: true
+       )}
+    end
+  end
 end

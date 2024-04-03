@@ -16,6 +16,7 @@ defmodule Routes.GitlabAuth do
     code = conn.query_params["code"]
     {:ok, access_token_secret} = Application.fetch_env(:spek, :access_token_secret)
     {:ok, refresh_token_secret} = Application.fetch_env(:spek, :refresh_token_secret)
+    {:ok, web_url} = Application.fetch_env(:spek, :web_url)
 
     try do
       # Exchange an auth code for an access token
@@ -28,7 +29,7 @@ defmodule Routes.GitlabAuth do
 
       conn
       |> Redirect.redirect(
-        "http://localhost:3000" <>
+        web_url <>
           "/login?accessToken=" <>
           Spek.AccessToken.generate_and_sign!(
             %{"userId" => user.id},
@@ -45,7 +46,7 @@ defmodule Routes.GitlabAuth do
       )
     rescue
       e in RuntimeError ->
-        Redirect.redirect(conn, "http://localhost:3000" <> "/?error=" <> URI.encode(e.message))
+        Redirect.redirect(conn, web_url <> "/?error=" <> URI.encode(e.message))
     end
   end
 
