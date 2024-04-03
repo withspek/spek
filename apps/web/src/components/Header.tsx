@@ -5,6 +5,7 @@ import {
   HomeIcon,
   InboxIcon,
   NotificationIcon,
+  PlusIcon,
   UserSharingIcon,
 } from "@/icons";
 import { Button } from "@/ui/button";
@@ -28,8 +29,8 @@ export const Header: React.FC = () => {
           <Link href={`/u/${user.id}`}>
             <UserSharingIcon />
           </Link>
-          <Link href={`/u/${user.id}`}>
-            <NotificationIcon />
+          <Link href={`/new/community`}>
+            <PlusIcon />
           </Link>
         </>
       ) : (

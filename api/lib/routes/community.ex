@@ -119,12 +119,12 @@ defmodule Routes.Community do
         "description" => conn.body_params["description"]
       }
 
-      {:ok, community, channel} = Operations.Communities.create_community(data)
+      {:ok, community, _channel} = Operations.Communities.create_community(data)
 
       conn
       |> send_resp(
         200,
-        Jason.encode!(%{"channels" => channel, "community" => community})
+        Jason.encode!(%{community: community})
       )
     else
       conn
