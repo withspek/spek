@@ -42,6 +42,7 @@ USER nobody:nobody
 COPY --from=build --chown=nobody:nobody /app/_build/prod/rel/spek ./
 
 ENV HOME=/app
+EXPOSE 4001
 
 ENV HOME=/app 
 CMD bin/spek eval "Spek.Release.migrate" && bin/spek start
