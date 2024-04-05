@@ -8,6 +8,8 @@
 /deps/
 
 .envrc
+spek.env
+.env
 
 # Where third-party dependencies like ExDoc output generated docs.
 /doc/

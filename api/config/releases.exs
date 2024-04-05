@@ -31,13 +31,13 @@ config :spek, OAuth.Gitlab,
 
 config :spek, OAuth.Github,
   client_id:
-    System.get_env("GITHUB_APP_ID") ||
+    System.get_env("GITHUB_CLIENT_ID") ||
       raise("""
       environment variable GITHUB_APP_ID not set.
       Create an oauth application on gitlab to get one
       """),
   client_secret:
-    System.get_env("GITHUB_APP_SECRET") ||
+    System.get_env("GITHUB_CLIENT_SECRET") ||
       raise("""
       environment variable GITLAB_APP_SECRET not set.
       Create an oauth application on gitlab to get one
@@ -59,8 +59,8 @@ config :spek,
       type some random characters to create one
       """),
   refresh_token_secret:
-    System.get_env("ACCESS_TOKEN_SECRET") ||
+    System.get_env("REFRESH_TOKEN_SECRET") ||
       raise("""
-      environment variable ACCESS_TOKEN_SECRET not set.
+      environment variable REFRESH_TOKEN_SECRET not set.
       type some random characters to create one
       """)

@@ -1,5 +1,5 @@
 defmodule Spek.Release do
-  @app :Spek
+  @app :spek
   def migrate do
     load_app()
 
