@@ -26,11 +26,12 @@ export const Button: React.FC<ButtonProps> = ({
   children,
   color = "default",
   size = "md",
-
+  loading,
   ...props
 }) => {
   return (
     <button
+      disabled={loading}
       className={`flex justify-center items-center gap-4 ${buttonColorStyles[color]} ${sizeStyles[size]}`}
       {...props}
     >

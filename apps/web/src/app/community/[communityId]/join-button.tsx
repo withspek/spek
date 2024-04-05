@@ -11,7 +11,7 @@ interface JoinButtonProps {
 export const JoinButton: React.FC<JoinButtonProps> = ({ community }) => {
   const { user } = useConn();
   const { push } = useRouter();
-  const { mutateAsync } = useTypeSafeMutation("joinCommunity");
+  const { mutateAsync, isLoading } = useTypeSafeMutation("joinCommunity");
 
   const isTeamMember =
     community.isAdmin || community.isMember || community.isMod;
@@ -22,6 +22,7 @@ export const JoinButton: React.FC<JoinButtonProps> = ({ community }) => {
         <p>You are a member</p>
       ) : (
         <Button
+          loading={isLoading}
           onClick={async () => {
             if (user) {
               await mutateAsync([
