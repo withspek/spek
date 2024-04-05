@@ -47,4 +47,13 @@ defmodule Operations.Access.Channels do
   def get_thread_by_id(id) do
     from(th in Thread, where: th.id == ^id) |> Repo.one()
   end
+
+  def search_thread_name(start_of_name) do
+    search_str = start_of_name <> "%"
+
+    from(th in Thread)
+    |> where([th], ilike(th.name, ^search_str))
+    |> limit([], 15)
+    |> Repo.all()
+  end
 end

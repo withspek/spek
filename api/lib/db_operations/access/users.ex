@@ -11,6 +11,19 @@ defmodule Operations.Access.Users do
     from(u in User, where: u.username == ^username, limit: 1) |> Repo.one()
   end
 
+  def search_username(<<first_letter>> <> rest) when first_letter == ?@ do
+    search_username(rest)
+  end
+
+  def search_username(start_of_username) do
+    search_str = start_of_username <> "%"
+
+    from(u in User)
+    |> where([u], ilike(u.username, ^search_str))
+    |> limit([], 15)
+    |> Repo.all()
+  end
+
   def get_users do
     query =
       from(u in User)

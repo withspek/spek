@@ -39,6 +39,15 @@ defmodule Operations.Access.Communities do
     |> Repo.one()
   end
 
+  def search_name(start_of_name) do
+    search_str = start_of_name <> "%"
+
+    Query.start()
+    |> where([c], ilike(c.name, ^search_str) and c.isPrivate == false)
+    |> limit([], 15)
+    |> Repo.all()
+  end
+
   def is_member?(userId, communityId) do
     query =
       from(c in CommunityMember, where: c.communityId == ^communityId and c.userId == ^userId)

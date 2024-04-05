@@ -23,6 +23,7 @@ defmodule Router do
   forward("/user", to: Routes.User)
   forward("/threads", to: Routes.Threads)
   forward("/dms", to: Routes.Dms)
+  forward("/misc", to: Routes.Misc)
 
   match _ do
     conn

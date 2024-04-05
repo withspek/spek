@@ -6,6 +6,7 @@ defmodule Operations.Users do
   defdelegate set_online(user_id), to: Operations.Mutations.Users
   defdelegate update_profile(user_id, data), to: Operations.Mutations.Users
   defdelegate update(changeset), to: Spek.Repo
+  defdelegate search_username(username), to: Operations.Access.Users
 
   # ACCESS
   defdelegate get_user_id(user_id), to: Operations.Access.Users
