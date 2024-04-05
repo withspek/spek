@@ -5,6 +5,7 @@ import {
   CommunityWithPermissions,
   DmMessage,
   Message,
+  SearchReponse,
   Thread,
   User,
   UserDm,
@@ -48,6 +49,8 @@ export const wrap = (connection: Connection) => ({
       connection.send("/dms/join-info", "POST", { dmId }),
     joinThreadAndGetInfo: (threadId: string): Promise<Thread> =>
       connection.send("/threads/join-info", "POST", { threadId }),
+    search: (query: string): Promise<SearchReponse> =>
+      connection.send(`/misc/search?query=${query}`, "GET"),
   },
   mutation: {
     updateProfile: (data: {

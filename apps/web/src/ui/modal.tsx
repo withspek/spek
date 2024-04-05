@@ -26,6 +26,27 @@ const customStyles = {
       maxWidth: 530,
     },
   },
+  search: {
+    overlay: {
+      backgroundColor: "rgba(0, 0, 0, 0.8)",
+      zIndex: 1000,
+    },
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      borderRadius: 8,
+      padding: "10px 25px 10px 25px",
+      transform: "translate(-50%, -50%)",
+      backgroundColor: "var(--alabaster-800)",
+      border: "none",
+      maxHeight: "80vh",
+      width: "90%",
+      maxWidth: 640,
+    },
+  },
   userPreview: {
     overlay: {
       backgroundColor: "rgba(0, 0, 0, 0.8)",
@@ -69,15 +90,17 @@ export const Modal: React.FC<
       {...props}
     >
       <div className={`flex flex-col w-full`}>
-        <div className={`flex justify-end absolute right-3 top-3`}>
-          <button
-            className={`p-1 text-alabaster-100`}
-            onClick={(e) => props?.onRequestClose?.(e)}
-            data-testid="close-modal"
-          >
-            <PlusIcon className="rotate-45 transform" />
-          </button>
-        </div>
+        {variant != "search" && (
+          <div className={`flex justify-end absolute right-3 top-3`}>
+            <button
+              className={`p-1 text-alabaster-100`}
+              onClick={(e) => props?.onRequestClose?.(e)}
+              data-testid="close-modal"
+            >
+              <PlusIcon className="rotate-45 transform" />
+            </button>
+          </div>
+        )}
         <div
           tabIndex={-1}
           className={`focus:outline-none`}

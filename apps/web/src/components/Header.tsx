@@ -4,17 +4,21 @@ import { useConn } from "@/hooks/useConn";
 import {
   HomeIcon,
   InboxIcon,
-  NotificationIcon,
   PlusIcon,
+  SearchIcon,
   UserSharingIcon,
 } from "@/icons";
 import { Button } from "@/ui/button";
+import { Modal } from "@/ui/modal";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { SearchBar } from "./SearchBar";
 
 export const Header: React.FC = () => {
   const { user } = useConn();
   const { push } = useRouter();
+  const [open, setOpen] = useState(false);
 
   return (
     <header className="flex gap-4 justify-between py-3 w-full">
@@ -24,6 +28,9 @@ export const Header: React.FC = () => {
       <Link href={`/direct`}>
         <InboxIcon />
       </Link>
+      <button onClick={() => setOpen(!open)}>
+        <SearchIcon />
+      </button>
       {user ? (
         <>
           <Link href={`/u/${user.id}`}>
@@ -45,6 +52,9 @@ export const Header: React.FC = () => {
           </Button>
         </>
       )}
+      <Modal isOpen={open} onRequestClose={() => setOpen(!open)}>
+        <SearchBar defaultValue="" />
+      </Modal>
     </header>
   );
 };

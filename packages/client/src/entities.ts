@@ -87,3 +87,10 @@ export type DmMessage = {
   inserted_at: string;
   updated_at: string;
 };
+
+export type SearchReponse = {
+  users: User[];
+  threads: Thread[];
+  communities: Community[];
+  items: User[] & Thread[] & Community[];
+};
