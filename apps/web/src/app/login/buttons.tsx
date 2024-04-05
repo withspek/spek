@@ -1,45 +1,81 @@
 "use client";
 
-import { CompassIcon } from "@/icons";
+import { CompassIcon, UserSharingIcon } from "@/icons";
 import { useTokenStore } from "@/stores/useTokenStore";
 import { Button } from "@/ui/button";
-import { apiUrl } from "@/utils/constants";
-import { useRouter } from "next/navigation";
-import React from "react";
+import { apiUrl, loginNextPathKey, prod } from "@/utils/constants";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useCallback } from "react";
+
+interface LoginButtonProps {
+  children: [React.ReactNode, React.ReactNode];
+  dev?: true;
+  onClick?: () => void;
+  oauthUrl?: string;
+}
+
+const LoginButton: React.FC<LoginButtonProps> = ({
+  children,
+  dev,
+  oauthUrl,
+  onClick,
+}) => {
+  const params = useSearchParams();
+  const nextPath = params.get("next");
+
+  const clickHandler = useCallback(() => {
+    if (typeof nextPath === "string" && nextPath) {
+      try {
+        localStorage.setItem(loginNextPathKey, nextPath);
+      } catch {}
+    }
+
+    window.location.href = oauthUrl as string;
+  }, [nextPath, oauthUrl]);
+
+  return (
+    <Button
+      color={dev ? "default" : "primary"}
+      onClick={oauthUrl ? clickHandler : onClick}
+    >
+      {children[0]}
+      {children[1]}
+    </Button>
+  );
+};
 
 export const Buttons: React.FC = () => {
   const { push } = useRouter();
 
   return (
     <>
-      <Button
-        onClick={() => {
-          window.location.href = `${apiUrl}/auth/gitlab`;
-        }}
-      >
+      <LoginButton oauthUrl={`${apiUrl}/auth/gitlab`}>
+        <UserSharingIcon />
         Login with Gitlab
-      </Button>
-      <Button
-        color="primary"
-        onClick={async () => {
-          const username = prompt("username");
-          const resp = await fetch(
-            `${apiUrl}/dev/test-info?username=${username}`
-          );
+      </LoginButton>
+      {!prod ? (
+        <LoginButton
+          dev
+          onClick={async () => {
+            const username = prompt("username");
+            const resp = await fetch(
+              `${apiUrl}/dev/test-info?username=${username}`
+            );
 
-          const d = await resp.json();
+            const d = await resp.json();
 
-          useTokenStore.getState().setTokens({
-            accessToken: d.accessToken,
-            refreshToken: d.refreshToken,
-          });
+            useTokenStore.getState().setTokens({
+              accessToken: d.accessToken,
+              refreshToken: d.refreshToken,
+            });
 
-          push("/");
-        }}
-      >
-        <CompassIcon />
-        Create test user
-      </Button>
+            push("/");
+          }}
+        >
+          <CompassIcon />
+          Create test user
+        </LoginButton>
+      ) : null}
     </>
   );
 };

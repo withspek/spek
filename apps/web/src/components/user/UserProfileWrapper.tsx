@@ -58,7 +58,7 @@ export const UserProfileWrapper: React.FC<UserProfileWrapperProps> = ({
                   push(`/direct/${dm.id}`);
                 }
               } else {
-                push("/");
+                push(`/?next=/u/${user.id}`);
               }
             }}
           >
