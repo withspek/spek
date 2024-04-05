@@ -14,8 +14,10 @@ export const SearchBar: React.FC<{ defaultValue: string }> = ({
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
 
-    prefetch(["search", query], [query]);
-    push(`/search?query=${query}`);
+    if (!!query) {
+      prefetch(["search", query], [query]);
+      push(`/search?query=${query}`);
+    }
   };
 
   return (
