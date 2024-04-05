@@ -40,8 +40,10 @@ export const useMainWsHandler = () => {
       }),
 
       conn.addListener<any>("new_dm_message", ({ message }) => {
-        updateQuery(["getDmMessages", message.dmId], (x) => ({
-          messages: [...x.messages, message],
+        updateQuery(["getDmMessages", 0], (x) => ({
+          messages: [message, ...x.messages],
+          initial: x.initial,
+          nextCursor: x.nextCursor,
         }));
       }),
     ];

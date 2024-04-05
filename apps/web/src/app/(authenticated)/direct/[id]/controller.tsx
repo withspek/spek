@@ -13,9 +13,14 @@ interface Props {
 }
 export const DmPageController: React.FC<Props> = ({ dmId }) => {
   const router = useRouter();
-  const { data, isLoading } = useTypeSafeQuery(["joinDmAndGetInfo", dmId], {}, [
-    dmId,
-  ]);
+  const { data, isLoading } = useTypeSafeQuery(
+    ["joinDmAndGetInfo", dmId],
+    {
+      staleTime: Infinity,
+      refetchOnMount: "always",
+    },
+    [dmId]
+  );
 
   if (isLoading) {
     return null;

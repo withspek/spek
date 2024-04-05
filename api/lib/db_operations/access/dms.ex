@@ -66,7 +66,7 @@ defmodule Operations.Access.Dms do
         where: m.dmId == ^dm_id,
         limit: ^@fetch_limit,
         offset: ^offset,
-        order_by: [asc: m.inserted_at]
+        order_by: [desc: m.inserted_at]
       )
       |> Repo.all()
       |> Repo.preload(:user)
