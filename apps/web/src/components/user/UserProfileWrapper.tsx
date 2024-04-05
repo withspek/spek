@@ -29,7 +29,7 @@ export const UserProfileWrapper: React.FC<UserProfileWrapperProps> = ({
       />
       <p className="text-xl font-bold">{user.displayName}</p>
       <p>{user.bio}</p>
-      {currentUser.id === user.id ? (
+      {currentUser && currentUser.id === user.id ? (
         <div className="flex gap-4">
           <Button onClick={() => setOpenEditModal(!openEditModal)}>
             Edit profile
@@ -50,11 +50,15 @@ export const UserProfileWrapper: React.FC<UserProfileWrapperProps> = ({
           <Button
             disabled={isLoading}
             onClick={async () => {
-              const userIds = [user.id, currentUser.id];
-              const dm = await mutateAsync([userIds]);
+              if (currentUser) {
+                const userIds = [user.id, currentUser.id];
+                const dm = await mutateAsync([userIds]);
 
-              if (dm) {
-                push(`/direct/${dm.id}`);
+                if (dm) {
+                  push(`/direct/${dm.id}`);
+                }
+              } else {
+                push("/");
               }
             }}
           >
