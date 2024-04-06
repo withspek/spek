@@ -3,13 +3,19 @@
 import { SearchBar } from "@/components/SearchBar";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export const SearchPageController: React.FC<{ query: string }> = ({
   query,
 }) => {
+  const { push } = useRouter();
   const { data, isLoading } = useTypeSafeQuery(["search", query], {}, [query]);
   if (isLoading && data) {
     return null;
+  }
+
+  if (!query) {
+    push("/home");
   }
 
   const results = data
