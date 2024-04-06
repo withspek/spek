@@ -7,6 +7,19 @@ const config: Config = {
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    fontFamily: {
+      sans: [
+        "Inter",
+        "-apple-system",
+        "BlinkMacSystemFont",
+        "Segoe UI",
+        "Roboto",
+        "Helvetica",
+        "Arial",
+        "sans-serif",
+      ],
+      mono: ["Menlo", "Monaco", "Courier New", "monospace"],
+    },
     screens: {
       sm: "640px",
       // => @media (min-width: 640px) { ... }
