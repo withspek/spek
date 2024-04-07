@@ -48,7 +48,7 @@ export const CreateCommunityForm: React.FC = () => {
             <Button onClick={() => handleSubmit} type="submit">
               Create
             </Button>
-            <Button color="primary" onClick={() => push("/home")}>
+            <Button type="button" color="primary" onClick={() => push("/home")}>
               Cancel
             </Button>
           </div>
