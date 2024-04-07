@@ -1,6 +1,3 @@
-import Link from "next/link";
-
-import { Avatar } from "@/ui/avatar";
 import { UserDm } from "@spek/client";
 import { useTypeSafePrefetch } from "@/hooks/useTypeSafePrefetch";
 import { useRouter } from "next/navigation";
