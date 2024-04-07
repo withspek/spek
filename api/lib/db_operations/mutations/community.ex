@@ -110,7 +110,9 @@ defmodule Operations.Mutations.Community do
         avatarUrl: user.avatarUrl,
         id: user.id,
         bio: user.bio,
-        displayName: user.displayName
+        displayName: user.displayName,
+        online: user.online,
+        lastOnline: user.lastOnline
       }
     ]
 

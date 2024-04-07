@@ -68,9 +68,11 @@ defmodule Operations.Access.Communities do
         on: u.id == c.userId,
         select: %User.Preview{
           avatarUrl: u.avatarUrl,
+          online: u.online,
           displayName: u.displayName,
           id: u.id,
-          bio: u.bio
+          bio: u.bio,
+          lastOnline: u.lastOnline
         },
         where: c.communityId == ^communityId
       )

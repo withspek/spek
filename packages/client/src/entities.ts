@@ -19,6 +19,8 @@ export type UserPreview = {
   displayName: string;
   avatarUrl: string;
   bio: string;
+  online: boolean;
+  lastOnline: string;
 };
 
 export interface Community {

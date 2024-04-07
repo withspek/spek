@@ -30,7 +30,7 @@ defmodule Routes.DevOnly do
                   %User{
                     githubId: "id:" <> username,
                     username: username,
-                    avatarUrl: "https://picsum.photos/200/200/?blur",
+                    avatarUrl: "https://placekitten.com/200/200",
                     bannerUrl: "https://picsum.photos/1000/300",
                     bio: "This is my bio as test user I am committed to helping to test the app",
                     displayName: String.capitalize(username),

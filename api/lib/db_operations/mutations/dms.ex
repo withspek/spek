@@ -17,7 +17,9 @@ defmodule Operations.Mutations.Dms do
           id: user.id,
           avatarUrl: user.avatarUrl,
           bio: user.bio,
-          displayName: user.displayName
+          displayName: user.displayName,
+          online: user.online,
+          lastOnline: user.lastOnline
         }
       end)
 

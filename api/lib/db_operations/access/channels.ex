@@ -27,6 +27,8 @@ defmodule Operations.Access.Channels do
         join: u in User,
         on: u.id == c.userId,
         select: %User.Preview{
+          online: u.online,
+          lastOnline: u.lastOnline,
           avatarUrl: u.avatarUrl,
           displayName: u.displayName,
           id: u.id,
