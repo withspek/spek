@@ -5,7 +5,7 @@ defmodule Models.Message do
   alias Models.User
   alias Models.Thread
 
-  @derive {Jason.Encoder, only: ~w(id text user threadId)a}
+  @derive {Jason.Encoder, only: ~w(id text user inserted_at updated_at threadId)a}
   @primary_key {:id, :binary_id, []}
   schema "messages" do
     field(:text, :string)

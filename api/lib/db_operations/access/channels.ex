@@ -47,7 +47,9 @@ defmodule Operations.Access.Channels do
   end
 
   def get_thread_by_id(id) do
-    from(th in Thread, where: th.id == ^id) |> Repo.one()
+    from(th in Thread, where: th.id == ^id)
+    |> Repo.one()
+    |> Repo.preload(:creator)
   end
 
   def search_thread_name(start_of_name) do

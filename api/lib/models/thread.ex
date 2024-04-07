@@ -7,8 +7,7 @@ defmodule Models.Thread do
   alias Models.User
 
   @derive {Jason.Encoder,
-           only:
-             ~w(id name creatorId channelId communityId peoplePreviewList inserted_at updated_at)a}
+           only: ~w(id name creator channelId communityId peoplePreviewList inserted_at)a}
   @primary_key {:id, :binary_id, []}
   schema "threads" do
     field(:name, :string)
