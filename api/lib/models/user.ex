@@ -22,7 +22,7 @@ defmodule Models.User do
     end
   end
 
-  @derive {Jason.Encoder, only: ~w(id username displayName bio bannerUrl avatarUrl
+  @derive {Jason.Encoder, only: ~w(id username displayName bio youSubscribed bannerUrl avatarUrl
              email githubUrl online lastOnline contributions inserted_at updated_at gitlabUrl)a}
 
   @primary_key {:id, :binary_id, []}
@@ -42,6 +42,7 @@ defmodule Models.User do
     field(:staff, :boolean)
     field(:online, :boolean, default: false)
     field(:lastOnline, :utc_datetime_usec)
+    field(:youSubscribed, :boolean, default: false, virtual: true)
 
     timestamps()
   end
