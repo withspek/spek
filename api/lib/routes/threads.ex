@@ -1,6 +1,7 @@
 defmodule Routes.Threads do
   use Plug.Router
 
+  alias Operations.Subs
   alias Operations.Messages
   alias Operations.Channels
   alias Spek.ThreadSession
@@ -167,6 +168,40 @@ defmodule Routes.Threads do
       _ ->
         conn
         |> send_resp(401, Jason.encode!(%{error: "invalid id"}))
+    end
+  end
+
+  post "/subscribe" do
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    if has_user_id do
+      user_id = conn.assigns.user_id
+      thread_id = conn.body_params["threadId"]
+
+      Subs.raw_insert(thread_id, user_id)
+
+      conn
+      |> send_resp(200, Jason.encode!(%{success: true}))
+    else
+      conn
+      |> send_resp(401, Jason.encode!(%{error: "UNAUTHORIZED"}))
+    end
+  end
+
+  post "/unsubscribe" do
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    if has_user_id do
+      user_id = conn.assigns.user_id
+      thread_id = conn.body_params["threadId"]
+
+      Subs.delete(thread_id, user_id)
+
+      conn
+      |> send_resp(200, Jason.encode!(%{success: true}))
+    else
+      conn
+      |> send_resp(401, Jason.encode!(%{error: "UNAUTHORIZED"}))
     end
   end
 end

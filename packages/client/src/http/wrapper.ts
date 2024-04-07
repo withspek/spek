@@ -88,5 +88,10 @@ export const wrap = (connection: Connection) => ({
       text: string;
     }): Promise<Message> =>
       connection.send(`/threads/${data.threadId}/message`, "POST", { ...data }),
+
+    subscribeToThread: (threadId: string): Promise<{ success: boolean }> =>
+      connection.send(`/threads/subscribe`, "POST", { threadId }),
+    unsubscribeToThread: (threadId: string): Promise<{ success: boolean }> =>
+      connection.send(`/threads/unsubscribe`, "POST", { threadId }),
   },
 });

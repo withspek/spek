@@ -10,6 +10,7 @@ export interface User {
   online: boolean;
   lastOnline: string;
   gitlabUrl: string;
+  youSubscribed: boolean;
   inserted_at: string;
   updated_at: string;
 }

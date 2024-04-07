@@ -1,16 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 import { format } from "date-fns";
 
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
-import { useConn } from "@/hooks/useConn";
 import { MessageInput } from "@/components/thread/MessageInput";
 import { MessagesList } from "@/components/thread/MessagesList";
 import { NotificationIcon, PlusIcon } from "@/icons";
 import { Avatar } from "@/ui/avatar";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
+import ConnectionContext from "@/contexts/ConnectionContext";
 
 interface ThreadPageControllerProps {
   threadId: string;
@@ -19,13 +20,17 @@ interface ThreadPageControllerProps {
 export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
   threadId,
 }) => {
-  const { user } = useConn();
+  const { conn, setUser } = useContext(ConnectionContext);
   const router = useRouter();
   const { data, isLoading } = useTypeSafeQuery(
     ["joinThreadAndGetInfo", threadId],
     { staleTime: Infinity, refetchOnMount: "always" },
     [threadId]
   );
+  const { mutateAsync: unsubscribe, isLoading: unsubscribeLoading } =
+    useTypeSafeMutation("unsubscribeToThread");
+  const { mutateAsync: subscribe, isLoading: subscribeLoading } =
+    useTypeSafeMutation("subscribeToThread");
 
   if (isLoading) {
     // TODO: make this better
@@ -65,20 +70,55 @@ export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
         </p>
       </div>
       <div>
-        <button
-          type="button"
-          className="flex gap-2 items-center bg-alabaster-900 py-1 px-2 rounded-md"
-        >
-          <NotificationIcon width={16} height={16} />
-          <span>Subscribe</span>
-        </button>
+        {conn?.user ? (
+          <button
+            disabled={subscribeLoading || unsubscribeLoading}
+            type="button"
+            className="flex gap-2 items-center bg-alabaster-900 py-1 px-2 rounded-md"
+            onClick={async () => {
+              if (conn.user.youSubscribed) {
+                const resp = await unsubscribe([threadId]);
+
+                if (resp.success) {
+                  setUser({
+                    ...conn.user,
+                    youSubscribed: false,
+                  });
+                }
+              } else {
+                const resp = await subscribe([threadId]);
+
+                if (resp.success) {
+                  setUser({
+                    ...conn.user,
+                    youSubscribed: true,
+                  });
+                }
+              }
+            }}
+          >
+            <NotificationIcon width={16} height={16} />
+            <span>{conn.user.youSubscribed ? "Subscribed" : "Subcribe"}</span>
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="flex gap-2 items-center bg-alabaster-900 py-1 px-2 rounded-md"
+            onClick={() => {
+              router.push(`/?next=/thread/${data?.id}`);
+            }}
+          >
+            <NotificationIcon width={16} height={16} />
+            <span>Subscribe</span>
+          </button>
+        )}
       </div>
       <div className="flex flex-1 flex-col-reverse gap-4">
-        <MessagesList threadId={data?.id!} currentUser={user} />
+        <MessagesList threadId={data?.id!} currentUser={conn?.user!} />
       </div>
       <div className="mb-3">
         <MessageInput
-          currentUser={user}
+          currentUser={conn?.user!}
           threadId={data?.id!}
           communityId={data?.communityId!}
         />
