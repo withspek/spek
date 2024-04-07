@@ -43,7 +43,9 @@ defmodule Operations.Access.Channels do
   ####################### THREADS ###################
 
   def get_threads_by_channel_id(id) do
-    from(th in Thread, where: th.channelId == ^id, order_by: [desc: th.inserted_at]) |> Repo.all()
+    from(th in Thread, where: th.channelId == ^id, order_by: [desc: th.inserted_at])
+    |> Repo.all()
+    |> Repo.preload(:creator)
   end
 
   def get_thread_by_id(id) do
