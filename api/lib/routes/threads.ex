@@ -15,7 +15,9 @@ defmodule Routes.Threads do
 
     case Ecto.UUID.cast(id) do
       {:ok, uuid} ->
-        thread = Channels.get_thread_by_id(uuid)
+        has_user_id = Map.has_key?(conn.assigns, :user_id)
+        user_id = if has_user_id, do: conn.assigns.user_id, else: Ecto.UUID.autogenerate()
+        thread = Channels.get_thread_by_id(uuid, user_id)
 
         cond do
           is_nil(thread) ->
@@ -132,7 +134,7 @@ defmodule Routes.Threads do
         :name => conn.body_params["name"]
       }
 
-      thread = Operations.Communities.create_thread(data)
+      thread = Channels.create_thread(data)
 
       ThreadSession.start_supervised(thread_id: thread.id)
       ThreadSession.join_thread(thread.id, user_id)
@@ -154,11 +156,11 @@ defmodule Routes.Threads do
     case Ecto.UUID.cast(thread_id) do
       {:ok, uuid} ->
         has_user_id = Map.has_key?(conn.assigns, :user_id)
-        thread = Channels.get_thread_by_id(uuid)
+        user_id = if has_user_id, do: conn.assigns.user_id, else: Ecto.UUID.autogenerate()
+
+        thread = Channels.get_thread_by_id(uuid, user_id)
 
         if not is_nil(thread) and has_user_id do
-          user_id = conn.assigns.user_id
-
           ThreadSession.join_thread(thread.id, user_id)
         end
 

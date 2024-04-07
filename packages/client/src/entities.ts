@@ -10,7 +10,7 @@ export interface User {
   online: boolean;
   lastOnline: string;
   gitlabUrl: string;
-  youSubscribed: boolean;
+
   inserted_at: string;
   updated_at: string;
 }
@@ -60,6 +60,7 @@ export type Thread = {
   name: string;
   creator: User;
   communityId: string;
+  youSubscribed: boolean;
   channelId: string;
   peoplePreviewList: UserPreview[];
   inserted_at: string;

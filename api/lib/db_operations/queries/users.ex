@@ -5,7 +5,7 @@ defmodule Operations.Queries.Users do
   """
 
   import Ecto.Query, warn: false
-  alias Models.Subscriber
+
   alias Models.User
 
   def start do
@@ -58,16 +58,5 @@ defmodule Operations.Queries.Users do
 
   def filter_by_gitlab_ids(query, gitlab_ids) do
     where(query, [u], u.gitlabId in ^gitlab_ids)
-  end
-
-  def thread_sub_info(query, me_id) do
-    query
-    |> join(:left, [u], sub in Subscriber,
-      as: :sub,
-      on: sub.subscriberId == u.id and sub.subscriberId == ^me_id
-    )
-    |> select_merge([sub: sub], %{
-      youSubscribed: not is_nil(sub.subscriberId)
-    })
   end
 end

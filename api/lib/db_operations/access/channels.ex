@@ -1,6 +1,7 @@
 defmodule Operations.Access.Channels do
   import Ecto.Query, warn: false
 
+  alias Models.Subscriber
   alias Models.User
   alias Models.User
   alias Models.ChannelMember
@@ -48,8 +49,18 @@ defmodule Operations.Access.Channels do
     |> Repo.preload(:creator)
   end
 
-  def get_thread_by_id(id) do
-    from(th in Thread, where: th.id == ^id)
+  def get_thread_by_id(id, user_id) do
+    from(th in Thread)
+    |> where([th], th.id == ^id)
+    |> select([th], th)
+    |> join(:left, [th], sub in Subscriber,
+      as: :sub,
+      on: sub.threadId == th.id and sub.subscriberId == ^user_id
+    )
+    |> select_merge([sub: sub], %{
+      youSubscribed: not is_nil(sub.subscriberId)
+    })
+    |> limit([th], 1)
     |> Repo.one()
     |> Repo.preload(:creator)
   end

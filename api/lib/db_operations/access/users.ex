@@ -8,7 +8,6 @@ defmodule Operations.Access.Users do
   def get_user_id(user_id) do
     Query.start()
     |> Query.filter_by_id(user_id)
-    |> Query.thread_sub_info(user_id)
     |> Query.limit_one()
     |> Repo.one()
   end

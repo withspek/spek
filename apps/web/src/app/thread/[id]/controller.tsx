@@ -1,17 +1,18 @@
 "use client";
 
-import React, { useContext } from "react";
+import React from "react";
+import Link from "next/link";
 import { format } from "date-fns";
+import { useRouter } from "next/navigation";
 
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { MessageInput } from "@/components/thread/MessageInput";
 import { MessagesList } from "@/components/thread/MessagesList";
-import { NotificationIcon, PlusIcon } from "@/icons";
+import { LinkIcon, NotificationIcon, PlusIcon } from "@/icons";
 import { Avatar } from "@/ui/avatar";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
-import ConnectionContext from "@/contexts/ConnectionContext";
+import { useConn } from "@/hooks/useConn";
+import { useTypeSafeUpdateQuery } from "@/hooks/useTypeSafeUpdateQuery";
 
 interface ThreadPageControllerProps {
   threadId: string;
@@ -20,7 +21,7 @@ interface ThreadPageControllerProps {
 export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
   threadId,
 }) => {
-  const { conn, setUser } = useContext(ConnectionContext);
+  const { user } = useConn();
   const router = useRouter();
   const { data, isLoading } = useTypeSafeQuery(
     ["joinThreadAndGetInfo", threadId],
@@ -31,6 +32,7 @@ export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
     useTypeSafeMutation("unsubscribeToThread");
   const { mutateAsync: subscribe, isLoading: subscribeLoading } =
     useTypeSafeMutation("subscribeToThread");
+  const updateQuery = useTypeSafeUpdateQuery();
 
   if (isLoading) {
     // TODO: make this better
@@ -69,36 +71,42 @@ export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
           {format(dt, "MMM dd, yyyy - hh:MM a")}
         </p>
       </div>
-      <div>
-        {conn?.user ? (
+      <div className="flex gap-2 items-center">
+        {user ? (
           <button
             disabled={subscribeLoading || unsubscribeLoading}
             type="button"
             className="flex gap-2 items-center bg-alabaster-900 py-1 px-2 rounded-md"
             onClick={async () => {
-              if (conn.user.youSubscribed) {
+              if (data?.youSubscribed) {
                 const resp = await unsubscribe([threadId]);
 
                 if (resp.success) {
-                  setUser({
-                    ...conn.user,
-                    youSubscribed: false,
-                  });
+                  updateQuery(
+                    ["joinThreadAndGetInfo", threadId],
+                    (oldData) => ({
+                      ...oldData,
+                      youSubscribed: false,
+                    })
+                  );
                 }
               } else {
                 const resp = await subscribe([threadId]);
 
                 if (resp.success) {
-                  setUser({
-                    ...conn.user,
-                    youSubscribed: true,
-                  });
+                  updateQuery(
+                    ["joinThreadAndGetInfo", threadId],
+                    (oldData) => ({
+                      ...oldData,
+                      youSubscribed: true,
+                    })
+                  );
                 }
               }
             }}
           >
             <NotificationIcon width={16} height={16} />
-            <span>{conn.user.youSubscribed ? "Subscribed" : "Subcribe"}</span>
+            <span>{data?.youSubscribed ? "Subscribed" : "Subcribe"}</span>
           </button>
         ) : (
           <button
@@ -112,13 +120,16 @@ export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
             <span>Subscribe</span>
           </button>
         )}
+        <div className="cursor-pointer">
+          <LinkIcon />
+        </div>
       </div>
       <div className="flex flex-1 flex-col-reverse gap-4">
-        <MessagesList threadId={data?.id!} currentUser={conn?.user!} />
+        <MessagesList threadId={data?.id!} currentUser={user} />
       </div>
       <div className="mb-3">
         <MessageInput
-          currentUser={conn?.user!}
+          currentUser={user}
           threadId={data?.id!}
           communityId={data?.communityId!}
         />

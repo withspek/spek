@@ -7,3 +7,4 @@ export { default as UserSharingIcon } from "./user-sharing-icon";
 export { default as PlusIcon } from "./plus-icon";
 export { default as SettingsIcon } from "./settings-icon";
 export { default as SearchIcon } from "./search-icon";
+export { default as LinkIcon } from "./link-icon";

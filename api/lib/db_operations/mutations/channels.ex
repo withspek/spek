@@ -1,6 +1,8 @@
 defmodule Operations.Mutations.Channels do
   import Ecto.Query, warn: false
 
+  alias Operations.Users
+  alias Models.Thread
   alias Models.ChannelMember
   alias Operations.Queries.Channels, as: Query
   alias Operations.Channels
@@ -22,5 +24,30 @@ defmodule Operations.Mutations.Channels do
       _ ->
         {:error, %{error: "Not found"}}
     end
+  end
+
+  def create_thread(data) do
+    user = Users.get_user_id(data.creatorId)
+
+    previewList = [
+      %{
+        avatarUrl: user.avatarUrl,
+        id: user.id,
+        bio: user.bio,
+        displayName: user.displayName,
+        online: user.online,
+        lastOnline: user.lastOnline
+      }
+    ]
+
+    Thread.changeset(%Thread{
+      channelId: data.channelId,
+      creatorId: data.creatorId,
+      communityId: data.communityId,
+      name: data.name,
+      peoplePreviewList: previewList
+    })
+    |> Repo.insert!(returning: true)
+    |> Repo.preload(:creator)
   end
 end
