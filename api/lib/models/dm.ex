@@ -1,11 +1,17 @@
 defmodule Models.Dm do
-  alias Models.User
   use Ecto.Schema
   import Ecto.Changeset
 
-  @derive {Jason.Encoder, only: ~w(id peoplePreviewList)a}
+  alias Models.User
+
+  @derive {Jason.Encoder,
+           only: ~w(id lastMessage lastMessageTime lastMessageRead peoplePreviewList)a}
   @primary_key {:id, :binary_id, []}
   schema "dms" do
+    field(:lastMessage, :string, virtual: true)
+    field(:lastMessageTime, :utc_datetime_usec, virtual: true)
+    field(:lastMessageRead, :boolean, virtual: true)
+
     embeds_many(:peoplePreviewList, User.Preview)
 
     timestamps()

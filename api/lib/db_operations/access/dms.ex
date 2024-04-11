@@ -20,10 +20,11 @@ defmodule Operations.Access.Dms do
 
   def get_user_dms(user_id) do
     query =
-      from(dm in Dm,
+      from(d in Dm,
         join: du in DmUser,
-        on: du.dmId == dm.id,
+        on: du.dmId == d.id,
         where: du.userId == ^user_id,
+        order_by: [desc: d.inserted_at],
         limit: 150
       )
 
