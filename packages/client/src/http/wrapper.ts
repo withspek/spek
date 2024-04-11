@@ -32,8 +32,11 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/threads/${threadId}`, "GET"),
     getDm: (dmId: string): Promise<UserDm> =>
       connection.send(`/dms/${dmId}`, "GET"),
-    getThreadMessages: (threadId: string): Promise<Message[]> =>
-      connection.send(`/threads/${threadId}/messages`, "GET"),
+    getThreadMessages: (
+      threadId: string,
+      cursor: number = 0
+    ): Promise<{ messages: Message[]; nextCursor: number | null }> =>
+      connection.send(`/threads/${threadId}/messages?cursor=${cursor}`, "GET"),
     getUserProfile: (userId: string): Promise<{ user: User }> =>
       connection.send(`/user/${userId}`, "GET"),
     getUserDms: (): Promise<UserDm[]> => connection.send(`/dms`, "GET"),

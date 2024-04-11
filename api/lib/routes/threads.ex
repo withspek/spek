@@ -38,23 +38,18 @@ defmodule Routes.Threads do
   end
 
   get "/:id/messages" do
-    %Plug.Conn{params: %{"id" => threadId}} = conn
+    %Plug.Conn{params: %{"id" => threadId, "cursor" => cursorStr}} = conn
 
     case Ecto.UUID.cast(threadId) do
       {:ok, uuid} ->
-        messages = Messages.get_thread_messages(uuid)
+        cursor = String.to_integer(cursorStr)
+        {messages, next_cursor} = Messages.get_thread_messages(uuid, cursor)
 
-        cond do
-          is_nil(messages) ->
-            conn
-            |> put_resp_content_type("application/json")
-            |> send_resp(400, Jason.encode!(%{error: "That thread does not exist"}))
-
-          true ->
-            conn
-            |> put_resp_content_type("application/json")
-            |> send_resp(200, Jason.encode!(messages))
-        end
+        conn
+        |> send_resp(
+          200,
+          Jason.encode!(%{messages: messages, nextCursor: next_cursor, initial: cursor == 0})
+        )
 
       _ ->
         conn
@@ -80,7 +75,7 @@ defmodule Routes.Threads do
 
           ThreadSession.broadcast_ws(uuid, %{
             op: "new_thread_message",
-            d: %{message: message, threadId: uuid}
+            d: %{message: message}
           })
 
           conn

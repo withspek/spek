@@ -35,8 +35,11 @@ export const useMainWsHandler = () => {
         }
       ),
 
-      conn.addListener<any>("new_thread_message", ({ threadId, message }) => {
-        updateQuery(["getThreadMessages", threadId], (x) => [...x, message]);
+      conn.addListener<any>("new_thread_message", ({ message }) => {
+        updateQuery(["getThreadMessages", 0], (x) => ({
+          messages: [message, ...x.messages],
+          nextCursor: x.nextCursor,
+        }));
       }),
 
       conn.addListener<any>("new_dm_message", ({ message }) => {

@@ -10,11 +10,6 @@ export const WaitListHeader: React.FC = () => {
   );
 };
 
-const width = 317;
-const height = 80;
-const path =
-  "M316 0V10C316 12.2091 314.209 14 312 14H5C2.79086 14 1 15.7909 1 18V80";
-
 export default function WaitlistPage() {
   return (
     <main className="flex h-full w-full flex-col">

@@ -27,10 +27,11 @@ h3 {
   --alabaster-800: #464646;
   --alabaster-900: #3d3d3d;
   --alabaster-950: #292929;
+  --background: #222326;
 }
 
 body {
-  background-color: #222326;
+  background-color: var(--background);
   color: var(--alabaster-50);
   margin: 0;
 }

@@ -7,7 +7,14 @@ defmodule Router do
 
   plug(Plugs.Cors)
   plug(:match)
-  plug(Plug.Parsers, parsers: [:json], pass: ["application/json"], json_decoder: Jason)
+  plug(Plug.Static, at: "/public", from: "/media")
+
+  plug(Plug.Parsers,
+    parsers: [:json, :urlencoded, {:multipart, length: 20_000_000}],
+    pass: ["application/json", "text/*"],
+    json_decoder: Jason
+  )
+
   plug(:dispatch)
 
   options _ do

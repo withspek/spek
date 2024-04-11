@@ -37,6 +37,7 @@ const config: Config = {
       white: "#fff",
       black: "#000",
       transparent: "transparent",
+      background: "var(--background)",
       alabaster: {
         50: "var(--alabaster-50)",
         100: "var(--alabaster-100)",

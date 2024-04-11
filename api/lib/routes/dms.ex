@@ -140,6 +140,13 @@ defmodule Routes.Dms do
     end
   end
 
+  post "/upload" do
+    IO.inspect(conn.params)
+
+    conn
+    |> send_resp(200, Jason.encode!("ok"))
+  end
+
   match _ do
     conn
     |> send_resp(404, "not found")
