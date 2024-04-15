@@ -95,4 +95,19 @@ defmodule Operations.Mutations.Community do
         {:ok, true}
     end
   end
+
+  def leave_community(community_id, user_id) do
+    Query.start_member()
+    |> Query.filter_by_member(community_id, user_id)
+    |> Repo.delete_all()
+
+    Query.start()
+    |> Query.filter_by_id(community_id)
+    |> Query.inc_member_count(-1)
+    |> Repo.update_all([])
+
+    Query.start_permissions()
+    |> Query.filter_by_permissions(community_id, user_id)
+    |> Repo.delete_all()
+  end
 end

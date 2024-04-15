@@ -131,6 +131,29 @@ defmodule Routes.Community do
     end
   end
 
+  post "/leave" do
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    if has_user_id do
+      communityId = conn.body_params["communityId"]
+      userId = conn.body_params["userId"]
+
+      # TODO: Get something from the mutation
+      Operations.Communities.leave_community(communityId, userId)
+
+      UserSession.send_ws(userId, nil, %{
+        op: "new_community_leave",
+        d: %{success: true, communityId: communityId}
+      })
+
+      conn
+      |> send_resp(200, Jason.encode!(%{ok: true}))
+    else
+      conn
+      |> send_resp(401, Jason.encode!(%{error: "Not authorized"}))
+    end
+  end
+
   match _ do
     conn
     |> send_resp(404, "Not found")

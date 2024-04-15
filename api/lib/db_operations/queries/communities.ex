@@ -1,4 +1,5 @@
 defmodule Operations.Queries.Communities do
+  alias Models.CommunityMember
   alias Models.CommunityPermissions
   alias Models.Community
   import Ecto.Query
@@ -7,8 +8,24 @@ defmodule Operations.Queries.Communities do
     from(c in Community)
   end
 
+  def start_member do
+    from(cm in CommunityMember)
+  end
+
+  def start_permissions do
+    from(cp in CommunityPermissions)
+  end
+
   def filter_by_id(query, id) do
     where(query, [c], c.id == ^id)
+  end
+
+  def filter_by_member(query, community_id, user_id) do
+    where(query, [cm], cm.communityId == ^community_id and cm.userId == ^user_id)
+  end
+
+  def filter_by_permissions(query, community_id, user_id) do
+    where(query, [cm], cm.communityId == ^community_id and cm.userId == ^user_id)
   end
 
   def inc_member_count(query, n) do

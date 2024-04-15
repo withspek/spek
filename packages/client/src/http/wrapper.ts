@@ -70,6 +70,11 @@ export const wrap = (connection: Connection) => ({
       communityId: string;
       userId: string;
     }): Promise<any> => connection.send("/community/join", "POST", { ...data }),
+    leaveCommunity: (data: {
+      communityId: string;
+      userId: string;
+    }): Promise<any> =>
+      connection.send("/community/leave", "POST", { ...data }),
     createThread: (data: {
       name: string;
       channelId: string;

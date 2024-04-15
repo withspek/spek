@@ -14,4 +14,5 @@ defmodule Operations.Communities do
   # MUTATIONS
   defdelegate create_community(data), to: Operations.Mutations.Community
   defdelegate join_community(communityId, userId), to: Operations.Mutations.Community
+  defdelegate leave_community(community_id, user_id), to: Operations.Mutations.Community
 end

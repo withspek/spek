@@ -2,10 +2,10 @@
 
 import { useConn } from "@/hooks/useConn";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
-import { JoinButton } from "./join-button";
 import Tabs from "@/ui/tabs";
 import { ThreadsFeed } from "@/components/community/threads-feed";
 import { MembersList } from "@/components/community/members-list";
+import { ActionButton } from "./action-button";
 
 interface Props {
   id: string;
@@ -28,7 +28,7 @@ export const CommunityPageController: React.FC<Props> = ({ id }: Props) => {
         <p>{data?.community.description}</p>
         <p>{data?.community.memberCount} members</p>
       </div>
-      <JoinButton community={data?.community!} />
+      <ActionButton currentUser={user} community={data?.community!} />
       <div>
         <Tabs>
           <Tabs.Titles titles={["Threads", "Members", "Channels"]} />
