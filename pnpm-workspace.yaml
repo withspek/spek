@@ -2,4 +2,4 @@ packages:
   # all packages in direct subdirs of packages/
   - "packages/*"
   # all apps in subdirs of apps/
-  - "apps/**"
+  - "apps/*"

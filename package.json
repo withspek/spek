@@ -4,11 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "pnpm -r --filter='./**/*' run build",
-    "dev": "pnpm -r --parallel --filter='./**/*' run dev",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
     "watch": "pnpm -r --parallel --filter='./**/*' run watch"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "turbo": "^1.13.2"
+  }
 }
