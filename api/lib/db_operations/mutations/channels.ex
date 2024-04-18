@@ -26,6 +26,12 @@ defmodule Operations.Mutations.Channels do
     end
   end
 
+  def leave_channel(channel_id, user_id) do
+    Query.start_member()
+    |> Query.filter_by_member(channel_id, user_id)
+    |> Repo.delete_all()
+  end
+
   def create_thread(data) do
     user = Users.get_user_id(data.creatorId)
 

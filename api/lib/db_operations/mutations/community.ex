@@ -109,5 +109,11 @@ defmodule Operations.Mutations.Community do
     Query.start_permissions()
     |> Query.filter_by_permissions(community_id, user_id)
     |> Repo.delete_all()
+
+    channels = Operations.Access.Channels.get_channels_by_community_id(community_id)
+
+    Enum.each(channels, fn channel ->
+      Operations.Mutations.Channels.leave_channel(channel.id, user_id)
+    end)
   end
 end
