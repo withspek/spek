@@ -27,6 +27,7 @@ defmodule Router do
 
   # API Routes
   forward("/community", to: Routes.Community)
+  forward("/channels", to: Routes.Channels)
   forward("/user", to: Routes.User)
   forward("/threads", to: Routes.Threads)
   forward("/dms", to: Routes.Dms)
