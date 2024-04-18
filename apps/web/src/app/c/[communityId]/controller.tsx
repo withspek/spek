@@ -6,6 +6,7 @@ import Tabs from "@/ui/tabs";
 import { ThreadsFeed } from "@/components/community/threads-feed";
 import { MembersList } from "@/components/community/members-list";
 import { ActionButton } from "./action-button";
+import Link from "next/link";
 
 interface Props {
   id: string;
@@ -52,10 +53,10 @@ export const CommunityPageController: React.FC<Props> = ({ id }: Props) => {
                 content: (
                   <>
                     {data?.channels.map((c) => (
-                      <div key={c.id}>
+                      <Link href={`/c/${id}/${c.id}`} key={c.id}>
                         <p>ID: {c.id}</p>
                         <p>Name: {c.name}</p>
-                      </div>
+                      </Link>
                     ))}
                   </>
                 ),

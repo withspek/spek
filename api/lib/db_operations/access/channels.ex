@@ -13,7 +13,7 @@ defmodule Operations.Access.Channels do
     Query.start()
     |> Query.filter_by_id(id)
     |> Query.limit_one()
-    |> Repo.all()
+    |> Repo.one()
   end
 
   def get_channels_by_community_id(id) do

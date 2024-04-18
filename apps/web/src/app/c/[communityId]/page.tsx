@@ -26,7 +26,7 @@ export async function generateMetadata(
       type: "website",
       description: community.description,
       siteName: "Spek",
-      url: `${baseUrl}/community/${community.id}`,
+      url: `${baseUrl}/c/${community.id}`,
       images: [
         {
           url: community.coverPhoto

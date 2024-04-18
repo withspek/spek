@@ -34,4 +34,15 @@ defmodule Operations.Queries.Channels do
       ]
     )
   end
+
+  def membership_info(query, me_id) do
+    query
+    |> join(:left, [c], cm in ChannelMember,
+      as: :member,
+      on: cm.channelId == c.id and cm.userId == ^me_id
+    )
+    |> select_merge([member: cm], %{
+      isMember: not is_nil(cm.id)
+    })
+  end
 end

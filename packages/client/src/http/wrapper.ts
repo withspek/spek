@@ -20,10 +20,14 @@ export const wrap = (connection: Connection) => ({
       id: string
     ): Promise<{ community: CommunityWithPermissions; channels: Channel[] }> =>
       connection.send(`/community/${id}`, "GET"),
+    getChannel: (id: string): Promise<{ channel: Channel }> =>
+      connection.send(`/channels/${id}`, "GET"),
     getTopCommunities: (): Promise<GetTopCommunitiesResponse> =>
       connection.send("/community/all", "GET"),
     getCommunityMembers: (id: string): Promise<User[]> =>
       connection.send(`/community/${id}/members`, "GET"),
+    getChannelMembers: (id: string): Promise<User[]> =>
+      connection.send(`/channels/${id}/members`, "GET"),
     getCommunityPermissions: (id: string): Promise<CommunityPermissions> =>
       connection.send(`/community/${id}/permissions`, "GET"),
     getChannelThreads: (channelId: string): Promise<Thread[]> =>

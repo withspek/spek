@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { format } from "date-fns";
 
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
@@ -18,7 +17,6 @@ interface ThreadsFeedProps {
 
 export const ThreadsFeed: React.FC<ThreadsFeedProps> = ({
   communityId,
-  isAdmin,
   isMember,
   channel,
   currentUser,
