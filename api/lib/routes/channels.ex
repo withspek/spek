@@ -28,10 +28,12 @@ defmodule Routes.Channels do
         members = Operations.Channels.get_channel_members(uuid)
 
         conn
+        |> put_resp_content_type("application/json")
         |> send_resp(200, Jason.encode!(members))
 
       _ ->
         conn
+        |> put_resp_content_type("application/json")
         |> send_resp(200, Jason.encode!(%{error: "invalid id"}))
     end
   end
