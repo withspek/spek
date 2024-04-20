@@ -32,6 +32,7 @@ jobs:
           tags: irere/spek:latest
   deployment:
     name: Build
+    needs: docker
     runs-on: ubuntu-latest
     steps:
       - name: executing remote ssh commands using password
