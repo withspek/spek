@@ -12,7 +12,7 @@ export const HomeController: React.FC<ControllerProps> = () => {
   const { data, isLoading } = useTypeSafeQuery("getTopCommunities");
 
   if (isLoading) {
-    return <div>loading...</div>;
+    return <div>loading....</div>;
   }
 
   return (
