@@ -26,8 +26,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: ../../api
-          file: ./../api/Dockerfile
+          context: ./api
+          file: ./api/Dockerfile
           push: true
           tags: irere/spek:latest
   deployment:
