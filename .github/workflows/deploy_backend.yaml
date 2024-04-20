@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - "api/**"
+      - ".github/**"
     branches:
       - master
 
