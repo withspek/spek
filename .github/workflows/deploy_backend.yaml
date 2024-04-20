@@ -8,9 +8,9 @@ on:
       - master
 
 jobs:
-  environment: api
   docker:
     runs-on: ubuntu-latest
+    environment: api
     steps:
       - name: Checkout
         uses: actions/checkout@v4
