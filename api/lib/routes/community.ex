@@ -10,6 +10,7 @@ defmodule Routes.Community do
   plug(Plugs.CheckAuth, %{shouldThrow: false})
   plug(:dispatch)
 
+  # TODO: fix warning
   get "/all" do
     communities = Communities.get_top_communities(40)
 
