@@ -8,9 +8,10 @@ on:
       - master
 
 jobs:
-  build:
+  deployment:
     name: Build
     runs-on: ubuntu-latest
+    environment: api
     steps:
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
@@ -18,4 +19,4 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          script: sudo -i && ${{secrets.SSH_PASSWORD}} && cd spek/api && git pull origin master && docker build -t irere/spek:0.0.1 . && docker tag irere/spek:0.0.1 dokku/spek-api:latest && dokku tags:deploy spek-api latest
+          script: sudo -i && "${{ vars.HOST_PASSWORD }}" && cd spek/api && git pull origin master && docker build -t irere/spek:0.0.1 . && docker tag irere/spek:0.0.1 dokku/spek-api:latest && dokku tags:deploy spek-api latest
