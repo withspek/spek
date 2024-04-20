@@ -2,14 +2,12 @@
 
 import React from "react";
 
-import { useConn } from "@/hooks/useConn";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { useRouter } from "next/navigation";
 
 interface ControllerProps {}
 
 export const HomeController: React.FC<ControllerProps> = () => {
-  const { user } = useConn();
   const { push } = useRouter();
   const { data, isLoading } = useTypeSafeQuery("getTopCommunities");
 
@@ -25,7 +23,7 @@ export const HomeController: React.FC<ControllerProps> = () => {
           <div
             key={c.id}
             className="flex flex-col bg-alabaster-950 border border-alabaster-600 px-5 py-4 cursor-pointer rounded-lg"
-            onClick={() => push(`community/${c.id}`)}
+            onClick={() => push(`c/${c.id}`)}
           >
             <p className="font-bold">{c.name}</p>
             <p>{c.description}</p>

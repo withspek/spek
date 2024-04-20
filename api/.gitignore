@@ -10,6 +10,7 @@
 .envrc
 spek.env
 .env
+env.txt
 
 # Where third-party dependencies like ExDoc output generated docs.
 /doc/

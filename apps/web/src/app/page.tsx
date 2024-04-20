@@ -1,13 +1,11 @@
 "use client";
 
 import { Buttons } from "./login/buttons";
-import { useConn } from "@/hooks/useConn";
 import { useRouter } from "next/navigation";
 import { useTokenStore } from "@/stores/useTokenStore";
 import { useEffect } from "react";
 
 export default function Home() {
-  const conn = useConn();
   const { push } = useRouter();
   const hasTokens = useTokenStore((s) => !!(s.accessToken && s.refreshToken));
 
