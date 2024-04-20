@@ -41,4 +41,4 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
-          script: dokku ps:rebuild api
+          script: dokku git:from-image api irere/spek:latest
