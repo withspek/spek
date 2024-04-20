@@ -1,0 +1,6 @@
+api:
+  - api/**/*
+web:
+  - apps/web/**/*
+client:
+  - packages/client/**/*
