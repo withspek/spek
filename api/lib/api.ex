@@ -1,6 +1,7 @@
 defmodule Spek do
   use Application
 
+  # start vm
   def start(_type, _args) do
     children = [
       Spek.Supervisors.UserSession,
