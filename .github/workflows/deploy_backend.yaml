@@ -8,6 +8,7 @@ on:
       - master
 
 jobs:
+  environment: api
   docker:
     runs-on: ubuntu-latest
     steps:
@@ -31,7 +32,6 @@ jobs:
   deployment:
     name: Build
     runs-on: ubuntu-latest
-    environment: api
     steps:
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
