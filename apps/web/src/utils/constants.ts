@@ -4,4 +4,6 @@ export const apiUrl = !prod
   ? "http://localhost:4001"
   : "https://spek.eastus.cloudapp.azure.com/";
 export const isServer = typeof window == "undefined";
-export const baseUrl = !prod ? "http://localhost:3000" : "https://spek.app";
+export const baseUrl = !prod
+  ? "http://localhost:3000"
+  : "https://spek.vercel.app/";
