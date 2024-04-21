@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import React from "react";
+import Image from "next/image";
 
 import { MessageInput } from "@/components/direct/MessageInput";
 import { MessagesList } from "@/components/direct/MessagesList";
@@ -37,7 +38,7 @@ export const DmPageController: React.FC<Props> = ({ dmId }) => {
               .filter((p) => user.id !== p.id)
               .map((p) => (
                 <div className="relative" key={p.id}>
-                  <img
+                  <Image
                     className="w-10 h-10 border-2 border-alabaster-300 rounded-full"
                     src={p.avatarUrl}
                     alt={p.displayName}

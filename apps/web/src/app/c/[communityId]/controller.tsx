@@ -2,7 +2,7 @@
 
 import { useConn } from "@/hooks/useConn";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
-import Tabs from "@/ui/tabs";
+import Tabs, { TabsContents, TabsTitles } from "@/ui/tabs";
 import { ThreadsFeed } from "@/components/community/threads-feed";
 import { MembersList } from "@/components/community/members-list";
 import { ActionButton } from "./action-button";
@@ -32,8 +32,8 @@ export const CommunityPageController: React.FC<Props> = ({ id }: Props) => {
       <ActionButton currentUser={user} community={data?.community!} />
       <div>
         <Tabs>
-          <Tabs.Titles titles={["Threads", "Members", "Channels"]} />
-          <Tabs.Contents
+          <TabsTitles titles={["Threads", "Members", "Channels"]} />
+          <TabsContents
             items={[
               {
                 content: (

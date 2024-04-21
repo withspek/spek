@@ -54,7 +54,7 @@ export const useMainWsHandler = () => {
     return () => {
       unsubs.forEach((u) => u());
     };
-  }, [conn, push]);
+  }, [conn, push, updateQuery]);
 };
 
 export const MainWsHandlerProvider: React.FC<{

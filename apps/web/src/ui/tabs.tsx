@@ -11,22 +11,17 @@ type TabContentProps = {
   }[];
 };
 
-type TabsComposition = {
-  Titles: (props: TabTitleProps) => React.ReactNode;
-  Contents: (props: TabContentProps) => React.ReactNode;
-};
-
 type TabsProps = {
   children: React.ReactNode;
 };
 
 type TabsWrapper = (props: TabsProps) => React.ReactNode;
 
-const Tabs: TabsWrapper & TabsComposition = ({ children }) => {
+const Tabs: TabsWrapper = ({ children }) => {
   return <TabsProvider>{children}</TabsProvider>;
 };
 
-Tabs.Titles = ({ titles }) => {
+export const TabsTitles: React.FC<TabTitleProps> = ({ titles }) => {
   const { currentIndex, setCurrentIndex } = useTabsContext();
 
   return (
@@ -52,7 +47,7 @@ Tabs.Titles = ({ titles }) => {
   );
 };
 
-Tabs.Contents = ({ items }) => {
+export const TabsContents: React.FC<TabContentProps> = ({ items }) => {
   const { currentIndex } = useTabsContext();
   const { content } = items[currentIndex];
 

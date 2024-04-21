@@ -10,14 +10,14 @@ import { useRouter } from "next/navigation";
 export default function LoginPage() {
   useSaveTokens();
   const conn = useConn();
-  const { push } = useRouter();
+  const router = useRouter();
   const hasTokens = useTokenStore((s) => !!(s.accessToken && s.refreshToken));
 
   useEffect(() => {
     if (hasTokens || conn.user) {
-      push("/home");
+      router.push("/home");
     }
-  }, [hasTokens, conn]);
+  }, [hasTokens, conn, router]);
   return (
     <div className="w-full h-full mx-auto flex flex-col">
       <div className="flex flex-col gap-3">
