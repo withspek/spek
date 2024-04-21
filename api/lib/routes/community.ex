@@ -155,6 +155,22 @@ defmodule Routes.Community do
     end
   end
 
+  delete "/:id" do
+    %Plug.Conn{params: %{"id" => id}} = conn
+
+    case Ecto.UUID.cast(id) do
+      {:ok, uuid} ->
+        Operations.Communities.delete_community(uuid)
+
+        conn
+        |> send_resp(200, Jason.encode!(%{success: true}))
+
+      _ ->
+        conn
+        |> send_resp(400, Jason.encode!(%{error: " invalid id"}))
+    end
+  end
+
   match _ do
     conn
     |> send_resp(404, "Not found")

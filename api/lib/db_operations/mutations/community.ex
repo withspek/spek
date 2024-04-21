@@ -116,4 +116,10 @@ defmodule Operations.Mutations.Community do
       Operations.Mutations.Channels.leave_channel(channel.id, user_id)
     end)
   end
+
+  def delete_community(community_id) do
+    Query.start()
+    |> Query.filter_by_id(community_id)
+    |> Repo.delete_all()
+  end
 end
