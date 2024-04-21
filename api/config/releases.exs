@@ -25,7 +25,7 @@ config :spek, OAuth.Gitlab,
   redirect_uri:
     System.get_env("GITLAB_REDIRECT_URI") ||
       raise("""
-      environment variable ITLAB_REDIRECT_URI not set.
+      environment variable GITLAB_REDIRECT_URI not set.
       set it your os environment
       """)
 
