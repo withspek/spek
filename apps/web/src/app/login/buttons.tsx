@@ -49,6 +49,10 @@ export const Buttons: React.FC = () => {
 
   return (
     <>
+      <LoginButton oauthUrl={`${apiUrl}/auth/github`}>
+        <UserSharingIcon />
+        Login with Github
+      </LoginButton>
       <LoginButton oauthUrl={`${apiUrl}/auth/gitlab`}>
         <UserSharingIcon />
         Login with Gitlab
