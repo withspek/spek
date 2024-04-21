@@ -13,7 +13,7 @@ export default function Home() {
     if (hasTokens) {
       push("/home");
     }
-  }, [hasTokens]);
+  }, [hasTokens, push]);
 
   return (
     <main className="flex flex-col gap-3 w-full h-full">

@@ -41,7 +41,7 @@ export const ConnnectionContextProvider: React.FC<
           console.log(err);
         });
     }
-  }, [conn]);
+  }, [conn, tokens]);
 
   return (
     <ConnectionContext.Provider
