@@ -1,4 +1,4 @@
-import { CompassIcon, HomeIcon, InfinityIcon } from "@/icons";
+import { HomeIcon, InfinityIcon } from "@/icons";
 import { BoxedIcon } from "@/ui/boxed-icon";
 import React from "react";
 

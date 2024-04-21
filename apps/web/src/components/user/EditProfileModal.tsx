@@ -5,7 +5,6 @@ import { InputField } from "@/ui/form-field";
 import { Button } from "@/ui/button";
 import ConnectionContext from "@/contexts/ConnectionContext";
 import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
-import { useTypeSafeUpdateQuery } from "@/hooks/useTypeSafeUpdateQuery";
 
 interface EditProfileProps {
   isOpen: boolean;
@@ -24,7 +23,6 @@ export const EditProfileModal: React.FC<EditProfileProps> = ({
 }) => {
   const { conn, setUser } = useContext(ConnectionContext);
   const { mutateAsync } = useTypeSafeMutation("updateProfile");
-  const updateQuery = useTypeSafeUpdateQuery();
 
   if (!conn) {
     return null;
