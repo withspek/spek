@@ -29,6 +29,7 @@ export default function Home() {
           <li>Thread conversations</li>
           <li>Real-time communities</li>
         </ul>
+        <h2 className="font-semibold">UI redesign(cooming soon)</h2>
       </div>
       <div className="flex gap-4 flex-col">
         <Buttons />
