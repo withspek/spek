@@ -2,7 +2,6 @@ import { Await } from "@/utils/util-types";
 import { wrap } from "@spek/client";
 import { UseQueryOptions, useQuery } from "react-query";
 import { useWrappedConn } from "./useConn";
-import { useTokenStore } from "@/stores/useTokenStore";
 
 type Keys = keyof ReturnType<typeof wrap>["query"];
 type PaginatedKey<K extends Keys> = [K, ...(string | number | boolean)[]];

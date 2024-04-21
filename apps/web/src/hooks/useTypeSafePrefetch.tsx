@@ -1,9 +1,8 @@
-import { useCallback, useContext } from "react";
+import { useCallback } from "react";
 import { useQueryClient } from "react-query";
 import { wrap } from "@spek/client";
 
 import { useWrappedConn } from "./useConn";
-import { useTokenStore } from "@/stores/useTokenStore";
 
 type Keys = keyof ReturnType<typeof wrap>["query"];
 
