@@ -79,6 +79,8 @@ const Page = React.forwardRef(
   }
 );
 
+Page.displayName = "Page";
+
 export const MessagesList: React.FC<MessagesListProps> = ({ threadId }) => {
   // The scrollable element for your list
   const parentRef = useRef<any>();
@@ -102,3 +104,5 @@ export const MessagesList: React.FC<MessagesListProps> = ({ threadId }) => {
     </div>
   );
 };
+
+MessagesList.displayName = "MessagesList";
