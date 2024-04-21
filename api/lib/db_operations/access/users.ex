@@ -27,7 +27,7 @@ defmodule Operations.Access.Users do
     search_str = start_of_username <> "%"
 
     from(u in User)
-    |> where([u], ilike(u.username, ^search_str))
+    |> where([u], ilike(u.username, ^search_str) or ilike(u.displayName, ^search_str))
     |> limit([], 15)
     |> Repo.all()
   end
