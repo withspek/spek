@@ -56,7 +56,7 @@ defmodule Routes.GithubAuth do
   end
 
   defp get_user!(client) do
-    %{body: user} = OAuth2.Client.get!(client, "/user")
+    %{body: user} = OAuth2.Client.get!(client, "/user", [{"User-Agent", "spek.app"}])
     user
   end
 end
