@@ -4,7 +4,7 @@ defmodule OAuth.Github do
   def config do
     [
       strategy: __MODULE__,
-      site: "https://api.github.com",
+      site: "https://api.github.com/user",
       authorize_url: "https://github.com/login/oauth/authorize",
       token_url: "https://github.com/login/oauth/access_token"
     ]
