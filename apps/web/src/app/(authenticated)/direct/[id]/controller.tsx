@@ -33,7 +33,7 @@ export const DmPageController: React.FC<Props> = ({ dmId }) => {
     <div className="flex flex-col gap-3 h-full">
       <div className="flex justify-between items-center sticky top-0 py-3">
         <div className="flex gap-3 items-center">
-          <div className="flex -space-x-4 rtl:space-x-reverse">
+          <div className="flex bg-background -space-x-4 rtl:space-x-reverse">
             {data?.peoplePreviewList
               .filter((p) => user.id !== p.id)
               .map((p) => (
