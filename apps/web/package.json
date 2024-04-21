@@ -11,6 +11,7 @@
   "dependencies": {
     "@artsy/fresnel": "^7.1.4",
     "@spek/client": "workspace:*",
+    "@spek/ui": "workspace:*",
     "tailwind-config": "workspace:*",
     "@tanstack/react-virtual": "^3.2.0",
     "date-fns": "^3.3.1",
