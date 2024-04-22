@@ -9,12 +9,14 @@ import { ActionButton } from "./action-button";
 import Link from "next/link";
 
 interface Props {
-  id: string;
+  slug: string;
 }
 
-export const CommunityPageController: React.FC<Props> = ({ id }: Props) => {
+export const CommunityPageController: React.FC<Props> = ({ slug }: Props) => {
   const { user } = useConn();
-  const { data, isLoading } = useTypeSafeQuery(["getCommunity", id], {}, [id]);
+  const { data, isLoading } = useTypeSafeQuery(["getCommunity", slug], {}, [
+    slug,
+  ]);
 
   if (isLoading) {
     return <div>loading...</div>;
@@ -38,7 +40,7 @@ export const CommunityPageController: React.FC<Props> = ({ id }: Props) => {
               {
                 content: (
                   <ThreadsFeed
-                    communityId={id}
+                    communityId={data?.community.id!}
                     isAdmin={true}
                     isMember={true}
                     currentUser={user}
@@ -47,13 +49,16 @@ export const CommunityPageController: React.FC<Props> = ({ id }: Props) => {
                 ),
               },
               {
-                content: <MembersList communityId={id} />,
+                content: <MembersList communityId={data?.community.id!} />,
               },
               {
                 content: (
                   <>
                     {data?.channels.map((c) => (
-                      <Link href={`/c/${id}/${c.id}`} key={c.id}>
+                      <Link
+                        href={`/c/${data?.community.id!}/${c.id}`}
+                        key={c.id}
+                      >
                         <p>ID: {c.id}</p>
                         <p>Name: {c.name}</p>
                       </Link>

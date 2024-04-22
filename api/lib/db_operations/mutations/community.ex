@@ -24,7 +24,7 @@ defmodule Operations.Mutations.Community do
         Community.changeset(%Community{
           id: Ecto.UUID.autogenerate(),
           name: community_name,
-          slug: Enum.join(String.split(community_name, " "), "_"),
+          slug: String.downcase(Enum.join(String.split(community_name, " "), "_")),
           isPrivate: false,
           ownerId: user_id,
           description: data["description"]

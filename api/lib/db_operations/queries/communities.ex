@@ -20,6 +20,10 @@ defmodule Operations.Queries.Communities do
     where(query, [c], c.id == ^id)
   end
 
+  def filter_by_slug(query, slug) do
+    where(query, [c], c.slug == ^slug)
+  end
+
   def filter_by_member(query, community_id, user_id) do
     where(query, [cm], cm.communityId == ^community_id and cm.userId == ^user_id)
   end

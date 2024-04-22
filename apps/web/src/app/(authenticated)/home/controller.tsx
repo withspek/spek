@@ -23,7 +23,7 @@ export const HomeController: React.FC<ControllerProps> = () => {
           <div
             key={c.id}
             className="flex flex-col bg-alabaster-950 border border-alabaster-600 px-5 py-4 cursor-pointer rounded-lg"
-            onClick={() => push(`c/${c.id}`)}
+            onClick={() => push(`c/${c.slug}`)}
           >
             <p className="font-bold">{c.name}</p>
             <p>{c.description}</p>

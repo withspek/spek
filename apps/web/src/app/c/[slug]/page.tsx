@@ -5,7 +5,7 @@ import { CommunityPageController } from "./controller";
 import { Header } from "@/components/Header";
 
 type Props = {
-  params: { communityId: string };
+  params: { slug: string };
 };
 
 export async function generateMetadata(
@@ -13,11 +13,11 @@ export async function generateMetadata(
   _parent: ResolvingMetadata
 ): Promise<Metadata> {
   // read route params
-  const id = params.communityId;
+  const slug = params.slug;
 
   // fetch data
 
-  const { community } = await defaultQueryFn({ queryKey: `community/${id}` });
+  const { community } = await defaultQueryFn({ queryKey: `community/${slug}` });
 
   return {
     title: community.name,
@@ -26,7 +26,7 @@ export async function generateMetadata(
       type: "website",
       description: community.description,
       siteName: "Spek",
-      url: `${baseUrl}/c/${community.id}`,
+      url: `${baseUrl}/c/${community.slug}`,
       images: [
         {
           url: community.coverPhoto
@@ -44,7 +44,7 @@ export default async function CommunityPage({ params }: Props) {
   return (
     <>
       <Header />
-      <CommunityPageController id={params.communityId} />
+      <CommunityPageController slug={params.slug} />
     </>
   );
 }

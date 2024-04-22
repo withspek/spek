@@ -17,9 +17,9 @@ export const wrap = (connection: Connection) => ({
   query: {
     getUsers: (): Promise<User[]> => connection.send("/dev", "GET"),
     getCommunity: (
-      id: string
+      slug: string
     ): Promise<{ community: CommunityWithPermissions; channels: Channel[] }> =>
-      connection.send(`/community/${id}`, "GET"),
+      connection.send(`/community/${slug}`, "GET"),
     getChannel: (id: string): Promise<{ channel: Channel }> =>
       connection.send(`/channels/${id}`, "GET"),
     getTopCommunities: (): Promise<GetTopCommunitiesResponse> =>

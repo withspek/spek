@@ -39,6 +39,15 @@ defmodule Operations.Access.Communities do
     |> Repo.one()
   end
 
+  def get_community_by_slug(slug, user_id) do
+    Query.start()
+    |> Query.filter_by_slug(slug)
+    |> select([c], c)
+    |> Query.perms_them_info(user_id)
+    |> Query.limit_one()
+    |> Repo.one()
+  end
+
   def search_name(start_of_name) do
     search_str = start_of_name <> "%"
 

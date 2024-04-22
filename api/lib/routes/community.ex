@@ -18,40 +18,33 @@ defmodule Routes.Community do
     |> send_resp(200, Jason.encode!(%{"communities" => communities}))
   end
 
-  get "/:id" do
-    %Plug.Conn{params: %{"id" => id}} = conn
+  get "/:slug" do
+    %Plug.Conn{params: %{"slug" => slug}} = conn
 
     user_id =
       if not Map.has_key?(conn.assigns, :user_id),
         do: Ecto.UUID.autogenerate(),
         else: conn.assigns.user_id
 
-    case Ecto.UUID.cast(id) do
-      {:ok, uuid} ->
-        community = Communities.get_community_by_id(uuid, user_id)
+    community = Communities.get_community_by_slug(slug, user_id)
 
-        cond do
-          is_nil(community) ->
-            conn
-            |> put_resp_content_type("application/json")
-            |> send_resp(400, Jason.encode!(%{error: "That community does not exist"}))
-
-          community.isPrivate ->
-            conn
-            |> put_resp_content_type("application/json")
-            |> send_resp(400, Jason.encode!(%{error: "Community is not public"}))
-
-          true ->
-            channels = Channels.get_channels_by_community_id(uuid)
-
-            conn
-            |> put_resp_content_type("application/json")
-            |> send_resp(200, Jason.encode!(%{community: community, channels: channels}))
-        end
-
-      _ ->
+    cond do
+      is_nil(community) ->
         conn
-        |> send_resp(400, Jason.encode!(%{"error" => "Invalid community id"}))
+        |> put_resp_content_type("application/json")
+        |> send_resp(400, Jason.encode!(%{error: "That community does not exist"}))
+
+      community.isPrivate ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(400, Jason.encode!(%{error: "Community is not public"}))
+
+      true ->
+        channels = Channels.get_channels_by_community_id(community.id)
+
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(200, Jason.encode!(%{community: community, channels: channels}))
     end
   end
 
