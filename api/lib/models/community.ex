@@ -37,5 +37,6 @@ defmodule Models.Community do
     community
     |> cast(params, [:name, :description, :isPrivate, :ownerId])
     |> validate_required([:name, :description, :ownerId])
+    |> unique_constraint(:name)
   end
 end

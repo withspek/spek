@@ -74,9 +74,12 @@ defmodule Routes.User do
 
           conn |> send_resp(200, Jason.encode!(user))
 
-        {:error, %Ecto.Changeset{errors: [username: {"has already been taken, _"}]}} ->
+        {:error,
+         %Ecto.Changeset{
+           errors: [username: {"has already been taken", _}]
+         }} ->
           conn
-          |> send_resp(200, Jason.encode!(%{error: "that username is taken"}))
+          |> send_resp(200, Jason.encode!(%{error: "This username is taken"}))
       end
     else
       conn
