@@ -11,6 +11,8 @@ defmodule Operations.Mutations.Community do
   alias Spek.Repo
   alias Operations.Queries.Communities, as: Query
 
+  @spec create_community(nil | maybe_improper_list() | map()) ::
+          {:error, any()} | {:ok, atom() | %{:id => any(), optional(any()) => any()}}
   def create_community(data) do
     user_id = data["ownerId"]
 
@@ -59,8 +61,8 @@ defmodule Operations.Mutations.Community do
 
         {:ok, community, channel}
 
-      {:error, :channel, channel_changeset} ->
-        IO.puts(channel_changeset)
+      {:error, :community, changeset_error, _changes_happened} ->
+        {:error, changeset_error}
     end
   end
 

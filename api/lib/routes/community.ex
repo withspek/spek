@@ -97,13 +97,20 @@ defmodule Routes.Community do
         "description" => conn.body_params["description"]
       }
 
-      {:ok, community, _channel} = Operations.Communities.create_community(data)
+      result = Operations.Communities.create_community(data)
 
-      conn
-      |> send_resp(
-        200,
-        Jason.encode!(%{community: community})
-      )
+      case result do
+        {:ok, community, _} ->
+          conn
+          |> send_resp(200, Jason.encode!(%{community: community}))
+
+        {:error,
+         %Ecto.Changeset{
+           errors: [name: {"has already been taken", _}]
+         }} ->
+          conn
+          |> send_resp(200, Jason.encode!(%{error: "Community name is taken."}))
+      end
     else
       conn
       |> send_resp(402, "UNAUTHORIZED")

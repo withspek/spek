@@ -68,7 +68,7 @@ export const wrap = (connection: Connection) => ({
     createCommunity: (data: {
       name: string;
       description: string;
-    }): Promise<{ community: Community }> =>
+    }): Promise<{ community: Community; error?: string }> =>
       connection.send("/community/create", "POST", { ...data }),
     joinCommunity: (data: {
       communityId: string;

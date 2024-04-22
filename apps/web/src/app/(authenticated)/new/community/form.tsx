@@ -20,20 +20,23 @@ export const CreateCommunityForm: React.FC = () => {
   return (
     <Formik<FormValues>
       initialValues={{ description: "", name: "" }}
-      onSubmit={async (values) => {
+      onSubmit={async (values, { setFieldError }) => {
         const resp = await mutateAsync([values]);
 
-        if (resp) {
+        if (!resp.error) {
           push(`/c/${resp.community.id}`);
+        } else {
+          setFieldError("name", resp.error);
         }
       }}
     >
-      {({ handleChange, handleSubmit }) => (
+      {({ handleChange, handleSubmit, errors, values }) => (
         <Form className="space-y-4 mt-3">
           <InputField
             label="Name"
             placeholder="Community name"
             name="name"
+            value={values.name}
             onChange={handleChange}
           />
           <InputField
@@ -42,6 +45,7 @@ export const CreateCommunityForm: React.FC = () => {
             label="Description"
             placeholder="Community description"
             name="description"
+            value={values.description}
             onChange={handleChange}
           />
           <div className="flex gap-3">

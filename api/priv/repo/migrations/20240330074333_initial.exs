@@ -129,8 +129,6 @@ defmodule Spek.Repo.Migrations.Initial do
 
     create(index(:messages, [:text]))
     create(index(:threads, [:name]))
-    create(index(:communities, [:name]))
-    create(index(:channels, [:name]))
 
     create table("dms", primary_key: false) do
       add(:id, :uuid, primary_key: true, default: fragment("uuid_generate_v4()"))
