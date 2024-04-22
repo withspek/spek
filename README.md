@@ -26,6 +26,8 @@ I’ve been in large communities on platforms like Discord and Slack for years, 
 
 Based on my own experience, and all those groups I have approached, we approached the problem hands-on and built [Spek](https://spek.vercel.app) diffently, tailor made for the purpse:
 
+- All conversations in communities which are public are search engine indexable which makes it so all the valuable information is not lost behind the walls of the platform but accessible to the whole internet to use.
+
 - Every conversation on Spek starts as a thread, its own place to provide rich context for the conversation ahead. Once a thread is published others can join the conversation.
 
 - Conversations in threads are modeled after real-time chat applications. It feels more present than a static list of threaded comments, and when multiple people are online talking at the same time it feels like any other chat app you know.
