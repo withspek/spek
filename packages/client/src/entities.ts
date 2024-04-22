@@ -27,6 +27,7 @@ export type UserPreview = {
 export interface Community {
   id: string;
   name: string;
+  slug: string;
   description: string;
   memberCount: number;
   ownerId: string;
@@ -37,6 +38,7 @@ export interface Community {
 export interface Channel {
   id: string;
   name: string;
+  slug: string;
   description: string;
   isDefault: boolean;
   isPrivate: boolean;
