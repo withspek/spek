@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import React from "react";
-import Image from "next/image";
 
 import { MessageInput } from "@/components/direct/MessageInput";
 import { MessagesList } from "@/components/direct/MessagesList";
@@ -31,14 +30,14 @@ export const DmPageController: React.FC<Props> = ({ dmId }) => {
 
   return (
     <div className="flex flex-col gap-3 h-full">
-      <div className="flex justify-between items-center sticky top-0 py-3">
+      <div className="flex justify-between items-center bg-background sticky top-0 py-3">
         <div className="flex gap-3 items-center">
-          <div className="flex bg-background -space-x-4 rtl:space-x-reverse">
+          <div className="flex -space-x-4 rtl:space-x-reverse">
             {data?.peoplePreviewList
               .filter((p) => user.id !== p.id)
               .map((p) => (
                 <div className="relative" key={p.id}>
-                  <Image
+                  <img
                     className="w-10 h-10 border-2 border-alabaster-300 rounded-full"
                     src={p.avatarUrl}
                     alt={p.displayName}

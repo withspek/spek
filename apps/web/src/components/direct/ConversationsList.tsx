@@ -1,5 +1,4 @@
 import { UserDm } from "@spek/client";
-import Image from "next/image";
 
 import { useTypeSafePrefetch } from "@/hooks/useTypeSafePrefetch";
 import { useRouter } from "next/navigation";
@@ -31,7 +30,7 @@ export const ConversationsList: React.FC<Props> = ({ conversations }) => {
               .filter((u) => u.id !== user.id)
               .map((p) => (
                 <div className="relative" key={p.id}>
-                  <Image
+                  <img
                     className="w-10 h-10 border-2 border-alabaster-300 rounded-full"
                     src={p.avatarUrl}
                     alt={p.displayName}
