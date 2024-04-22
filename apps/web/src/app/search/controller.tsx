@@ -33,7 +33,7 @@ export const SearchPageController: React.FC<{ query: string }> = ({
               <p>{item.bio}</p>
             </Link>
           ) : "memberCount" in item ? (
-            <Link href={`/c/${item.id}`} key={item.id}>
+            <Link href={`/c/${item.slug}`} key={item.id}>
               <p>Community: {item.name}</p>
               <p>{item.description}</p>
             </Link>

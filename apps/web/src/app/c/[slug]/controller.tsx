@@ -56,7 +56,7 @@ export const CommunityPageController: React.FC<Props> = ({ slug }: Props) => {
                   <>
                     {data?.channels.map((c) => (
                       <Link
-                        href={`/c/${data?.community.id!}/${c.id}`}
+                        href={`/c/${data?.community.slug!}/${c.id}`}
                         key={c.id}
                       >
                         <p>ID: {c.id}</p>

@@ -24,7 +24,7 @@ export const CreateCommunityForm: React.FC = () => {
         const resp = await mutateAsync([values]);
 
         if (!resp.error) {
-          push(`/c/${resp.community.id}`);
+          push(`/c/${resp.community.slug}`);
         } else {
           setFieldError("name", resp.error);
         }
