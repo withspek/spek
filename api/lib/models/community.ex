@@ -11,11 +11,12 @@ defmodule Models.Community do
 
   @derive {Jason.Encoder,
            only:
-             ~w(id name description coverPhoto isAdmin isMod isMember isBlocked isPrivate memberCount membersOnlineCount peoplePreviewList)a}
+             ~w(id name slug description coverPhoto isAdmin isMod isMember isBlocked isPrivate memberCount membersOnlineCount peoplePreviewList)a}
 
   @primary_key {:id, :binary_id, []}
   schema "communities" do
     field(:name, :string)
+    field(:slug, :string)
     field(:description, :string)
     field(:memberCount, :integer, default: 1)
     field(:membersOnlineCount, :integer, virtual: true)
@@ -35,8 +36,8 @@ defmodule Models.Community do
 
   def changeset(community, params \\ %{}) do
     community
-    |> cast(params, [:name, :description, :isPrivate, :ownerId])
-    |> validate_required([:name, :description, :ownerId])
+    |> cast(params, [:name, :slug, :description, :isPrivate, :ownerId])
+    |> validate_required([:name, :slug, :description, :ownerId])
     |> unique_constraint(:name)
   end
 end

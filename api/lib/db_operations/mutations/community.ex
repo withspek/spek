@@ -15,6 +15,7 @@ defmodule Operations.Mutations.Community do
           {:error, any()} | {:ok, atom() | %{:id => any(), optional(any()) => any()}}
   def create_community(data) do
     user_id = data["ownerId"]
+    community_name = String.trim(data["name"])
 
     multi_struct =
       Multi.new()
@@ -22,7 +23,8 @@ defmodule Operations.Mutations.Community do
         :community,
         Community.changeset(%Community{
           id: Ecto.UUID.autogenerate(),
-          name: data["name"],
+          name: community_name,
+          slug: Enum.join(String.split(community_name, " "), "_"),
           isPrivate: false,
           ownerId: user_id,
           description: data["description"]
@@ -33,6 +35,7 @@ defmodule Operations.Mutations.Community do
           id: Ecto.UUID.autogenerate(),
           description: "This is where all threads start",
           name: "general",
+          slug: "general",
           isPrivate: false,
           isDefault: true
         })

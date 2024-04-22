@@ -4,10 +4,11 @@ defmodule Models.Channel do
   import Ecto.Changeset
 
   @derive {Jason.Encoder,
-           only: ~w(id name description communityId isPrivate isDefault memberCount)a}
+           only: ~w(id name slug description communityId isPrivate isDefault memberCount)a}
   @primary_key {:id, :binary_id, []}
   schema "channels" do
     field(:name, :string)
+    field(:slug, :string)
     field(:description, :string)
     field(:isPrivate, :boolean)
     field(:isDefault, :boolean)
@@ -21,8 +22,8 @@ defmodule Models.Channel do
 
   def changeset(channel, params \\ %{}) do
     channel
-    |> cast(params, [:name, :description, :isPrivate, :isDefault])
-    |> validate_required([:name, :description])
+    |> cast(params, [:name, :slug, :description, :isPrivate, :isDefault])
+    |> validate_required([:name, :slug, :description])
     |> unique_constraint(:name)
   end
 end
