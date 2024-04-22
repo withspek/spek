@@ -33,6 +33,7 @@ jobs:
   deployment:
     name: Build
     # needs: docker
+    environment: api
     runs-on: ubuntu-latest
     steps:
       - name: executing remote ssh commands using password
