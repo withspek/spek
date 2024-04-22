@@ -61,4 +61,4 @@ Please read [CODE_OF_CONDUCT.md](https://github.com/irere123/spek/blob/master/CO
 
 ## How to run locally
 
-Check <a href="https://github.com/irere123/spek/blob/maaster/CONTRIBUTING.md#quickstart-local-frontend-development">here</a> on how to run locally</a>
+Check <a href="https://github.com/irere123/spek/blob/master/CONTRIBUTING.md#quickstart-local-frontend-development">here</a> on how to run locally</a>
