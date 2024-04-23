@@ -13,6 +13,11 @@ interface FormValues {
   description: string;
 }
 
+interface FormErrors {
+  name?: string;
+  description?: string;
+}
+
 export const CreateCommunityForm: React.FC = () => {
   const { push } = useRouter();
   const { mutateAsync } = useTypeSafeMutation("createCommunity");
@@ -20,6 +25,18 @@ export const CreateCommunityForm: React.FC = () => {
   return (
     <Formik<FormValues>
       initialValues={{ description: "", name: "" }}
+      validateOnChange={false}
+      validate={(values) => {
+        const errors: FormErrors = {};
+
+        if (!values.name) {
+          errors.name = "Required";
+        } else if (!values.description) {
+          errors.description = "Required";
+        }
+
+        return errors;
+      }}
       onSubmit={async (values, { setFieldError }) => {
         const resp = await mutateAsync([values]);
 
@@ -30,7 +47,7 @@ export const CreateCommunityForm: React.FC = () => {
         }
       }}
     >
-      {({ handleChange, handleSubmit, errors, values }) => (
+      {({ handleChange, handleSubmit, values, isSubmitting }) => (
         <Form className="space-y-4 mt-3">
           <InputField
             label="Name"
@@ -49,7 +66,11 @@ export const CreateCommunityForm: React.FC = () => {
             onChange={handleChange}
           />
           <div className="flex gap-3">
-            <Button onClick={() => handleSubmit} type="submit">
+            <Button
+              loading={isSubmitting}
+              onClick={() => handleSubmit}
+              type="submit"
+            >
               Create
             </Button>
             <Button type="button" color="primary" onClick={() => push("/home")}>

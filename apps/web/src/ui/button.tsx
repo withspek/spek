@@ -1,3 +1,4 @@
+import { Spinner } from "@spek/ui";
 import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
 
 const buttonColorStyles = {
@@ -35,7 +36,7 @@ export const Button: React.FC<ButtonProps> = ({
       className={`flex justify-center items-center gap-4 ${buttonColorStyles[color]} ${sizeStyles[size]}`}
       {...props}
     >
-      {children}
+      {loading ? <Spinner /> : <>{children}</>}
     </button>
   );
 };

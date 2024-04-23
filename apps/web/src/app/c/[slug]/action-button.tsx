@@ -35,7 +35,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
                   await leaveCommunity([
                     { communityId: community.id, userId: currentUser.id },
                   ]);
-                  updateQuery(["getCommunity", community.id], (data) => ({
+                  updateQuery(["getCommunity", community.slug], (data) => ({
                     ...data,
                     community: {
                       ...data.community,
@@ -60,7 +60,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
               await mutateAsync([
                 { communityId: community.id, userId: currentUser.id },
               ]);
-              updateQuery(["getCommunity", community.id], (data) => ({
+              updateQuery(["getCommunity", community.slug], (data) => ({
                 ...data,
                 community: {
                   ...data.community,
