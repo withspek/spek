@@ -9,7 +9,7 @@
 <h3 align="center">
   <a href="https://github.com/irere123/spek/blob/master/CONTRIBUTING.md">Contribute</a>
   <span> · </span>
-  <a href="https://spek.vercel.app/c/08b4f551-5797-4a9a-9dd5-52a6b8157e9e">Community</a>
+  <a href="https://spek.vercel.app/c/spek">Community</a>
   <span> · </span>
   <a href="https://github.com/irere123/spek/docs">Documentation</a>
 </h3>
