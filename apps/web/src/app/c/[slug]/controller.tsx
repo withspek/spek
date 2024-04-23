@@ -7,12 +7,16 @@ import { ThreadsFeed } from "@/components/community/threads-feed";
 import { MembersList } from "@/components/community/members-list";
 import { ActionButton } from "./action-button";
 import Link from "next/link";
+import { SettingsIcon } from "@/icons";
+import { useState } from "react";
+import { SettingsModal } from "@/components/community/SettingsModal";
 
 interface Props {
   slug: string;
 }
 
 export const CommunityPageController: React.FC<Props> = ({ slug }: Props) => {
+  const [openModal, setOpenModal] = useState(false);
   const { user } = useConn();
   const { data, isLoading } = useTypeSafeQuery(["getCommunity", slug], {}, [
     slug,
@@ -27,7 +31,15 @@ export const CommunityPageController: React.FC<Props> = ({ slug }: Props) => {
   return (
     <div className="mt-2">
       <div className="bg-alabaster-500 mb-3 px-3 rounded-lg py-2">
-        <h1 className="text-xl">{data?.community.name}</h1>
+        <div className="flex justify-between">
+          <h1 className="text-xl">{data?.community.name}</h1>
+          <span
+            className="cursor-pointer"
+            onClick={() => setOpenModal(!openModal)}
+          >
+            <SettingsIcon />
+          </span>
+        </div>
         <p>{data?.community.description}</p>
         <p>{data?.community.memberCount} members</p>
       </div>
@@ -70,6 +82,12 @@ export const CommunityPageController: React.FC<Props> = ({ slug }: Props) => {
           />
         </Tabs>
       </div>
+      {openModal ? (
+        <SettingsModal
+          onRequestClose={() => setOpenModal(!openModal)}
+          open={openModal}
+        />
+      ) : null}
     </div>
   );
 };
