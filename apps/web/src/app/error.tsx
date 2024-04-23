@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/ui/button";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function ErrorPage({
@@ -9,6 +11,7 @@ export default function ErrorPage({
   error: string;
   reset: () => void;
 }) {
+  const router = useRouter();
   useEffect(() => {
     // log into the logging service
 
@@ -17,8 +20,11 @@ export default function ErrorPage({
 
   return (
     <div>
-      <p>Something went wrong</p>
-      <button onClick={() => reset()}>Try again</button>
+      <h2>Something went wrong</h2>
+      <div className="flex gap-4">
+        <Button onClick={() => reset()}>Try again</Button>
+        <Button onClick={() => router.push("/home")}>Go Back</Button>
+      </div>
     </div>
   );
 }
