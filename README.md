@@ -11,7 +11,7 @@
   <span> · </span>
   <a href="https://spek.vercel.app/c/spek">Community</a>
   <span> · </span>
-  <a href="https://github.com/irere123/spek/docs">Documentation</a>
+  <a href="https://github.com/irere123/spek">Documentation</a>
 </h3>
 
 ---
