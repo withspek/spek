@@ -1,4 +1,4 @@
-defmodule Spek.Repo.Migrations.Initial do
+defmodule Spek.Repo.Migrations.MostTables do
   use Ecto.Migration
 
   def change do
@@ -33,6 +33,7 @@ defmodule Spek.Repo.Migrations.Initial do
     create table("communities", primary_key: false) do
       add(:id, :uuid, primary_key: true, default: fragment("uuid_generate_v4()"))
       add(:name, :text)
+      add(:slug, :text)
       add(:description, :text)
       add(:isPrivate, :boolean, default: false)
       add(:memberCount, :integer, default: 1)
@@ -48,6 +49,7 @@ defmodule Spek.Repo.Migrations.Initial do
     create table("channels", primary_key: false) do
       add(:id, :uuid, primary_key: true, default: fragment("uuid_generate_v4()"))
       add(:name, :text)
+      add(:slug, :text)
       add(:description, :text)
       add(:isPrivate, :boolean, default: false)
       add(:isDefault, :boolean, default: false)
@@ -129,11 +131,13 @@ defmodule Spek.Repo.Migrations.Initial do
 
     create(index(:messages, [:text]))
     create(index(:threads, [:name]))
+    create(unique_index(:communities, [:name]))
+    create(index(:channels, [:name]))
+    create(unique_index(:communities, [:slug]))
+    create(index(:channels, [:slug]))
 
     create table("dms", primary_key: false) do
       add(:id, :uuid, primary_key: true, default: fragment("uuid_generate_v4()"))
-
-      add(:userId, references(:users, on_delete: :delete_all, type: :uuid), null: false)
       add(:peoplePreviewList, {:array, :map}, default: [])
 
       add(:inserted_at, :utc_datetime_usec, null: false, default: fragment("now()"))
@@ -153,9 +157,18 @@ defmodule Spek.Repo.Migrations.Initial do
 
     create table(:dm_users, primary_key: false) do
       add(:id, :uuid, primary_key: true, default: fragment("uuid_generate_v4()"))
-
       add(:dmId, references(:dms, on_delete: :delete_all, type: :uuid), null: false)
       add(:userId, references(:users, on_delete: :delete_all, type: :uuid), null: false)
+
+      add(:inserted_at, :utc_datetime_usec, null: false, default: fragment("now()"))
+      add(:updated_at, :utc_datetime_usec, null: false, default: fragment("now()"))
+    end
+
+    create table("subscribers", primary_key: false) do
+      add(:id, :uuid, primary_key: true, default: fragment("uuid_generate_v4()"))
+
+      add(:threadId, references(:threads, on_delete: :delete_all, type: :uuid), null: false)
+      add(:subscriberId, references(:users, on_delete: :delete_all, type: :uuid), null: false)
 
       add(:inserted_at, :utc_datetime_usec, null: false, default: fragment("now()"))
       add(:updated_at, :utc_datetime_usec, null: false, default: fragment("now()"))
