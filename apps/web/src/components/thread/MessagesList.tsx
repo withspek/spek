@@ -49,7 +49,7 @@ const Page = React.forwardRef(
       <>
         {data.messages.map((m) => (
           <div key={m.id} className={`flex gap-4 px-3 py-4`}>
-            <Avatar src={m.user.avatarUrl} size="sm" isOnline={m.user.online} />
+            <Avatar src={m.user.avatarUrl} size="md" isOnline={m.user.online} />
             <div>
               <p>
                 {m.user.displayName}{" "}
