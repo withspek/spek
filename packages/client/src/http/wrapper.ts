@@ -79,6 +79,8 @@ export const wrap = (connection: Connection) => ({
       userId: string;
     }): Promise<any> =>
       connection.send("/community/leave", "POST", { ...data }),
+    deleteCommunity: (communityId: string): Promise<any> =>
+      connection.send(`/community/${communityId}`, "DELETE"),
     createThread: (data: {
       name: string;
       channelId: string;

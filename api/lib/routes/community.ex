@@ -157,17 +157,24 @@ defmodule Routes.Community do
 
   delete "/:id" do
     %Plug.Conn{params: %{"id" => id}} = conn
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
 
-    case Ecto.UUID.cast(id) do
-      {:ok, uuid} ->
-        Operations.Communities.delete_community(uuid)
+    if has_user_id do
+      case Ecto.UUID.cast(id) do
+        {:ok, uuid} ->
+          user_id = conn.assigns.user_id
+          Operations.Communities.delete_community(uuid, user_id)
 
-        conn
-        |> send_resp(200, Jason.encode!(%{success: true}))
+          conn
+          |> send_resp(200, Jason.encode!(%{success: true}))
 
-      _ ->
-        conn
-        |> send_resp(400, Jason.encode!(%{error: " invalid id"}))
+        _ ->
+          conn
+          |> send_resp(400, Jason.encode!(%{error: " invalid id"}))
+      end
+    else
+      conn
+      |> send_resp(402, Jason.encode!(%{error: "Not authenticated"}))
     end
   end
 

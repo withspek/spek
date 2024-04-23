@@ -122,9 +122,9 @@ defmodule Operations.Mutations.Community do
     end)
   end
 
-  def delete_community(community_id) do
+  def delete_community(community_id, user_id) do
     Query.start()
-    |> Query.filter_by_id(community_id)
+    |> where([c], c.id == ^community_id and c.ownerId == ^user_id)
     |> Repo.delete_all()
   end
 end

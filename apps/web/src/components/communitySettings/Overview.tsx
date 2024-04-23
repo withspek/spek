@@ -3,6 +3,8 @@ import { Channel, CommunityWithPermissions } from "@spek/client";
 import Tabs, { TabsContents, TabsTitles } from "@/ui/tabs";
 import { EditForm } from "./EditForm";
 import { Button } from "@/ui/button";
+import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
+import { useRouter } from "next/navigation";
 
 interface OverviewProps {
   channels: Channel[];
@@ -15,6 +17,10 @@ export const Overview: React.FC<OverviewProps> = ({
   community,
   communitySlug,
 }) => {
+  const { push } = useRouter();
+  const { mutateAsync: deleteCommunity, isLoading: deleteLoading } =
+    useTypeSafeMutation("deleteCommunity");
+
   return (
     <div>
       <Tabs>
@@ -26,7 +32,16 @@ export const Overview: React.FC<OverviewProps> = ({
                 <>
                   <EditForm community={community} />
                   <h3>Danger zone</h3>
-                  <Button color="primary">Delete</Button>
+                  <Button
+                    color="primary"
+                    loading={deleteLoading}
+                    onClick={() => {
+                      deleteCommunity([community.id]);
+                      push("/home");
+                    }}
+                  >
+                    Delete
+                  </Button>
                 </>
               ),
             },
