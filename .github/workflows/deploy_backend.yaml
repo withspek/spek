@@ -1,4 +1,4 @@
-name: api:deploy_staging
+name: api:deploy_master_branch
 on:
   push:
     paths:
