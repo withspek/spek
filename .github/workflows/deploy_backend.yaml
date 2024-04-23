@@ -43,4 +43,4 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
-          script: dokku ps:rebuild api
+          script: echo "${{ secrets.PASSPHRASE }}" | sudo -S dokku ps:rebuild api
