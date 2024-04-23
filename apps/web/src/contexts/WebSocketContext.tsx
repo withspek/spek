@@ -3,7 +3,8 @@ import { apiUrl } from "@/utils/constants";
 import { websocket } from "@spek/client";
 import { WSConnection } from "@spek/client/dist/websocket";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import ConnectionContext from "./ConnectionContext";
 
 interface WebSocketProviderProps {
   shouldConnect: boolean;
@@ -25,6 +26,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
   children,
 }) => {
   const hasTokens = useTokenStore((s) => s.accessToken && s.refreshToken);
+  const { setUser } = useContext(ConnectionContext);
   const [conn, setConn] = useState<V>(null);
   const { replace } = useRouter();
   const isConnecting = useRef(false);
@@ -47,7 +49,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
             // the index page nulls the conn
             // if you switch this, make sure to null the conn at the new location
             replace("/");
-            // @todo do something better
+            // TODO: do something better
           },
           onClearTokens: () => {
             console.log("clearing tokens...");
@@ -60,6 +62,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
         })
         .then((x) => {
           setConn(x);
+          setUser(x.user);
         })
         .catch((err) => {
           if (err.code === 4001) {

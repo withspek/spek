@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import { User, raw } from "@spek/client";
 import { apiUrl } from "@/utils/constants";
@@ -27,9 +27,12 @@ export const ConnnectionContextProvider: React.FC<
 > = ({ children }) => {
   const [conn, setConn] = useState<V>(null);
   const tokens = useTokenStore.getState();
+  const isConnecting = useRef(false);
 
   useEffect(() => {
-    if (!conn) {
+    if (!conn && !isConnecting.current) {
+      isConnecting.current = true;
+
       raw
         .connect(tokens.accessToken, tokens.refreshToken, {
           url: apiUrl,
@@ -39,9 +42,18 @@ export const ConnnectionContextProvider: React.FC<
         })
         .catch((err) => {
           console.log(err);
+        })
+        .finally(() => {
+          isConnecting.current = false;
         });
     }
   }, [conn, tokens]);
+
+  useEffect(() => {
+    if (!conn) {
+      return;
+    }
+  }, [conn]);
 
   return (
     <ConnectionContext.Provider

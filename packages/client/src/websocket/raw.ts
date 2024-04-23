@@ -1,6 +1,8 @@
 import WebSocket from "isomorphic-ws";
 import ReconnectingWebSocket from "reconnecting-websocket";
 
+import { User } from "../entities";
+
 const heartbeatInterval = 8000;
 const apiUrl = "wss://api.spek.app/ws";
 const connectionTimeout = 15000;
@@ -19,6 +21,7 @@ export type Listener<Data = unknown> = {
 
 export type WSConnection = {
   close: () => void;
+  user: User;
   once: <Data = unknown>(
     opcode: Opcode,
     handler: ListenerHandler<Data>
@@ -98,6 +101,7 @@ export const connect = (
       if (message.op == "auth-good") {
         const connection: WSConnection = {
           close: () => socket.close(),
+          user: message.d.user,
           once: (opcode, handler) => {
             const listener = { opcode, handler } as Listener<unknown>;
 
