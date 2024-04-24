@@ -5,12 +5,11 @@ import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 
 interface ChannelPageControllerProps {
   channelId: string;
-  communityId: string;
+  communitySlug: string;
 }
 
 export const ChannelPageController: React.FC<ChannelPageControllerProps> = ({
   channelId,
-  communityId,
 }) => {
   const { data, isLoading } = useTypeSafeQuery(
     ["getChannel", channelId],
@@ -21,7 +20,7 @@ export const ChannelPageController: React.FC<ChannelPageControllerProps> = ({
     [channelId]
   );
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return null;
   }
 
@@ -35,7 +34,10 @@ export const ChannelPageController: React.FC<ChannelPageControllerProps> = ({
         </p>
       </div>
       <div>
-        <CreateInput channelId={channelId} communityId={communityId} />
+        <CreateInput
+          channelId={channelId}
+          communityId={data.channel.community.id}
+        />
       </div>
       <div></div>
     </div>

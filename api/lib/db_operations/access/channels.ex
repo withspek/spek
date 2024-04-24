@@ -14,12 +14,16 @@ defmodule Operations.Access.Channels do
     |> Query.filter_by_id(id)
     |> Query.limit_one()
     |> Repo.one()
+    |> Repo.preload([:community])
   end
 
+  @spec get_channels_by_community_id(any()) ::
+          nil | [%{optional(atom()) => any()}] | %{optional(atom()) => any()}
   def get_channels_by_community_id(id) do
     Query.start()
     |> Query.filter_by_community_id(id)
     |> Repo.all()
+    |> Repo.preload([:community])
   end
 
   def get_channel_members(channelId) do

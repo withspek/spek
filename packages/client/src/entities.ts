@@ -42,7 +42,7 @@ export interface Channel {
   description: string;
   isDefault: boolean;
   isPrivate: boolean;
-  communityId: string;
+  community: CommunityWithPermissions;
   memberCount: number;
   inserted_at: string;
   updated_at: string;

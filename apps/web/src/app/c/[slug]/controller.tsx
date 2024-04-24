@@ -21,11 +21,11 @@ export const CommunityPageController: React.FC<Props> = ({ slug }: Props) => {
     slug,
   ]);
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return <div>loading...</div>;
   }
 
-  const channel = data?.channels.find((c) => c.isDefault == true);
+  const channel = data.channels.find((c) => c.isDefault == true);
 
   return (
     <div className="mt-2">
@@ -67,13 +67,13 @@ export const CommunityPageController: React.FC<Props> = ({ slug }: Props) => {
               {
                 content: (
                   <>
-                    {data?.channels.map((c) => (
+                    {data?.channels.map((channel) => (
                       <Link
-                        href={`/c/${data?.community.slug!}/${c.id}`}
-                        key={c.id}
+                        href={`/c/${data.community.slug!}/${channel.id}`}
+                        key={channel.id}
                       >
-                        <p>ID: {c.id}</p>
-                        <p>Name: {c.name}</p>
+                        <p>ID: {channel.id}</p>
+                        <p>Name: {channel.name}</p>
                       </Link>
                     ))}
                   </>

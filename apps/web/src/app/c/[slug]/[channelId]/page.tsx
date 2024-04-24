@@ -4,17 +4,17 @@ import { Metadata } from "next";
 import { ChannelPageController } from "./controller";
 
 interface Props {
-  params: { channelId: string; communityId: string };
+  params: { channelId: string; slug: string };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const channel = await defaultQueryFn({
+  const { channel } = await defaultQueryFn({
     queryKey: `/channels/${params.channelId}`,
   });
 
   return {
-    title: channel[0].name,
-    description: channel[0].description,
+    title: channel.name,
+    description: channel.description,
   };
 }
 
@@ -23,7 +23,7 @@ export default function ChannelPage({ params }: Props) {
     <>
       <Header />
       <ChannelPageController
-        communityId={params.communityId}
+        communitySlug={params.slug}
         channelId={params.channelId}
       />
     </>

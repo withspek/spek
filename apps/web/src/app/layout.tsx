@@ -5,7 +5,7 @@ import { CenterLayout } from "@/components/CenterLayout";
 import { ProgressBar } from "@/components/progress-bar";
 
 export const metadata: Metadata = {
-  title: { default: "Spek", template: "%s | Spek" },
+  title: { default: "Spek", template: "%s ― Spek" },
   description: "Simple public communities",
 };
 
