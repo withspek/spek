@@ -40,4 +40,11 @@ defmodule Models.Community do
     |> validate_required([:name, :slug, :description, :ownerId])
     |> unique_constraint(:name)
   end
+
+  def edit_changeset(community, params \\ %{}) do
+    community
+    |> cast(params, [:name, :description])
+    |> validate_required([:name, :description])
+    |> unique_constraint(:name)
+  end
 end

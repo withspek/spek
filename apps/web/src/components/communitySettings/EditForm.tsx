@@ -1,7 +1,9 @@
+import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
+import { useTypeSafeUpdateQuery } from "@/hooks/useTypeSafeUpdateQuery";
 import { Button } from "@/ui/button";
 import { InputField } from "@/ui/form-field";
 import { CommunityWithPermissions } from "@spek/client";
-import { Form, Formik } from "formik";
+import { Formik } from "formik";
 
 interface EditFormProps {
   community: CommunityWithPermissions;
@@ -13,18 +15,38 @@ interface InitialFormValues {
 }
 
 export const EditForm: React.FC<EditFormProps> = ({ community }) => {
+  const { mutateAsync: updateCommunity, isLoading: updateLoading } =
+    useTypeSafeMutation("updateCommunity");
+
+  const update = useTypeSafeUpdateQuery();
+
   return (
     <Formik<InitialFormValues>
       initialValues={{
         description: community.description,
         name: community.name,
       }}
-      onSubmit={(values) => {
-        console.log("submitted");
+      onSubmit={async (values, { setFieldError }) => {
+        const resp = await updateCommunity([
+          {
+            name: values.name,
+            description: values.description,
+            communityId: community.id,
+          },
+        ]);
+
+        if (!resp.error) {
+          update(["getCommunity", community.slug], (oldData) => ({
+            ...oldData,
+            community: resp.community,
+          }));
+        } else {
+          setFieldError("name", resp.error);
+        }
       }}
     >
-      {({ handleSubmit, isSubmitting, errors, values, touched }) => (
-        <Form onSubmit={handleSubmit}>
+      {({ handleSubmit, values, touched }) => (
+        <>
           <div>
             <h3 className="text-2xl">Community</h3>
             <p className="text-alabaster-300">
@@ -42,11 +64,15 @@ export const EditForm: React.FC<EditFormProps> = ({ community }) => {
           {(touched.name && values.name !== community.name) ||
           (touched.description &&
             values.description !== community.description) ? (
-            <Button type="submit" loading={isSubmitting}>
+            <Button
+              type="submit"
+              onClick={() => handleSubmit}
+              loading={updateLoading}
+            >
               Save
             </Button>
           ) : null}
-        </Form>
+        </>
       )}
     </Formik>
   );

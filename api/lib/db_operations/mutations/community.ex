@@ -127,4 +127,11 @@ defmodule Operations.Mutations.Community do
     |> where([c], c.id == ^community_id and c.ownerId == ^user_id)
     |> Repo.delete_all()
   end
+
+  def update_community(community_id, data) do
+    community_id
+    |> Operations.Communities.get_community_by_id_without_perms()
+    |> Community.edit_changeset(data)
+    |> Repo.update()
+  end
 end

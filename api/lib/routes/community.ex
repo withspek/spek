@@ -178,6 +178,49 @@ defmodule Routes.Community do
     end
   end
 
+  put "/:id" do
+    %Plug.Conn{params: %{"id" => id}} = conn
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    if has_user_id do
+      case Ecto.UUID.cast(id) do
+        {:ok, uuid} ->
+          user_id = conn.assigns.user_id
+
+          data = %{
+            "name" => conn.body_params["name"],
+            "description" => conn.body_params["name"]
+          }
+
+          result = Operations.Communities.update_community(uuid, data)
+
+          case result do
+            {:ok, community} ->
+              Spek.UserSession.send_ws(user_id, nil, %{
+                op: "community_update",
+                d: %{community: community}
+              })
+
+              conn |> send_resp(200, Jason.encode!(%{community: community}))
+
+            {:error,
+             %Ecto.Changeset{
+               errors: [name: {"has already been taken", _}]
+             }} ->
+              conn
+              |> send_resp(200, Jason.encode!(%{error: "This name is taken"}))
+          end
+
+        _ ->
+          conn
+          |> send_resp(400, Jason.encode!(%{error: " invalid id"}))
+      end
+    else
+      conn
+      |> send_resp(402, Jason.encode!(%{error: "Not authenticated"}))
+    end
+  end
+
   match _ do
     conn
     |> send_resp(404, "Not found")
