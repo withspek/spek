@@ -66,7 +66,7 @@ export const EditForm: React.FC<EditFormProps> = ({ community }) => {
             values.description !== community.description) ? (
             <Button
               type="submit"
-              onClick={() => handleSubmit}
+              onClick={() => handleSubmit()}
               loading={updateLoading}
             >
               Save

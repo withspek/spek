@@ -10,17 +10,12 @@ interface PageControllerProps {
 }
 
 export const PageController: React.FC<PageControllerProps> = ({ slug }) => {
-  const router = useRouter();
   const { data, isLoading } = useTypeSafeQuery(["getCommunity", slug], {}, [
     slug,
   ]);
 
   if (isLoading || !data) {
     return <div>loading...</div>;
-  }
-
-  if (!data.community.isAdmin) {
-    router.push("/");
   }
 
   const subheading = {

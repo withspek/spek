@@ -189,7 +189,7 @@ defmodule Routes.Community do
 
           data = %{
             "name" => conn.body_params["name"],
-            "description" => conn.body_params["name"]
+            "description" => conn.body_params["description"]
           }
 
           result = Operations.Communities.update_community(uuid, data)
