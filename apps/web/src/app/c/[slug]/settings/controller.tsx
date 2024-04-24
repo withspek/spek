@@ -3,7 +3,6 @@
 import { Header } from "@/components/communitySettings/Header";
 import { Overview } from "@/components/communitySettings/Overview";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
-import { useRouter } from "next/navigation";
 
 interface PageControllerProps {
   slug: string;
@@ -16,6 +15,10 @@ export const PageController: React.FC<PageControllerProps> = ({ slug }) => {
 
   if (isLoading || !data) {
     return <div>loading...</div>;
+  }
+
+  if (!data.community.isAdmin) {
+    return null;
   }
 
   const subheading = {
