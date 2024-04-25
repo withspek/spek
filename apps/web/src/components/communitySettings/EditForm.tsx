@@ -37,8 +37,12 @@ export const EditForm: React.FC<EditFormProps> = ({ community }) => {
 
         if (!resp.error) {
           update(["getCommunity", community.slug], (oldData) => ({
-            ...oldData,
-            community: resp.community,
+            channels: oldData.channels,
+            community: {
+              ...resp.community,
+              name: resp.community.name,
+              description: resp.community.description,
+            },
           }));
         } else {
           setFieldError("name", resp.error);

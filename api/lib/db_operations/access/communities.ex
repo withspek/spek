@@ -30,14 +30,6 @@ defmodule Operations.Access.Communities do
     Repo.all(query)
   end
 
-  def get_community_by_id_without_perms(id) do
-    Query.start()
-    |> Query.filter_by_id(id)
-    |> select([c], c)
-    |> Query.limit_one()
-    |> Repo.one()
-  end
-
   def get_community_by_id(id, user_id) do
     Query.start()
     |> Query.filter_by_id(id)

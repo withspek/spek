@@ -128,9 +128,9 @@ defmodule Operations.Mutations.Community do
     |> Repo.delete_all()
   end
 
-  def update_community(community_id, data) do
+  def update_community(community_id, data, user_id) do
     community_id
-    |> Operations.Communities.get_community_by_id_without_perms()
+    |> Operations.Communities.get_community_by_id(user_id)
     |> Community.edit_changeset(data)
     |> Repo.update()
   end

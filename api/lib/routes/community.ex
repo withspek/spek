@@ -186,13 +186,15 @@ defmodule Routes.Community do
       case Ecto.UUID.cast(id) do
         {:ok, uuid} ->
           user_id = conn.assigns.user_id
+          name = conn.body_params["name"]
+          description = conn.body_params["description"]
 
           data = %{
-            "name" => conn.body_params["name"],
-            "description" => conn.body_params["description"]
+            "name" => name,
+            "description" => description
           }
 
-          result = Operations.Communities.update_community(uuid, data)
+          result = Operations.Communities.update_community(uuid, data, user_id)
 
           case result do
             {:ok, community} ->
