@@ -31,8 +31,6 @@ const Page = React.forwardRef(
       [threadId, cursor]
     );
 
-    console.log(ref);
-
     if (isLoading) {
       return <div>loading..</div>;
     }

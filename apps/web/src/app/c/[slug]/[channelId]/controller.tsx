@@ -1,6 +1,7 @@
 "use client";
 
-import { CreateInput } from "@/components/community/create-input";
+import { ThreadsFeed } from "@/components/community/threads-feed";
+import { useConn } from "@/hooks/useConn";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 
 interface ChannelPageControllerProps {
@@ -11,6 +12,7 @@ interface ChannelPageControllerProps {
 export const ChannelPageController: React.FC<ChannelPageControllerProps> = ({
   channelId,
 }) => {
+  const { user } = useConn();
   const { data, isLoading } = useTypeSafeQuery(
     ["getChannel", channelId],
     {
@@ -34,12 +36,14 @@ export const ChannelPageController: React.FC<ChannelPageControllerProps> = ({
         </p>
       </div>
       <div>
-        <CreateInput
-          channelId={channelId}
+        <ThreadsFeed
+          channel={data.channel}
           communityId={data.channel.community.id}
+          currentUser={user}
+          isAdmin={data.channel.community.isAdmin}
+          isMember={data.channel.community.isMember}
         />
       </div>
-      <div></div>
     </div>
   );
 };

@@ -6,9 +6,9 @@ import Tabs, { TabsContents, TabsTitles } from "@/ui/tabs";
 import { ThreadsFeed } from "@/components/community/threads-feed";
 import { MembersList } from "@/components/community/members-list";
 import { ActionButton } from "./action-button";
-import Link from "next/link";
 import { SettingsIcon } from "@/icons";
 import { useRouter } from "next/navigation";
+import { ChannelsList } from "@/components/community/ChannelsList";
 
 interface Props {
   slug: string;
@@ -66,17 +66,11 @@ export const CommunityPageController: React.FC<Props> = ({ slug }: Props) => {
               },
               {
                 content: (
-                  <>
-                    {data?.channels.map((channel) => (
-                      <Link
-                        href={`/c/${data.community.slug!}/${channel.id}`}
-                        key={channel.id}
-                      >
-                        <p>ID: {channel.id}</p>
-                        <p>Name: {channel.name}</p>
-                      </Link>
-                    ))}
-                  </>
+                  <ChannelsList
+                    channels={data.channels}
+                    communitySlug={slug}
+                    community={data.community}
+                  />
                 ),
               },
             ]}
