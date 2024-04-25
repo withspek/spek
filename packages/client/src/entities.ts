@@ -42,6 +42,8 @@ export interface Channel {
   description: string;
   isDefault: boolean;
   isPrivate: boolean;
+  isMember: boolean;
+  isAdmin: boolean;
   community: CommunityWithPermissions;
   memberCount: number;
   inserted_at: string;

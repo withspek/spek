@@ -42,12 +42,26 @@ export const Overview: React.FC<OverviewProps> = ({
                         () => {
                           deleteCommunity([community.id]);
                           push("/home");
-                        },
+                        }
                       );
                     }}
                   >
                     Delete
                   </Button>
+                </>
+              ),
+            },
+            {
+              content: (
+                <>
+                  <p>members</p>
+                </>
+              ),
+            },
+            {
+              content: (
+                <>
+                  <p>channels</p>
                 </>
               ),
             },

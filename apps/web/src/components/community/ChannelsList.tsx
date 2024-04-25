@@ -42,9 +42,14 @@ export const ChannelsList: React.FC<ChannelsListProps> = ({
           onClick={() => push(`/c/${community.slug}/${channel.id}`)}
         >
           <p className="text-lg">#{channel.name}</p>
-          <button className="bg-alabaster-700 px-3 py-1 rounded-md">
-            Join
-          </button>
+          {!channel.isMember ? (
+            <button className="bg-alabaster-700 px-3 py-1 rounded-md">
+              Join
+            </button>
+          ) : (
+            <button type="button">Leave</button>
+          )}
+          {channel.isAdmin && <button>Delete</button>}
         </div>
       ))}
     </div>
