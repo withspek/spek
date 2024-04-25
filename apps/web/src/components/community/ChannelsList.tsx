@@ -1,5 +1,6 @@
 import { useRouter } from "next/navigation";
 import { Channel, CommunityWithPermissions } from "@spek/client";
+import { SettingsIcon } from "@/icons";
 
 interface ChannelsListProps {
   community: CommunityWithPermissions;
@@ -39,17 +40,27 @@ export const ChannelsList: React.FC<ChannelsListProps> = ({
         <div
           key={channel.id}
           className="flex justify-between items-center cursor-pointer"
-          onClick={() => push(`/c/${community.slug}/${channel.id}`)}
         >
-          <p className="text-lg">#{channel.name}</p>
-          {!channel.isMember ? (
-            <button className="bg-alabaster-700 px-3 py-1 rounded-md">
-              Join
-            </button>
-          ) : (
-            <button type="button">Leave</button>
-          )}
-          {channel.isAdmin && <button>Delete</button>}
+          <p
+            onClick={() => push(`/c/${community.slug}/${channel.id}`)}
+            className="text-lg"
+          >
+            #{channel.name}
+          </p>
+          <div className="flex items-center gap-3">
+            {!channel.isMember ? (
+              <button className="bg-alabaster-700 px-3 py-1 rounded-md">
+                Join
+              </button>
+            ) : !channel.isAdmin ? (
+              <button type="button">Leave</button>
+            ) : null}
+            {channel.isAdmin && (
+              <button>
+                <SettingsIcon />
+              </button>
+            )}
+          </div>
         </div>
       ))}
     </div>
