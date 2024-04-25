@@ -40,7 +40,7 @@ defmodule Routes.Community do
         |> send_resp(400, Jason.encode!(%{error: "Community is not public"}))
 
       true ->
-        channels = Channels.get_channels_by_community_id(community.id)
+        channels = Channels.get_channels_by_community_id(community.id, user_id)
 
         conn
         |> put_resp_content_type("application/json")

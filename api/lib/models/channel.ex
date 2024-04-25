@@ -1,10 +1,12 @@
 defmodule Models.Channel do
+  alias Models.User
   alias Models.Community
   use Ecto.Schema
   import Ecto.Changeset
 
   @derive {Jason.Encoder,
-           only: ~w(id name slug description community isPrivate isDefault memberCount)a}
+           only:
+             ~w(id name slug description community isPrivate isDefault isMember isAdmin memberCount)a}
   @primary_key {:id, :binary_id, []}
   schema "channels" do
     field(:name, :string)
@@ -12,10 +14,13 @@ defmodule Models.Channel do
     field(:description, :string)
     field(:isPrivate, :boolean)
     field(:isDefault, :boolean)
+    field(:isMember, :boolean, virtual: true)
+    field(:isAdmin, :boolean, virtual: true)
     field(:memberCount, :integer, default: 1)
     field(:archivedAt, :utc_datetime_usec)
 
     belongs_to(:community, Community, foreign_key: :communityId, type: :binary_id)
+    belongs_to(:user, User, foreign_key: :creatorId, type: :binary_id)
 
     timestamps()
   end

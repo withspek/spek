@@ -17,11 +17,10 @@ defmodule Operations.Access.Channels do
     |> Repo.preload([:community])
   end
 
-  @spec get_channels_by_community_id(any()) ::
-          nil | [%{optional(atom()) => any()}] | %{optional(atom()) => any()}
-  def get_channels_by_community_id(id) do
+  def get_channels_by_community_id(id, me_id) do
     Query.start()
     |> Query.filter_by_community_id(id)
+    |> Query.membership_info(me_id)
     |> Repo.all()
     |> Repo.preload([:community])
   end

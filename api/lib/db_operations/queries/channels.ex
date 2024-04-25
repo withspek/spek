@@ -41,8 +41,9 @@ defmodule Operations.Queries.Channels do
       as: :member,
       on: cm.channelId == c.id and cm.userId == ^me_id
     )
-    |> select_merge([member: cm], %{
-      isMember: not is_nil(cm.id)
+    |> select_merge([c, member: cm], %{
+      isMember: not is_nil(cm.id),
+      isAdmin: not is_nil(c.creatorId) and c.creatorId == ^me_id
     })
   end
 end

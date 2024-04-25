@@ -1,6 +1,7 @@
 defmodule Operations.Mutations.Community do
   import Ecto.Query, warn: false
 
+  alias Operations.Access.Channels
   alias Operations.Communities
   alias Models.CommunityPermissions
   alias Models.ChannelMember
@@ -36,6 +37,7 @@ defmodule Operations.Mutations.Community do
           description: "This is where all threads start",
           name: "general",
           slug: "general",
+          creatorId: user_id,
           isPrivate: false,
           isDefault: true
         })
@@ -115,7 +117,7 @@ defmodule Operations.Mutations.Community do
     |> Query.filter_by_permissions(community_id, user_id)
     |> Repo.delete_all()
 
-    channels = Operations.Access.Channels.get_channels_by_community_id(community_id)
+    channels = Channels.get_channels_by_community_id(community_id, user_id)
 
     Enum.each(channels, fn channel ->
       Operations.Mutations.Channels.leave_channel(channel.id, user_id)

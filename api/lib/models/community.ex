@@ -4,9 +4,17 @@ defmodule Models.Community do
 
   alias Models.User
 
-  defmodule CommunityPreview do
-    @derive {Jason.Encoder, only: ~w(id name description createdAt peoplePreviewList)a}
-    defstruct [:id, :name, :description, :createdAt, :peoplePreviewList]
+  defmodule Permissions do
+    use Ecto.Schema
+
+    @derive {Jason.Encoder, only: ~w(isAdmin isMember isMod isBlocked)a}
+    @primary_key false
+    embedded_schema do
+      field(:isAdmin, :boolean)
+      field(:isMember, :boolean)
+      field(:isMod, :boolean)
+      field(:isBlocked, :boolean)
+    end
   end
 
   @derive {Jason.Encoder,
