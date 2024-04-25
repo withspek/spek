@@ -5,6 +5,7 @@ import { EditForm } from "./EditForm";
 import { Button } from "@/ui/button";
 import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 import { useRouter } from "next/navigation";
+import { confirmModal } from "../ConfirmModal";
 
 interface OverviewProps {
   channels: Channel[];
@@ -36,8 +37,13 @@ export const Overview: React.FC<OverviewProps> = ({
                     color="primary"
                     loading={deleteLoading}
                     onClick={() => {
-                      deleteCommunity([community.id]);
-                      push("/home");
+                      confirmModal(
+                        "Are you sure you want to delete this community",
+                        () => {
+                          deleteCommunity([community.id]);
+                          push("/home");
+                        },
+                      );
                     }}
                   >
                     Delete

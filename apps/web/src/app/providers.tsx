@@ -1,5 +1,6 @@
 "use client";
 
+import { ConfirmModal } from "@/components/ConfirmModal";
 import { WebSocketWrapper } from "@/components/WebSocketWrapper";
 import { WaitForConn } from "@/components/check-auth";
 import { ConnnectionContextProvider } from "@/contexts/ConnectionContext";
@@ -19,7 +20,10 @@ export const Providers: React.FC<Props> = ({ children }) => {
       <ConnnectionContextProvider>
         <QueryClientProvider client={queryClient}>
           <WaitForConn>
-            <WebSocketWrapper>{children}</WebSocketWrapper>
+            <WebSocketWrapper>
+              {children}
+              <ConfirmModal />
+            </WebSocketWrapper>
           </WaitForConn>
         </QueryClientProvider>
       </ConnnectionContextProvider>
