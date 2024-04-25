@@ -40,8 +40,8 @@ export const ChannelPageController: React.FC<ChannelPageControllerProps> = ({
           channel={data.channel}
           communityId={data.channel.community.id}
           currentUser={user}
-          isAdmin={data.channel.community.isAdmin}
-          isMember={data.channel.community.isMember}
+          isAdmin={data.channel.isAdmin}
+          isMember={data.channel.isMember}
         />
       </div>
     </div>

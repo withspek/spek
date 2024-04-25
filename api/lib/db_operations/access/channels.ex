@@ -9,9 +9,10 @@ defmodule Operations.Access.Channels do
   alias Operations.Queries.Channels, as: Query
   alias Spek.Repo
 
-  def get_channel_by_id(id) do
+  def get_channel_by_id(id, me_id) do
     Query.start()
     |> Query.filter_by_id(id)
+    |> Query.membership_info(me_id)
     |> Query.limit_one()
     |> Repo.one()
     |> Repo.preload([:community])

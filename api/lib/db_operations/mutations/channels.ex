@@ -9,7 +9,7 @@ defmodule Operations.Mutations.Channels do
   alias Spek.Repo
 
   def join_channel(channelId, userId) do
-    channel = Channels.get_channel_by_id(channelId)
+    channel = Channels.get_channel_by_id(channelId, userId)
 
     if not is_nil(channel) do
       Query.start()
