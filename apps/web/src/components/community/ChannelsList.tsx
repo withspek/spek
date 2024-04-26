@@ -56,7 +56,11 @@ export const ChannelsList: React.FC<ChannelsListProps> = ({
               <button type="button">Leave</button>
             ) : null}
             {channel.isAdmin && (
-              <button>
+              <button
+                onClick={() =>
+                  push(`/c/${community.slug}/${channel.id}/settings`)
+                }
+              >
                 <SettingsIcon />
               </button>
             )}
