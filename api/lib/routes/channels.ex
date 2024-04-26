@@ -52,6 +52,89 @@ defmodule Routes.Channels do
     end
   end
 
+  post "/join" do
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    if has_user_id do
+      user_id = conn.assigns.user_id
+      channel_id = conn.params["channelId"]
+
+      case Operations.Channels.join_channel(channel_id, user_id) do
+        {:ok, channel} ->
+          conn
+          |> put_resp_content_type("application/json")
+          |> send_resp(200, Jason.encode!(%{channel: channel}))
+
+        {:error, error} ->
+          conn
+          |> put_resp_content_type("application/json")
+          |> send_resp(404, Jason.encode!(error))
+      end
+    else
+      conn
+      |> put_resp_content_type("application/json")
+      |> send_resp(402, Jason.encode!(%{error: "Not authenticated"}))
+    end
+  end
+
+  post "/leave" do
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    if has_user_id do
+      user_id = conn.assigns.user_id
+      channel_id = conn.params["channelId"]
+
+      case Operations.Channels.leave_channel(channel_id, user_id) do
+        {:ok, channel} ->
+          conn
+          |> put_resp_content_type("application/json")
+          |> send_resp(200, Jason.encode!(%{channel: channel}))
+
+        {:error, error} ->
+          conn
+          |> put_resp_content_type("application/json")
+          |> send_resp(404, Jason.encode!(error))
+      end
+    else
+      conn
+      |> put_resp_content_type("application/json")
+      |> send_resp(402, Jason.encode!(%{error: "Not authenticated"}))
+    end
+  end
+
+  delete "/delete" do
+    %Plug.Conn{params: %{"channelId" => id}} = conn
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    if has_user_id do
+      case Ecto.UUID.cast(id) do
+        {:ok, uuid} ->
+          user_id = conn.assigns.user_id
+
+          case Operations.Channels.delete_channel(uuid, user_id) do
+            {:ok, _} ->
+              conn
+              |> put_resp_content_type("application/json")
+              |> send_resp(200, Jason.encode!(%{success: true}))
+
+            {:error, error} ->
+              conn
+              |> put_resp_content_type("application/json")
+              |> send_resp(404, Jason.encode!(error))
+          end
+
+        _ ->
+          conn
+          |> put_resp_content_type("application/json")
+          |> send_resp(200, Jason.encode!(%{error: "invalid id"}))
+      end
+    else
+      conn
+      |> put_resp_content_type("application/json")
+      |> send_resp(402, Jason.encode!(%{error: "not authenticated"}))
+    end
+  end
+
   match _ do
     conn
     |> send_resp(200, "Not found")

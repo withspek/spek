@@ -9,4 +9,7 @@ defmodule Operations.Channels do
 
   # MUTATIONS
   defdelegate create_thread(data), to: Operations.Mutations.Channels
+  defdelegate delete_channel(channel_id, user_id), to: Operations.Mutations.Channels
+  defdelegate join_channel(channel_id, user_id), to: Operations.Mutations.Channels
+  defdelegate leave_channel(channel_id, user_id), to: Operations.Mutations.Channels
 end

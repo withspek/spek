@@ -8,17 +8,31 @@ defmodule Operations.Mutations.Channels do
   alias Operations.Channels
   alias Spek.Repo
 
-  def join_channel(channelId, userId) do
-    channel = Channels.get_channel_by_id(channelId, userId)
+  def join_channel(channel_id, user_id) do
+    channel = Channels.get_channel_by_id(channel_id, user_id)
 
     if not is_nil(channel) do
       Query.start()
-      |> Query.filter_by_id(channelId)
+      |> Query.filter_by_id(channel_id)
       |> Query.inc_member_count(1)
       |> Repo.update_all([])
 
-      ChannelMember.changeset(%ChannelMember{channelId: channel.id, userId: userId})
+      ChannelMember.changeset(%ChannelMember{channelId: channel.id, userId: user_id})
       |> Repo.insert()
+
+      {:ok, channel}
+    else
+      {:error, %{error: "Not found"}}
+    end
+  end
+
+  def delete_channel(channel_id, user_id) do
+    channel = Channels.get_channel_by_id(channel_id, user_id)
+
+    if not is_nil(channel) and channel.isAdmin do
+      Query.start()
+      |> Query.filter_by_id(channel_id)
+      |> Repo.delete_all()
     else
       {:error, %{error: "Not found"}}
     end
