@@ -1,6 +1,8 @@
 import { useRouter } from "next/navigation";
 import { Channel, CommunityWithPermissions } from "@spek/client";
 import { SettingsIcon } from "@/icons";
+import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
+import { useTypeSafeUpdateQuery } from "@/hooks/useTypeSafeUpdateQuery";
 
 interface ChannelsListProps {
   community: CommunityWithPermissions;
@@ -10,8 +12,16 @@ interface ChannelsListProps {
 export const ChannelsList: React.FC<ChannelsListProps> = ({
   community,
   channels,
+  communitySlug,
 }) => {
   const { push } = useRouter();
+  const { mutateAsync: joinChannel, isLoading: joinLoading } =
+    useTypeSafeMutation("joinChannel");
+  const { mutateAsync: leaveChannel, isLoading: leaveLoading } =
+    useTypeSafeMutation("leaveChannel");
+
+  const update = useTypeSafeUpdateQuery();
+
   const sortChannels = (array: Array<Channel>): Array<Channel> => {
     if (!array || array.length === 0) return [];
 
@@ -49,11 +59,41 @@ export const ChannelsList: React.FC<ChannelsListProps> = ({
           </p>
           <div className="flex items-center gap-3">
             {!channel.isMember ? (
-              <button className="bg-alabaster-700 px-3 py-1 rounded-md">
+              <button
+                className="bg-alabaster-700 px-3 py-1 rounded-md"
+                disabled={joinLoading}
+                onClick={async () => {
+                  await joinChannel([channel.id]);
+
+                  update(["getCommunity", communitySlug], (oldData) => ({
+                    ...oldData,
+                    channels: [
+                      { ...channel, isMember: true },
+                      ...oldData.channels,
+                    ],
+                  }));
+                }}
+              >
                 Join
               </button>
             ) : !channel.isAdmin ? (
-              <button type="button">Leave</button>
+              <button
+                type="button"
+                disabled={leaveLoading}
+                onClick={async () => {
+                  await leaveChannel([channel.id]);
+
+                  update(["getCommunity", communitySlug], (oldData) => ({
+                    ...oldData,
+                    channels: [
+                      { ...channel, isMember: false },
+                      ...oldData.channels,
+                    ],
+                  }));
+                }}
+              >
+                Leave
+              </button>
             ) : null}
             {channel.isAdmin && (
               <button
