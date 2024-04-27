@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SearchBar } from "./SearchBar";
+import { Tooltip } from "@spek/ui";
 
 export const Header: React.FC = () => {
   const { user } = useConn();
@@ -22,23 +23,31 @@ export const Header: React.FC = () => {
 
   return (
     <header className="flex gap-4 justify-between py-3 w-full">
-      <Link href={`/home`}>
-        <HomeIcon />
-      </Link>
-      <Link href={`/direct`}>
-        <InboxIcon />
-      </Link>
-      <button onClick={() => setOpen(!open)}>
-        <SearchIcon />
-      </button>
+      <Tooltip content="Home">
+        <Link href={`/home`}>
+          <HomeIcon />
+        </Link>
+      </Tooltip>
+      <Tooltip content="Inbox">
+        <Link href={`/direct`}>
+          <InboxIcon />
+        </Link>
+      </Tooltip>
+      <Tooltip content="Search">
+        <SearchIcon onClick={() => setOpen(!open)} />
+      </Tooltip>
       {user ? (
         <>
-          <Link href={`/u/${user.id}`}>
-            <UserSharingIcon />
-          </Link>
-          <Link href={`/new/community`}>
-            <PlusIcon />
-          </Link>
+          <Tooltip content="Profile">
+            <Link href={`/u/${user.id}`}>
+              <UserSharingIcon />
+            </Link>
+          </Tooltip>
+          <Tooltip content="Create">
+            <Link href={`/new/community`}>
+              <PlusIcon />
+            </Link>
+          </Tooltip>
         </>
       ) : (
         <>

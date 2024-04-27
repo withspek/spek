@@ -27,5 +27,8 @@
     "tsconfig": "workspace:*",
     "tsup": "^8.0.2",
     "typescript": "^5"
+  },
+  "dependencies": {
+    "@floating-ui/react": "^0.26.12"
   }
 }
