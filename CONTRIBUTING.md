@@ -1,6 +1,6 @@
 # Contributing to Spek
 
-> Please read the [PRIORITY LIST](https://github.com/irere123/spek/issues/1969) before contributing.
+> Please read the [PRIORITY LIST](https://github.com/Irere123/spek/issues/3) before contributing.
 
 We love your input! We want to make contributing to this project as easy and transparent as possible, whether it's:
 
