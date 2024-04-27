@@ -1,5 +1,9 @@
 "use client";
 
+import { Tooltip } from "@spek/ui";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
 import { useConn } from "@/hooks/useConn";
 import {
   HomeIcon,
@@ -10,11 +14,8 @@ import {
 } from "@/icons";
 import { Button } from "@/ui/button";
 import { Modal } from "@/ui/modal";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { SearchBar } from "./SearchBar";
-import { Tooltip } from "@spek/ui";
+import Link from "next/link";
 
 export const Header: React.FC = () => {
   const { user } = useConn();

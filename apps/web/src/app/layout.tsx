@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+
 import "./globals.css";
 import { Providers } from "./providers";
 import { CenterLayout } from "@/components/CenterLayout";
-import { ProgressBar } from "@/components/progress-bar";
+import { ProgressBar } from "@/components/ProgressBar";
 
 export const metadata: Metadata = {
   title: { default: "Spek", template: "%s ― Spek" },

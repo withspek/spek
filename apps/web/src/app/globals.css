@@ -48,8 +48,3 @@ body {
     text-wrap: balance;
   }
 }
-
-#nprogress {
-  position: relative;
-  z-index: 9999999;
-}
