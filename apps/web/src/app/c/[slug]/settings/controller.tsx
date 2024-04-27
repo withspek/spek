@@ -1,14 +1,21 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
+import { ChannelsList } from "@/components/community/ChannelsList";
 import { Header } from "@/components/communitySettings/Header";
 import { Overview } from "@/components/communitySettings/Overview";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
+import Tabs, { TabsContents, TabsTitles } from "@/ui/tabs";
+import { MembersList } from "@/components/community/members-list";
+import { Button } from "@/ui/button";
 
 interface PageControllerProps {
   slug: string;
 }
 
 export const PageController: React.FC<PageControllerProps> = ({ slug }) => {
+  const router = useRouter();
   const { data, isLoading } = useTypeSafeQuery(["getCommunity", slug], {}, [
     slug,
   ]);
@@ -18,7 +25,7 @@ export const PageController: React.FC<PageControllerProps> = ({ slug }) => {
   }
 
   if (!data.community.isAdmin) {
-    return null;
+    router.replace("/home");
   }
 
   const subheading = {
@@ -31,11 +38,37 @@ export const PageController: React.FC<PageControllerProps> = ({ slug }) => {
   return (
     <div>
       <Header heading="Settings" subheading={subheading} avatar="" />
-      <Overview
-        channels={data.channels}
-        community={data.community}
-        communitySlug={slug}
-      />
+      <Tabs>
+        <TabsTitles titles={["Overview", "Members", "Channels"]} />
+        <TabsContents
+          items={[
+            {
+              content: (
+                <Overview
+                  channels={data.channels}
+                  community={data.community}
+                  communitySlug={slug}
+                />
+              ),
+            },
+            {
+              content: <MembersList communityId={data.community.id} />,
+            },
+            {
+              content: (
+                <>
+                  <Button size="sm">Create</Button>
+                  <ChannelsList
+                    channels={data.channels}
+                    community={data.community}
+                    communitySlug={slug}
+                  />
+                </>
+              ),
+            },
+          ]}
+        />
+      </Tabs>
     </div>
   );
 };
