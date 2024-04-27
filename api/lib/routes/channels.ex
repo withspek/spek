@@ -34,6 +34,39 @@ defmodule Routes.Channels do
     end
   end
 
+  put "/:id" do
+    %Plug.Conn{params: %{"id" => id}} = conn
+
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    if has_user_id do
+      user_id = conn.assigns.user_id
+
+      data = %{
+        "name" => conn.body_params["name"],
+        "description" => conn.body_params["description"]
+      }
+
+      case Ecto.UUID.cast(id) do
+        {:ok, uuid} ->
+          {:ok, channel} = Channels.update_channel(uuid, data, user_id)
+
+          conn
+          |> put_resp_content_type("application/json")
+          |> send_resp(200, Jason.encode!(%{channel: channel}))
+
+        _ ->
+          conn
+          |> put_resp_content_type("application/json")
+          |> send_resp(200, Jason.encode!(%{error: "invalid id"}))
+      end
+    else
+      conn
+      |> put_resp_content_type("application/json")
+      |> send_resp(402, Jason.encode!(%{error: "Not authenticated"}))
+    end
+  end
+
   get "/:id/members" do
     %Plug.Conn{params: %{"id" => id}} = conn
 

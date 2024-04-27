@@ -87,12 +87,18 @@ export const wrap = (connection: Connection) => ({
       description: string;
     }): Promise<{ community: CommunityWithPermissions; error?: string }> =>
       connection.send(`/community/${data.communityId}`, "PUT", { ...data }),
-    joinChannel: (data: { channelId: string }): Promise<any> =>
-      connection.send("/channels/join", "POST", { ...data }),
-    leaveChannel: (data: { channelId: string }): Promise<any> =>
-      connection.send("/channels/leave", "POST", { ...data }),
-    deleteChannel: (data: { channelId: string }): Promise<any> =>
-      connection.send("/channels/delete", "DELETE", { ...data }),
+    joinChannel: (channelId: string): Promise<any> =>
+      connection.send("/channels/join", "POST", { channelId }),
+    leaveChannel: (channelId: string): Promise<any> =>
+      connection.send("/channels/leave", "POST", { channelId }),
+    deleteChannel: (channelId: string): Promise<{ success: boolean }> =>
+      connection.send("/channels/delete", "DELETE", { channelId }),
+    updateChannel: (data: {
+      channelId: string;
+      name: string;
+      description: string;
+    }): Promise<{ channel: Channel }> =>
+      connection.send(`/channels/${data.channelId}`, "PUT", { ...data }),
     createThread: (data: {
       name: string;
       channelId: string;

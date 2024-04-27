@@ -1,7 +1,9 @@
 "use client";
 
 import { confirmModal } from "@/components/ConfirmModal";
+import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
+import { useTypeSafeUpdateQuery } from "@/hooks/useTypeSafeUpdateQuery";
 import { Button } from "@/ui/button";
 import { InputField } from "@/ui/form-field";
 import { Formik } from "formik";
@@ -21,6 +23,7 @@ interface DangerZoneItemProps {
   title: string;
   actionTitle: string;
   onActionClick: () => void;
+  loading?: boolean;
   subtitle: string;
 }
 
@@ -29,6 +32,7 @@ const DangerZoneItem: React.FC<DangerZoneItemProps> = ({
   subtitle,
   title,
   actionTitle,
+  loading,
 }) => {
   return (
     <div className="flex gap-2 justify-between">
@@ -36,7 +40,7 @@ const DangerZoneItem: React.FC<DangerZoneItemProps> = ({
         <p>{title}</p>
         <p className="text-sm text-alabaster-300">{subtitle}</p>
       </div>
-      <button type="button" onClick={onActionClick}>
+      <button disabled={loading} type="button" onClick={onActionClick}>
         {actionTitle}
       </button>
     </div>
@@ -51,6 +55,11 @@ export const SettingsPageController: React.FC<SettingsPageControllerProps> = ({
   const { data, isLoading } = useTypeSafeQuery(["getChannel", channelId], {}, [
     channelId,
   ]);
+  const { mutateAsync: deleteChannel, isLoading: deleteLoading } =
+    useTypeSafeMutation("deleteChannel");
+  const { mutateAsync: updateChannel, isLoading: updateLoading } =
+    useTypeSafeMutation("updateChannel");
+  const update = useTypeSafeUpdateQuery();
 
   if (isLoading || !data) {
     return <div>loading...</div>;
@@ -76,7 +85,21 @@ export const SettingsPageController: React.FC<SettingsPageControllerProps> = ({
             description: data.channel.description,
             name: data.channel.name,
           }}
-          onSubmit={() => {}}
+          onSubmit={async (values) => {
+            const resp = await updateChannel([
+              {
+                channelId: data.channel.id,
+                description: values.description,
+                name: values.name,
+              },
+            ]);
+
+            if (resp.channel) {
+              update(["getChannel", resp.channel.id], (oldData) => ({
+                channel: resp.channel,
+              }));
+            }
+          }}
         >
           {({ values, isSubmitting, handleChange, handleSubmit, touched }) => (
             <div className="flex flex-col gap-3 mt-5">
@@ -100,7 +123,7 @@ export const SettingsPageController: React.FC<SettingsPageControllerProps> = ({
                 <Button
                   type="submit"
                   onClick={() => handleSubmit()}
-                  loading={isSubmitting}
+                  loading={updateLoading}
                 >
                   Save
                 </Button>
@@ -112,10 +135,16 @@ export const SettingsPageController: React.FC<SettingsPageControllerProps> = ({
         <div className="flex flex-col gap-3 border border-red-400 px-4 py-5 rounded-md mt-4">
           <DangerZoneItem
             actionTitle="Delete"
+            loading={deleteLoading}
             onActionClick={() => {
               confirmModal(
                 `Are you sure you want to delete ${data.channel.name}`,
-                () => {}
+                async () => {
+                  const resp = await deleteChannel([data.channel.id]);
+                  if (resp.success) {
+                    router.push(`/c/${communitySlug}/${data.channel.id}`);
+                  }
+                }
               );
             }}
             subtitle="Once you delete a channel, there is no going back. Please be certain."

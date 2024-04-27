@@ -31,4 +31,10 @@ defmodule Models.Channel do
     |> validate_required([:name, :slug, :description])
     |> unique_constraint(:name)
   end
+
+  def edit_changeset(channel, params \\ %{}) do
+    channel
+    |> cast(params, [:name, :description])
+    |> validate_required([:name, :description])
+  end
 end

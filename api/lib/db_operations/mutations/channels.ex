@@ -1,6 +1,7 @@
 defmodule Operations.Mutations.Channels do
   import Ecto.Query, warn: false
 
+  alias Models.Channel
   alias Operations.Users
   alias Models.Thread
   alias Models.ChannelMember
@@ -42,6 +43,13 @@ defmodule Operations.Mutations.Channels do
     Query.start_member()
     |> Query.filter_by_member(channel_id, user_id)
     |> Repo.delete_all()
+  end
+
+  def update_channel(channel_id, data, user_id) do
+    channel_id
+    |> Operations.Channels.get_channel_by_id(user_id)
+    |> Channel.edit_changeset(data)
+    |> Repo.update()
   end
 
   def create_thread(data) do
