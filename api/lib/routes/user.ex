@@ -86,4 +86,10 @@ defmodule Routes.User do
       |> send_resp(401, Jason.encode!(%{error: "UNAUTHORIZED"}))
     end
   end
+
+  match _ do
+    conn
+    |> put_resp_content_type("application/json")
+    |> send_resp(404, "Not found")
+  end
 end

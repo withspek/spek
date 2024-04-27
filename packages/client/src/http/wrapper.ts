@@ -87,6 +87,12 @@ export const wrap = (connection: Connection) => ({
       description: string;
     }): Promise<{ community: CommunityWithPermissions; error?: string }> =>
       connection.send(`/community/${data.communityId}`, "PUT", { ...data }),
+    createChannel: (data: {
+      communityId: string;
+      name: string;
+      description: string;
+    }): Promise<{ channel: Channel; error?: string }> =>
+      connection.send("/channels/create", "POST", { ...data }),
     joinChannel: (channelId: string): Promise<any> =>
       connection.send("/channels/join", "POST", { channelId }),
     leaveChannel: (channelId: string): Promise<any> =>

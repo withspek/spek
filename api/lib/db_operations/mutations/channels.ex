@@ -1,6 +1,7 @@
 defmodule Operations.Mutations.Channels do
   import Ecto.Query, warn: false
 
+  alias Ecto.Multi
   alias Models.Channel
   alias Operations.Users
   alias Models.Thread
@@ -8,6 +9,43 @@ defmodule Operations.Mutations.Channels do
   alias Operations.Queries.Channels, as: Query
   alias Operations.Channels
   alias Spek.Repo
+
+  def create_channel(data, user_id) do
+    channel_name = String.trim(data.name)
+
+    multi_struct =
+      Multi.new()
+      |> Multi.insert(
+        :channel,
+        Channel.changeset(%Channel{
+          id: Ecto.UUID.autogenerate(),
+          name: channel_name,
+          slug: String.downcase(Enum.join(String.split(channel_name, " "), "_")),
+          isPrivate: false,
+          communityId: data.communityId,
+          creatorId: data.creatorId,
+          memberCount: 1,
+          description: data.description
+        })
+      )
+      |> Multi.insert(:channel_member, fn %{channel: channel} ->
+        ChannelMember.changeset(%ChannelMember{
+          id: Ecto.UUID.autogenerate(),
+          channelId: channel.id,
+          userId: user_id
+        })
+        |> Ecto.Changeset.put_assoc(:channel, channel)
+      end)
+
+    case Repo.transaction(multi_struct) do
+      {:ok, %{channel: channel, channel_member: channel_member}} ->
+        channel = channel |> Repo.preload(:community)
+        {:ok, channel, channel_member}
+
+      {:error, :community, changeset_error, _changes_happened} ->
+        {:error, changeset_error}
+    end
+  end
 
   def join_channel(channel_id, user_id) do
     channel = Channels.get_channel_by_id(channel_id, user_id)

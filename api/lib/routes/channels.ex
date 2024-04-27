@@ -110,6 +110,40 @@ defmodule Routes.Channels do
     end
   end
 
+  post "/create" do
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    if has_user_id do
+      user_id = conn.assigns.user_id
+
+      data = %{
+        name: conn.body_params["name"],
+        description: conn.body_params["description"],
+        creatorId: user_id,
+        communityId: conn.body_params["communityId"]
+      }
+
+      case Operations.Channels.create_channel(data, user_id) do
+        {:ok, channel, _} ->
+          conn
+          |> put_resp_content_type("application/json")
+          |> send_resp(200, Jason.encode!(%{channel: channel}))
+
+        {:error,
+         %Ecto.Changeset{
+           errors: [name: {"has already been taken", _}]
+         }} ->
+          conn
+          |> put_resp_content_type("application/json")
+          |> send_resp(404, Jason.encode!(%{error: "That name is in use."}))
+      end
+    else
+      conn
+      |> put_resp_content_type("application/json")
+      |> send_resp(402, Jason.encode!(%{error: "Not authenticated"}))
+    end
+  end
+
   post "/leave" do
     has_user_id = Map.has_key?(conn.assigns, :user_id)
 
@@ -144,17 +178,11 @@ defmodule Routes.Channels do
         {:ok, uuid} ->
           user_id = conn.assigns.user_id
 
-          case Operations.Channels.delete_channel(uuid, user_id) do
-            {:ok, _} ->
-              conn
-              |> put_resp_content_type("application/json")
-              |> send_resp(200, Jason.encode!(%{success: true}))
+          Operations.Channels.delete_channel(uuid, user_id)
 
-            {:error, error} ->
-              conn
-              |> put_resp_content_type("application/json")
-              |> send_resp(404, Jason.encode!(error))
-          end
+          conn
+          |> put_resp_content_type("application/json")
+          |> send_resp(200, Jason.encode!(%{success: true}))
 
         _ ->
           conn

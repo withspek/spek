@@ -142,7 +142,7 @@ export const SettingsPageController: React.FC<SettingsPageControllerProps> = ({
                 async () => {
                   const resp = await deleteChannel([data.channel.id]);
                   if (resp.success) {
-                    router.push(`/c/${communitySlug}/${data.channel.id}`);
+                    router.push(`/c/${communitySlug}`);
                   }
                 }
               );

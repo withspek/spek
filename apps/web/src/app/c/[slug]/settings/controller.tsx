@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { ChannelsList } from "@/components/community/ChannelsList";
@@ -9,12 +10,14 @@ import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import Tabs, { TabsContents, TabsTitles } from "@/ui/tabs";
 import { MembersList } from "@/components/community/members-list";
 import { Button } from "@/ui/button";
+import { CreateChannelModal } from "@/components/communitySettings/CreateChannelModal";
 
 interface PageControllerProps {
   slug: string;
 }
 
 export const PageController: React.FC<PageControllerProps> = ({ slug }) => {
+  const [open, setOpen] = useState(false);
   const router = useRouter();
   const { data, isLoading } = useTypeSafeQuery(["getCommunity", slug], {}, [
     slug,
@@ -57,7 +60,9 @@ export const PageController: React.FC<PageControllerProps> = ({ slug }) => {
             {
               content: (
                 <>
-                  <Button size="sm">Create</Button>
+                  <Button size="sm" onClick={() => setOpen(!open)}>
+                    Create
+                  </Button>
                   <ChannelsList
                     channels={data.channels}
                     community={data.community}
@@ -69,6 +74,13 @@ export const PageController: React.FC<PageControllerProps> = ({ slug }) => {
           ]}
         />
       </Tabs>
+      {open ? (
+        <CreateChannelModal
+          communityId={data.community.id}
+          open={open}
+          onRequestClose={() => setOpen(!open)}
+        />
+      ) : null}
     </div>
   );
 };
