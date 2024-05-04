@@ -7,7 +7,7 @@ database_url =
     For example: ecto://USER:PASSWORD@HOST:PORT/DATABASE
     """
 
-config :spek, Spek.Repo, url: database_url, ssl: true
+config :spek, Spek.Repo, url: database_url
 
 config :spek, OAuth.Gitlab,
   client_id:
