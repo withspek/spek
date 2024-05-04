@@ -78,6 +78,11 @@ defmodule Operations.Mutations.Channels do
   end
 
   def leave_channel(channel_id, user_id) do
+    Query.start()
+    |> Query.filter_by_id(channel_id)
+    |> Query.inc_member_count(-1)
+    |> Repo.update_all([])
+
     Query.start_member()
     |> Query.filter_by_member(channel_id, user_id)
     |> Repo.delete_all()

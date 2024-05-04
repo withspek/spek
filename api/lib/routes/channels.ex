@@ -151,17 +151,11 @@ defmodule Routes.Channels do
       user_id = conn.assigns.user_id
       channel_id = conn.params["channelId"]
 
-      case Operations.Channels.leave_channel(channel_id, user_id) do
-        {:ok, channel} ->
-          conn
-          |> put_resp_content_type("application/json")
-          |> send_resp(200, Jason.encode!(%{channel: channel}))
+      Operations.Channels.leave_channel(channel_id, user_id)
 
-        {:error, error} ->
-          conn
-          |> put_resp_content_type("application/json")
-          |> send_resp(404, Jason.encode!(error))
-      end
+      conn
+      |> put_resp_content_type("application/json")
+      |> send_resp(200, Jason.encode!(%{success: true}))
     else
       conn
       |> put_resp_content_type("application/json")

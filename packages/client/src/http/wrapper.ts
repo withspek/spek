@@ -95,7 +95,7 @@ export const wrap = (connection: Connection) => ({
       connection.send("/channels/create", "POST", { ...data }),
     joinChannel: (channelId: string): Promise<any> =>
       connection.send("/channels/join", "POST", { channelId }),
-    leaveChannel: (channelId: string): Promise<any> =>
+    leaveChannel: (channelId: string): Promise<{ success: boolean }> =>
       connection.send("/channels/leave", "POST", { channelId }),
     deleteChannel: (channelId: string): Promise<{ success: boolean }> =>
       connection.send("/channels/delete", "DELETE", { channelId }),
