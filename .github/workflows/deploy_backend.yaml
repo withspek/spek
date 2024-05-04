@@ -31,17 +31,17 @@ jobs:
           file: ./api/Dockerfile
           push: true
           tags: irere/spek:latest
-  deployment:
-    name: Build
-    needs: docker
-    environment: api
-    runs-on: ubuntu-latest
-    steps:
-      - name: Executing remote ssh commands using password
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
-          script: echo "${{ secrets.PASSPHRASE }}" | sudo -S dokku ps:rebuild api
+  # deployment:
+  #   name: Build
+  #   needs: docker
+  #   environment: api
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Executing remote ssh commands using password
+  #       uses: appleboy/ssh-action@master
+  #       with:
+  #         host: ${{ secrets.SSH_HOST }}
+  #         username: ${{ secrets.SSH_USERNAME }}
+  #         key: ${{ secrets.SSH_KEY }}
+  #         passphrase: ${{ secrets.PASSPHRASE }}
+  #         script: echo "${{ secrets.PASSPHRASE }}" | sudo -S dokku ps:rebuild api
