@@ -6,14 +6,14 @@ import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 export const DirectMessagePageController: React.FC = ({}) => {
   const { data, isLoading } = useTypeSafeQuery("getUserDms");
 
-  if (isLoading || !data) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
   return (
     <>
       <h2>Directs</h2>
-      <ConversationsList conversations={data} />
+      <ConversationsList conversations={data!} />
     </>
   );
 };
