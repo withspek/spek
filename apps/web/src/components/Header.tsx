@@ -16,6 +16,7 @@ import { Button } from "@/ui/button";
 import { Modal } from "@/ui/modal";
 import { SearchBar } from "./SearchBar";
 import Link from "next/link";
+import { ApiPreloadLink } from "./ApiPreloadLink";
 
 export const Header: React.FC = () => {
   const { user } = useConn();
@@ -30,9 +31,9 @@ export const Header: React.FC = () => {
         </Link>
       </Tooltip>
       <Tooltip content="Inbox">
-        <Link href={`/direct`}>
+        <ApiPreloadLink route="directs">
           <InboxIcon />
-        </Link>
+        </ApiPreloadLink>
       </Tooltip>
       <Tooltip content="Search">
         <SearchIcon onClick={() => setOpen(!open)} />
@@ -40,9 +41,9 @@ export const Header: React.FC = () => {
       {user ? (
         <>
           <Tooltip content="Profile">
-            <Link href={`/u/${user.id}`}>
+            <ApiPreloadLink route="profile" data={{ id: user.id }}>
               <UserSharingIcon />
-            </Link>
+            </ApiPreloadLink>
           </Tooltip>
           <Tooltip content="Create">
             <Link href={`/new/community`}>
