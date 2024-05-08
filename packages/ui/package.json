@@ -4,7 +4,7 @@
   "description": "",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.mts",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist/**"
   ],
@@ -29,6 +29,11 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@floating-ui/react": "^0.26.12"
+  },
+  "peerDependencies": {
+    "next": "13.5.4",
+    "react": "^18.2.0",
     "@floating-ui/react": "^0.26.12"
   }
 }

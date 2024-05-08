@@ -1,8 +1,8 @@
 import { defineConfig, Options } from "tsup";
 
 export default defineConfig((options: Options) => ({
-  entry: ["src/**/*.tsx"],
-  format: ["esm"],
+  entry: ["src/**/*@(ts|tsx)"],
+  format: ["esm", "cjs"],
   esbuildOptions(options) {
     options.banner = {
       js: '"use client"',
