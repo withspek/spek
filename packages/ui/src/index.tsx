@@ -1,3 +1,3 @@
 export * from "./button";
 export * from "./spinner";
-export * from "./tooltip";
+// export * from "./tooltip";

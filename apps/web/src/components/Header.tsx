@@ -1,6 +1,5 @@
 "use client";
 
-import { Tooltip } from "@spek/ui";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -25,31 +24,25 @@ export const Header: React.FC = () => {
 
   return (
     <header className="flex gap-4 justify-between py-3 w-full">
-      <Tooltip content="Home">
-        <Link href={`/home`}>
-          <HomeIcon />
-        </Link>
-      </Tooltip>
-      <Tooltip content="Inbox">
-        <ApiPreloadLink route="directs">
-          <InboxIcon />
-        </ApiPreloadLink>
-      </Tooltip>
-      <Tooltip content="Search">
-        <SearchIcon onClick={() => setOpen(!open)} />
-      </Tooltip>
+      <Link href={`/home`}>
+        <HomeIcon />
+      </Link>
+
+      <ApiPreloadLink route="directs">
+        <InboxIcon />
+      </ApiPreloadLink>
+
+      <SearchIcon onClick={() => setOpen(!open)} />
+
       {user ? (
         <>
-          <Tooltip content="Profile">
-            <ApiPreloadLink route="profile" data={{ id: user.id }}>
-              <UserSharingIcon />
-            </ApiPreloadLink>
-          </Tooltip>
-          <Tooltip content="Create">
-            <Link href={`/new/community`}>
-              <PlusIcon />
-            </Link>
-          </Tooltip>
+          <ApiPreloadLink route="profile" data={{ id: user.id }}>
+            <UserSharingIcon />
+          </ApiPreloadLink>
+
+          <Link href={`/new/community`}>
+            <PlusIcon />
+          </Link>
         </>
       ) : (
         <>
