@@ -6,6 +6,8 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "storybook:dev": "turbo run storybook:dev --parallel",
+    "storybook:build": "turbo run storybook:build --parallel",
     "watch": "pnpm -r --parallel --filter='./**/*' run watch"
   },
   "keywords": [],
