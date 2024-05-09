@@ -20,6 +20,10 @@
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "storybook:build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", "storybook-static/**"]
     }
   }
 }
