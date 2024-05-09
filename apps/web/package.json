@@ -26,7 +26,7 @@
     "react-dropzone": "^14.2.3",
     "react-modal": "^3.16.1",
     "react-query": "^3.39.3",
-    "tailwind-config": "workspace:*",
+    "config": "workspace:*",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
