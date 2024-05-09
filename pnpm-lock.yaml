@@ -26,6 +26,9 @@ importers:
       '@tanstack/react-virtual':
         specifier: ^3.2.0
         version: 3.2.0(react-dom@18.2.0)(react@18.2.0)
+      config:
+        specifier: workspace:*
+        version: link:../../packages/config
       date-fns:
         specifier: ^3.3.1
         version: 3.3.1
@@ -59,9 +62,6 @@ importers:
       react-query:
         specifier: ^3.39.3
         version: 3.39.3(react-dom@18.2.0)(react@18.2.0)
-      tailwind-config:
-        specifier: workspace:*
-        version: link:../../packages/tailwind-config
       zustand:
         specifier: ^4.5.2
         version: 4.5.2(@types/react@18.2.61)(react@18.2.0)
@@ -155,7 +155,7 @@ importers:
         specifier: ^5
         version: 5.3.3
 
-  packages/tailwind-config:
+  packages/config:
     dependencies:
       tailwindcss:
         specifier: ^3.3.0
@@ -175,6 +175,9 @@ importers:
       autoprefixer:
         specifier: ^10.0.1
         version: 10.4.18(postcss@8.4.35)
+      config:
+        specifier: workspace:*
+        version: link:../config
       next:
         specifier: 14.1.1
         version: 14.1.1(@babel/core@7.24.4)(react-dom@18.2.0)(react@18.2.0)
@@ -184,9 +187,6 @@ importers:
       react:
         specifier: ^18
         version: 18.2.0
-      tailwind-config:
-        specifier: workspace:*
-        version: link:../tailwind-config
       tailwindcss:
         specifier: ^3.3.0
         version: 3.4.1
