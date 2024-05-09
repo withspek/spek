@@ -21,6 +21,9 @@
       "cache": false,
       "persistent": true
     },
-    "storybook:build": {}
+    "storybook:build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", "storybook-static/**"]
+    }
   }
 }
