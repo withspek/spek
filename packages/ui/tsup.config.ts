@@ -1,7 +1,7 @@
 import { defineConfig, Options } from "tsup";
 
 export default defineConfig((options: Options) => ({
-  entry: ["src/**/*@(ts|tsx)"],
+  entry: ["src/**/*.tsx"],
   format: ["esm", "cjs"],
   esbuildOptions(options) {
     options.banner = {
@@ -9,7 +9,8 @@ export default defineConfig((options: Options) => ({
     };
   },
   dts: true,
+  // clean: true,
   minify: true,
-  external: ["react"],
+  external: ["react", "react-dom"],
   ...options,
 }));

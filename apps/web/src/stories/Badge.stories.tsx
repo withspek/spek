@@ -18,20 +18,20 @@ export const Primary: Story = {
 
 export const Secondary: Story = {
   args: {
-    color: "secondary",
     children: "Login",
   },
 };
 
 export const Minimal: Story = {
   args: {
-    color: "minimal",
     children: "Help",
   },
 };
 
 export const Destructive: Story = {
-  args: {
-    color: "destructive",
-  },
+  args: {},
+};
+
+export const Example: Story = {
+  render: () => <div className="space-x-3"></div>,
 };
