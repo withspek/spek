@@ -4,16 +4,15 @@ import { VariantProps, cva } from "class-variance-authority";
 import { Spinner } from "./spinner";
 import classNames from "./utils/classNames";
 
-const buttonClasses = cva(["rounded-md", "flex", "gap-2"], {
+const buttonClasses = cva(["rounded-md", "flex", "gap-2", "items-center"], {
   variants: {
     color: {
       primary: [
         "border",
         "bg-primary-900",
         "text-primary-100",
-        "hover:bg-primary-800",
-        "focus:ring-2",
-        "focus:ring-primary-600",
+        "hover:bg-primary-800 disabled:bg-primary-700",
+        "focus:ring-2 focus:ring-primary-600",
       ],
       secondary: [
         "border",
@@ -74,7 +73,7 @@ export const Button: React.FC<ButtonProps> = ({
     >
       {startIcon ? <span>{startIcon}</span> : null}
       {loading ? <Spinner /> : <>{children}</>}
-      {endIcon ? <span>{startIcon}</span> : null}
+      {endIcon ? <span>{endIcon}</span> : null}
     </button>
   );
 };

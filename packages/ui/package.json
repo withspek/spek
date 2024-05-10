@@ -31,6 +31,7 @@
   "dependencies": {
     "@floating-ui/react": "^0.26.12",
     "class-variance-authority": "^0.7.0",
+    "lucide-react": "^0.378.0",
     "tailwind-merge": "^2.3.0"
   },
   "peerDependencies": {
