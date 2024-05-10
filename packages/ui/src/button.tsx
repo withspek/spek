@@ -1,42 +1,80 @@
 import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
+import { VariantProps, cva } from "class-variance-authority";
+
 import { Spinner } from "./spinner";
+import classNames from "./utils/classNames";
 
-const buttonColorStyles = {
-  default: "bg-alabaster-500 text-white",
-  primary: "bg-alabaster-950 text-alabaster-50",
-};
+const buttonClasses = cva(["rounded-md", "flex", "gap-2"], {
+  variants: {
+    color: {
+      primary: [
+        "border",
+        "bg-primary-900",
+        "text-primary-100",
+        "hover:bg-primary-800",
+        "focus:ring-2",
+        "focus:ring-primary-600",
+      ],
+      secondary: [
+        "border",
+        "bg-transparent hover:bg-primary-100",
+        "text-primary-900",
+        "border-primary-200",
+        "focus:ring-2",
+        "focus:ring-primary-600",
+      ],
+      minimal: ["bg-transparent", "text-primary-900"],
+      destructive: ["bg-transparent", "text-red-600"],
+    },
+    size: {
+      small: ["text-sm", "py-1", "px-2"],
+      medium: ["text-base", "py-2", "px-4"],
+      large: ["text-base", "py-4", "px-8"],
+    },
+  },
+  defaultVariants: {
+    color: "primary",
+    size: "medium",
+  },
+});
 
-const sizeStyles = {
-  lg: "",
-  md: "px-4 py-2 rounded w-56",
-  sm: "px-3 py-2 rounded",
-  xs: "",
-};
-export type ButtonProps = DetailedHTMLProps<
+type InferredVariantProps = VariantProps<typeof buttonClasses>;
+
+export type ButtonBaseProps = DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
-> & {
-  size?: keyof typeof sizeStyles;
-  color?: keyof typeof buttonColorStyles;
+>;
+
+type ButtonColor = NonNullable<InferredVariantProps["color"]>;
+type ButtonSize = NonNullable<InferredVariantProps["size"]>;
+
+export type ButtonProps = ButtonBaseProps & {
+  size?: ButtonSize;
+  color?: ButtonColor;
   loading?: boolean;
-  icon?: React.ReactNode;
+  startIcon?: React.ReactNode;
+  endIcon?: React.ReactNode;
   transition?: boolean;
 };
 
 export const Button: React.FC<ButtonProps> = ({
   children,
-  color = "default",
-  size = "md",
+  color = "primary",
+  size = "medium",
+  endIcon,
+  startIcon,
   loading,
   ...props
 }) => {
   return (
     <button
       disabled={loading}
-      className={`flex justify-center items-center gap-4 ${buttonColorStyles[color]} ${sizeStyles[size]}`}
+      className={classNames(buttonClasses({ color }))}
       {...props}
     >
+      {startIcon ? <span>{startIcon}</span> : null}
       {loading ? <Spinner /> : <>{children}</>}
+      {endIcon ? <span>{startIcon}</span> : null}
     </button>
   );
 };

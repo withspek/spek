@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import colors from "tailwindcss/colors";
 
 const config: Config = {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
@@ -18,42 +19,51 @@ const config: Config = {
     },
     screens: {
       sm: "640px",
-      // => @media (min-width: 640px) { ... }
-
       md: "800px",
-      // => @media (min-width: 800px) { ... }
-
       lg: "1024px",
-      // => @media (min-width: 1024px) { ... }
-
       xl: "1280px",
-      // => @media (min-width: 1280px) { ... }
     },
-
+    colors: {
+      black: colors.black,
+      white: colors.white,
+      currentColor: colors.current,
+      transparent: colors.transparent,
+      accent: {
+        DEFAULT: "var(--color-accent)",
+        hover: "var(--color-accent-hover)",
+        disabled: "var(--color-accent-disabled)",
+      },
+      primary: {
+        50: "var(--color-primary-50)",
+        100: "var(--color-primary-100)",
+        200: "var(--color-primary-200)",
+        300: "var(--color-primary-300)",
+        400: "var(--color-primary-400)",
+        500: "var(--color-primary-500)",
+        600: "var(--color-primary-600)",
+        700: "var(--color-primary-700)",
+        800: "var(--color-primary-800)",
+        900: "var(--color-primary-900)",
+      },
+      secondary: {
+        50: "var(--color-secondary-50)",
+        100: "var(--color-secondary-100)",
+        200: "var(--color-secondary-200)",
+        300: "var(--color-secondary-300)",
+        400: "var(--color-secondary-400)",
+        500: "var(--color-secondary-500)",
+        600: "var(--color-secondary-600)",
+        700: "var(--color-secondary-700)",
+        800: "var(--color-secondary-800)",
+        900: "var(--color-secondary-900)",
+      },
+      red: colors.red,
+    },
     extend: {
       spacing: {
         md: "44rem",
         lg: "64.0625rem",
         xl: "75rem",
-      },
-      colors: {
-        white: "#fff",
-        black: "#000",
-        transparent: "transparent",
-        background: "var(--background)",
-        alabaster: {
-          50: "var(--alabaster-50)",
-          100: "var(--alabaster-100)",
-          200: "var(--alabaster-200)",
-          300: "var(--alabaster-300)",
-          400: "var(--alabaster-400)",
-          500: "var(--alabaster-500)",
-          600: "var(--alabaster-600)",
-          700: "var(--alabaster-700)",
-          800: "var(--alabaster-800)",
-          900: "var(--alabaster-900)",
-          950: "var(--alabaster-950)",
-        },
       },
     },
   },
