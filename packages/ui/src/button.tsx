@@ -4,7 +4,7 @@ import { VariantProps, cva } from "class-variance-authority";
 import { Spinner } from "./spinner";
 import classNames from "./utils/classNames";
 
-const buttonClasses = cva(["rounded-md", "flex", "gap-2", "items-center"], {
+const buttonClasses = cva("rounded-md flex gap-2 items-center", {
   variants: {
     color: {
       primary: [
