@@ -22,7 +22,7 @@ importers:
         version: link:../../packages/client
       '@spek/ui':
         specifier: workspace:*
-        version: link:../../packages/spek-ui
+        version: link:../../packages/ui
       '@tanstack/react-virtual':
         specifier: ^3.2.0
         version: 3.2.0(react-dom@18.2.0)(react@18.2.0)
@@ -174,7 +174,9 @@ importers:
         specifier: ^4.9.4
         version: 4.9.5
 
-  packages/spek-ui:
+  packages/tsconfig: {}
+
+  packages/ui:
     dependencies:
       '@spek/lib':
         specifier: workspace:*
@@ -201,8 +203,6 @@ importers:
       typescript:
         specifier: ^4.9.4
         version: 4.9.5
-
-  packages/tsconfig: {}
 
 packages:
 

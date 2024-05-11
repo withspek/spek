@@ -4,7 +4,6 @@ import React from "react";
 
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { useRouter } from "next/navigation";
-import { Button } from "spek-ui";
 
 interface ControllerProps {}
 
@@ -18,7 +17,6 @@ export const HomeController: React.FC<ControllerProps> = () => {
 
   return (
     <div className="flex flex-col flex-1">
-      <Button>Hello world</Button>
       <h2>Feed</h2>
       <div className="flex flex-col gap-4 mt-3">
         {data?.communities.map((c) => (
