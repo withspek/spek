@@ -1,43 +1,36 @@
 {
   "name": "@spek/ui",
-  "version": "1.0.0",
-  "description": "",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist/**"
-  ],
+  "private": true,
+  "sideEffects": false,
+  "version": "0.0.0",
+  "main": "./index.tsx",
+  "exports": {
+    ".": "./index.tsx",
+    "./components/toast": "./components/toast/index.tsx",
+    "./components/icon": "./components/icon/index.ts",
+    "./components/icon/Spinner": "./components/icon/Spinner.tsx"
+  },
+  "types": "./index.tsx",
+  "license": "MIT",
   "scripts": {
-    "dev": "tsup --watch",
-    "build": "tsup",
-    "lint": "eslint src/"
+    "lint": "eslint .",
+    "type-check": "tsc --pretty --noEmit",
+    "type-check:ci": "tsc-absolute --pretty --noEmit",
+    "lint:fix": "eslint . --fix",
+    "lint:report": "eslint . --format json --output-file ../../lint-results/ui.json"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/react": "^18",
-    "autoprefixer": "^10.0.1",
-    "config": "workspace:*",
-    "next": "14.1.1",
-    "postcss": "^8",
-    "react": "^18",
-    "tailwindcss": "^3.3.0",
-    "tsconfig": "workspace:*",
-    "tsup": "^8.0.2",
-    "typescript": "^5"
-  },
   "dependencies": {
-    "@floating-ui/react": "^0.26.12",
+    "@spek/lib": "workspace:*",
     "class-variance-authority": "^0.7.0",
+    "downshift": "^9.0.4",
     "lucide-react": "^0.378.0",
-    "tailwind-merge": "^2.3.0"
+    "next": "14.1.1",
+    "react": "^18"
   },
-  "peerDependencies": {
-    "@floating-ui/react": "^0.26.12",
-    "next": "13.5.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+  "devDependencies": {
+    "tsconfig": "workspace:*",
+    "typescript": "^4.9.4"
   }
 }

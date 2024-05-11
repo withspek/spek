@@ -1,8 +1,7 @@
 import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
 import { VariantProps, cva } from "class-variance-authority";
 
-import { Spinner } from "./spinner";
-import classNames from "./utils/classNames";
+import { classNames } from "@spek/lib";
 
 const buttonClasses = cva("rounded-md flex gap-2 items-center", {
   variants: {
@@ -72,7 +71,7 @@ export const Button: React.FC<ButtonProps> = ({
       {...props}
     >
       {startIcon ? <span>{startIcon}</span> : null}
-      {loading ? <Spinner /> : <>{children}</>}
+      {children}
       {endIcon ? <span>{endIcon}</span> : null}
     </button>
   );
