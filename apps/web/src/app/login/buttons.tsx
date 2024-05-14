@@ -1,8 +1,7 @@
 "use client";
 
-import { CompassIcon, UserSharingIcon } from "@/icons";
 import { useTokenStore } from "@/stores/useTokenStore";
-import { Button } from "@/ui/button";
+import { Button, Icon } from "@spek/ui";
 import { apiUrl, loginNextPathKey, prod } from "@/utils/constants";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback } from "react";
@@ -35,7 +34,7 @@ const LoginButton: React.FC<LoginButtonProps> = ({
 
   return (
     <Button
-      color={dev ? "default" : "primary"}
+      color={dev ? "secondary" : "primary"}
       onClick={oauthUrl ? clickHandler : onClick}
     >
       {children[0]}
@@ -50,12 +49,12 @@ export const Buttons: React.FC = () => {
   return (
     <>
       <LoginButton oauthUrl={`${apiUrl}/auth/github`}>
-        <UserSharingIcon />
-        Login with Github
+        <Icon name="github" width={16} height={16} />
+        Continue with Github
       </LoginButton>
       <LoginButton oauthUrl={`${apiUrl}/auth/gitlab`}>
-        <UserSharingIcon />
-        Login with Gitlab
+        <Icon name="gitlab" width={16} height={16} />
+        Continue with Gitlab
       </LoginButton>
       {!prod ? (
         <LoginButton
@@ -73,10 +72,10 @@ export const Buttons: React.FC = () => {
               refreshToken: d.refreshToken,
             });
 
-            push("/");
+            push("/home");
           }}
         >
-          <CompassIcon />
+          <Icon name="bug" width={16} height={16} />
           Create test user
         </LoginButton>
       ) : null}

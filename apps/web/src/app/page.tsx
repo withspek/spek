@@ -4,6 +4,7 @@ import { Buttons } from "./login/buttons";
 import { useRouter } from "next/navigation";
 import { useTokenStore } from "@/stores/useTokenStore";
 import { useEffect } from "react";
+import { ParticlesComp } from "@/components/Particles";
 
 export default function Home() {
   const { push } = useRouter();
@@ -16,24 +17,46 @@ export default function Home() {
   }, [hasTokens, push]);
 
   return (
-    <main className="flex flex-col gap-3 w-full h-full">
-      <div>
-        <h1 className="text-5xl font-bold text-center">Spek</h1>
-        <p className="text-xl">Simple, public communities</p>
-      </div>
-      <div>
-        <h2 className="font-semibold">Features</h2>
-        <ul className="list-disc px-3">
-          <li>Open source</li>
-          <li>Text chat</li>
-          <li>Thread conversations</li>
-          <li>Real-time communities</li>
-        </ul>
-        <h2 className="font-semibold">UI redesign(cooming soon)</h2>
-      </div>
-      <div className="flex gap-4 flex-col">
-        <Buttons />
-      </div>
-    </main>
+    <>
+      <ParticlesComp />
+      <main
+        className="grid w-full h-full"
+        style={{ gridTemplateRows: "1fr auto 1fr" }}
+      >
+        <div className="hidden sm:flex" />
+        <div className="md:hidden flex justify-center w-full mt-6">
+          <h1>Spek</h1>
+        </div>
+        <div className="flex flex-col gap-4 mx-auto w-56">
+          <h1 className="text-balance text-center">Login</h1>
+          <Buttons />
+        </div>
+        <div className="flex w-full justify-between items-end px-5 py-4">
+          <div className="sm:flex hidden">
+            <h1>Spek</h1>
+          </div>
+          <div className="flex gap-4">
+            <a
+              className="text-base hover:underline"
+              href="https://irere.vercel.app/blog/why-spek"
+            >
+              About
+            </a>
+            <a
+              href="https://irere.vercel.app/blog/"
+              className="text-base hover:underline"
+            >
+              Blog
+            </a>
+            <a
+              href="https://github.com/irere123/spek?tab=License-1-ov-file"
+              className="text-base hover:underline"
+            >
+              Terms
+            </a>
+          </div>
+        </div>
+      </main>
+    </>
   );
 }

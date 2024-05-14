@@ -13,8 +13,7 @@ const IconLazy = dynamic(
   // This prevent slowdowns in development mode
   process.env.NODE_ENV === "production"
     ? () => import("./IconProd")
-    : () => import("./IconDev"),
-  { loading: () => <div>loading...</div> }
+    : () => import("./IconDev")
 );
 
 const Icon = memo((props: IconProps) => <IconLazy {...props} />);

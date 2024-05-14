@@ -52,7 +52,7 @@ const Page = React.forwardRef(
               <p>
                 {m.user.displayName}{" "}
                 <span className="text-alabaster-500">
-                  {format(new Date(m.inserted_at), "dd/MM/yy h:mm a")}
+                  {format(new Date(m.inserted_at), "dd/MM/yy H:mm a")}
                 </span>
               </p>
               <p className="text-alabaster-300">{m.text}</p>

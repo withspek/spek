@@ -2,10 +2,11 @@ import { useRouter } from "next/navigation";
 import { useTokenStore } from "@/stores/useTokenStore";
 import { Button } from "@/ui/button";
 import { User } from "@spek/client";
-import { Avatar } from "@/ui/avatar";
+// import { Avatar } from "@/ui/avatar";
 import { useState } from "react";
 import { EditProfileModal } from "./EditProfileModal";
 import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
+import { Avatar } from "@spek/ui";
 
 export type UserProfileWrapperProps = {
   currentUser: User;
@@ -23,9 +24,10 @@ export const UserProfileWrapper: React.FC<UserProfileWrapperProps> = ({
   return (
     <div className="flex flex-col gap-4 mt-3">
       <Avatar
-        src={user.avatarUrl}
-        isOnline={user.online}
-        username={user.username}
+        imageSrc={user.avatarUrl}
+        alt={user.username}
+        accepted={true}
+        size="xl"
       />
       <p className="text-xl font-bold">{user.displayName}</p>
       <p>{user.bio}</p>
