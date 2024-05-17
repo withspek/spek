@@ -6,7 +6,7 @@ import { ProgressBar } from "@/components/ProgressBar";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://spek.vercel.app"),
-  title: { default: "Spek - Powerful commmunities", template: "%s ― Spek" },
+  title: { default: "Spek - Powerful commmunities", template: "%s ║ Spek" },
   description: "Simple public communities",
 };
 

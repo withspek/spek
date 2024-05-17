@@ -5,13 +5,14 @@ import Link from "next/link";
 import { classNames } from "@spek/lib";
 import { AVATAR_FALLBACK } from "@spek/lib/constants";
 
-import { Tooltip } from "../tooltip";
+import { Tooltip } from "../tooltip/";
 
 type Maybe<T> = T | null | undefined;
 
 export type AvatarProps = {
   className?: string;
   size?: "xxs" | "xs" | "xsm" | "sm" | "md" | "mdLg" | "lg" | "xl";
+  shape?: "rounded" | "square";
   imageSrc?: Maybe<string>;
   title?: string;
   alt: string;
@@ -34,8 +35,21 @@ const sizesPropsBySize = {
   xl: "w-24 h-24 min-w-24 min-h-24", // 96px
 } as const;
 
+const shapePropsStyle = {
+  rounded: "rounded-full",
+  square: "rounded-md",
+};
+
 export function Avatar(props: AvatarProps) {
-  const { imageSrc, size = "md", alt, title, href, indicator } = props;
+  const {
+    imageSrc,
+    size = "md",
+    alt,
+    title,
+    href,
+    indicator,
+    shape = "rounded",
+  } = props;
   const rootClass = classNames(
     "aspect-square rounded-full",
     sizesPropsBySize[size]
@@ -44,10 +58,11 @@ export function Avatar(props: AvatarProps) {
     <AvatarPrimitive.Root
       data-testid={props?.["data-testid"]}
       className={classNames(
-        "bg-primary-900 item-center relative inline-flex aspect-square justify-center rounded-full align-top",
+        "bg-primary-900 item-center relative inline-flex aspect-square justify-center align-top",
         indicator ? "overflow-visible" : "overflow-hidden",
         props.className,
-        sizesPropsBySize[size]
+        sizesPropsBySize[size],
+        shapePropsStyle[shape]
       )}
     >
       <>
