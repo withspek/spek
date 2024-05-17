@@ -1,5 +1,5 @@
 "use client";
-import { Avatar, AvatarGroup } from "../avatar";
+import { AvatarGroup } from "../avatar";
 import { Badge } from "../badge";
 
 export const ThreadCard: React.FC = () => {
