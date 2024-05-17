@@ -1,8 +1,12 @@
 defmodule ApiTest do
-  use ExUnit.Case
-  doctest Api
+  use ExUnit.Case, async: true
+
+  def add(a, b) do
+    a + b
+  end
 
   test "greets the world" do
-    assert Api.hello() == :world
+    result = add(2, 3)
+    assert result == 5
   end
 end

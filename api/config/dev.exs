@@ -4,6 +4,9 @@ database_url = "postgres://postgres:postgres@localhost/spek_repo"
 
 config :spek, Spek.Repo, url: database_url
 
+config :lettuce,
+  folders_to_watch: ["lib", "config"]
+
 config :spek, OAuth.Gitlab,
   client_id:
     System.get_env("GITLAB_APP_ID") ||
