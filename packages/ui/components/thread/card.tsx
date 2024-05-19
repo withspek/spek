@@ -2,29 +2,42 @@
 import { AvatarGroup } from "../avatar";
 import { Badge } from "../badge";
 
-export const ThreadCard: React.FC = () => {
+export interface ThreadCardProps {
+  conversation: {
+    messageCount: number;
+    channelName: string;
+    communityName: string;
+    name: string;
+    description: string;
+  };
+  avatars: {
+    image: string;
+    title?: string;
+    alt?: string;
+    href?: string | null;
+  }[];
+}
+
+export const ThreadCard: React.FC<ThreadCardProps> = ({
+  avatars,
+  conversation,
+}) => {
+  const message =
+    conversation.messageCount > 1
+      ? `${conversation.messageCount} messages`
+      : `${conversation.messageCount} message`;
   return (
     <div className="border-b border-primary-200">
       <div className="flex gap-2">
-        {/* <Avatar alt="" shape="square" size="sm" /> */}
-        <p className="uppercase">Spek support</p>
-        <Badge>General</Badge>
+        <p className="uppercase">{conversation.communityName}</p>
+        <Badge>{conversation.channelName}</Badge>
       </div>
       <div className="py-3">
-        <p>Talk about bugs and feature requests about spek in general</p>
+        <p>{conversation.name}</p>
       </div>
       <div className="flex justify-between items-center py-3">
-        <AvatarGroup
-          items={[
-            { image: "/avatar.jpg" },
-            { image: "/avatar.jpg" },
-            { image: "/avatar.jpg" },
-            { image: "/avatar.jpg" },
-          ]}
-          size="sm"
-          truncateAfter={3}
-        />
-        <p className="text-primary-700">12 messages</p>
+        <AvatarGroup items={avatars} size="sm" truncateAfter={3} />
+        <p className="text-primary-700">{message}</p>
       </div>
     </div>
   );

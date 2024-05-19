@@ -6,6 +6,7 @@ defmodule Operations.Channels do
   defdelegate get_thread_by_id(id, user_id), to: Operations.Access.Channels
   defdelegate get_channel_members(channelId), to: Operations.Access.Channels
   defdelegate search_thread_name(start_of_name), to: Operations.Access.Channels
+  defdelegate get_top_active_threads(), to: Operations.Access.Channels
 
   # MUTATIONS
   defdelegate create_thread(data), to: Operations.Mutations.Channels

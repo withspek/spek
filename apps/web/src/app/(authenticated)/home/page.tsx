@@ -25,7 +25,16 @@ export default function HomePage() {
           <div className="border border-primary-300 h-20 px-3 py-2 rounded-md">
             <p>Hello</p>
           </div>
-          <ThreadCard />
+          <ThreadCard
+            avatars={[{ image: "/ciduc", title: "" }]}
+            conversation={{
+              channelName: "General",
+              communityName: "Spek support",
+              description: "Hello world this is the description for the clubs",
+              messageCount: 12,
+              name: "This is where we talk about bugs and features requests",
+            }}
+          />
         </div>
       </div>
       <HomeController />

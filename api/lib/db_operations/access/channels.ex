@@ -1,6 +1,8 @@
 defmodule Operations.Access.Channels do
   import Ecto.Query, warn: false
 
+  alias Models.Channel
+  alias Models.Message
   alias Models.Subscriber
   alias Models.User
   alias Models.User
@@ -46,6 +48,17 @@ defmodule Operations.Access.Channels do
   end
 
   ####################### THREADS ###################
+
+  def get_top_active_threads() do
+    # select * from threads as t left join messages as m on t.id=m.threadId left join channels as c on c.id=t.channelId order by d.
+    from(t in Thread,
+      left_join: m in Message,
+      on: t.id == m.threadId,
+      left_join: c in Channel,
+      on: c.id == t.channelId
+    )
+    |> Repo.all()
+  end
 
   def get_threads_by_channel_id(id) do
     from(th in Thread, where: th.channelId == ^id, order_by: [desc: th.inserted_at])
