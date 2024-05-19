@@ -21,6 +21,8 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
     });
 }
 
+export const prerender = true;
+
 type Props = { page: Page<CollectionEntry<'blog'>> };
 
 const { page } = Astro.props;

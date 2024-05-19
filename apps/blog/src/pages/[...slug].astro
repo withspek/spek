@@ -14,6 +14,8 @@ export async function getStaticPaths() {
 
 type Props = { page: CollectionEntry<'pages'> };
 
+export const prerender = true;
+
 const { page } = Astro.props;
 const { title, seo } = page.data;
 const { Content } = await page.render();

@@ -21,6 +21,8 @@ export async function getStaticPaths() {
     }));
 }
 
+export const prerender = true;
+
 type Props = { post: CollectionEntry<'blog'>; prevPost: CollectionEntry<'blog'>; nextPost: CollectionEntry<'blog'> };
 
 const { href } = Astro.url;
