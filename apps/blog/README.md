@@ -1,14 +1,20 @@
 # Blog
 
-Features:
+## Theme Features:
 
-- ✅ 100/100 Lighthouse performance
+- ✅ Dark and light color mode
+- ✅ Hero section with bio
+- ✅ Pagination support
+- ✅ Post tags support
+- ✅ View transitions
+- ✅ Tailwind CSS
+- ✅ Mobile-first responsive layout
 - ✅ SEO-friendly with canonical URLs and OpenGraph data
 - ✅ Sitemap support
 - ✅ RSS Feed support
 - ✅ Markdown & MDX support
 
-## 🚀 Project Structure
+## Project Structure
 
 Inside this project, you'll see the following folders and files:
 
@@ -17,10 +23,15 @@ Inside this project, you'll see the following folders and files:
 ├── src/
 │   ├── components/
 │   ├── content/
+│   ├── data/
+│   ├── icons/
 │   ├── layouts/
-│   └── pages/
+│   ├── pages/
+│   ├── styles/
+│   └── utils/
 ├── astro.config.mjs
-├── README.md
 ├── package.json
+├── README.md
+├── tailwind.config.cjs
 └── tsconfig.json
 ```
