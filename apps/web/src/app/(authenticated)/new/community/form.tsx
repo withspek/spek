@@ -3,7 +3,7 @@
 import React from "react";
 import { Form, Formik } from "formik";
 
-import { Button } from "@/ui/button";
+import { Button } from "@spek/ui";
 import { InputField } from "@/ui/form-field";
 import { useRouter } from "next/navigation";
 import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
@@ -73,7 +73,7 @@ export const CreateCommunityForm: React.FC = () => {
             >
               Create
             </Button>
-            <Button type="button" color="primary" onClick={() => push("/home")}>
+            <Button type="button" color="minimal" onClick={() => push("/home")}>
               Cancel
             </Button>
           </div>

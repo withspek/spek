@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Modal } from "@/ui/modal";
 import { Form, Formik } from "formik";
 import { InputField } from "@/ui/form-field";
-import { Button } from "@/ui/button";
+import { Button } from "@spek/ui";
 import ConnectionContext from "@/contexts/ConnectionContext";
 import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 
@@ -81,7 +81,7 @@ export const EditProfileModal: React.FC<EditProfileProps> = ({
               />
 
               <div className="flex justify-between gap-4">
-                <Button color="default" onClick={onRequestClose}>
+                <Button color="secondary" onClick={onRequestClose}>
                   Cancel
                 </Button>
                 <Button color="primary" type="submit" disabled={isSubmitting}>

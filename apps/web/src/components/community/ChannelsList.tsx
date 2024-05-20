@@ -60,7 +60,7 @@ export const ChannelsList: React.FC<ChannelsListProps> = ({
           <div className="flex items-center gap-3">
             {!channel.isMember ? (
               <button
-                className="bg-alabaster-700 px-3 py-1 rounded-md"
+                className="bg-primary-900 text-primary-50 px-3 py-1 rounded-md"
                 disabled={joinLoading}
                 onClick={async () => {
                   await joinChannel([channel.id]);

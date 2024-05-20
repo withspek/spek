@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { DirectMessagePageController } from "./controller";
-import { Header } from "@/components/Header";
+import { MainLayout } from "@spek/ui";
+import { LeftPanel } from "@/components/Panels";
 
 export const metadata: Metadata = {
   title: "Direct",
@@ -8,9 +9,9 @@ export const metadata: Metadata = {
 
 export default function DirectMessagesPage() {
   return (
-    <>
-      <Header />
+    <MainLayout leftPanel={<LeftPanel />}>
       <DirectMessagePageController />
-    </>
+      <div />
+    </MainLayout>
   );
 }

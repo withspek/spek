@@ -1,6 +1,5 @@
 "use client";
 
-import { Header } from "@/components/Header";
 import { UserProfileWrapper } from "@/components/user/UserProfileWrapper";
 import { useConn } from "@/hooks/useConn";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
@@ -22,9 +21,9 @@ export const UserProfileController: React.FC<UserProfileControllerProps> = ({
   }
 
   return (
-    <>
-      <Header />
+    <div>
       <UserProfileWrapper user={data?.user!} currentUser={user} />
-    </>
+      <div />
+    </div>
   );
 };

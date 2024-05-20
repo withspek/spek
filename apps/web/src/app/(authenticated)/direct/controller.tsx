@@ -11,9 +11,9 @@ export const DirectMessagePageController: React.FC = ({}) => {
   }
 
   return (
-    <>
+    <div>
       <h2>Directs</h2>
       <ConversationsList conversations={data!} />
-    </>
+    </div>
   );
 };

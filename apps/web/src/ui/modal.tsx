@@ -1,6 +1,7 @@
 "use client";
 
 import { PlusIcon } from "@/icons";
+import { AnimatePresence } from "framer-motion";
 import React from "react";
 import ReactModal from "react-modal";
 
@@ -19,7 +20,7 @@ const customStyles = {
       borderRadius: 8,
       padding: "40px 40px 40px 40px",
       transform: "translate(-50%, -50%)",
-      backgroundColor: "var(--alabaster-800)",
+      backgroundColor: "var(--color-primary-100)",
       border: "none",
       maxHeight: "80vh",
       width: "90%",
@@ -40,7 +41,7 @@ const customStyles = {
       borderRadius: 8,
       padding: "10px 25px 10px 25px",
       transform: "translate(-50%, -50%)",
-      backgroundColor: "var(--alabaster-800)",
+      backgroundColor: "var(--color-primary-100)",
       border: "none",
       maxHeight: "80vh",
       width: "90%",
@@ -61,7 +62,7 @@ const customStyles = {
       borderRadius: 8,
       padding: 0,
       transform: "translate(-50%, -50%)",
-      backgroundColor: "var(--alabaster-900)",
+      backgroundColor: "var(--color-primary-100)",
       border: "none",
       maxHeight: "80vh",
       width: "90%",
@@ -83,32 +84,34 @@ export const Modal: React.FC<
   };
 
   return (
-    <ReactModal
-      shouldCloseOnEsc
-      shouldFocusAfterRender
-      style={customStyles[variant]}
-      {...props}
-    >
-      <div className={`flex flex-col w-full`}>
-        {variant != "search" && (
-          <div className={`flex justify-end absolute right-3 top-3`}>
-            <button
-              className={`p-1 text-alabaster-100`}
-              onClick={(e) => props?.onRequestClose?.(e)}
-              data-testid="close-modal"
-            >
-              <PlusIcon className="rotate-45 transform" />
-            </button>
+    <AnimatePresence mode="wait">
+      <ReactModal
+        shouldCloseOnEsc
+        shouldFocusAfterRender
+        style={customStyles[variant]}
+        {...props}
+      >
+        <div className={`flex flex-col w-full`}>
+          {variant != "search" && (
+            <div className={`flex justify-end absolute right-3 top-3`}>
+              <button
+                className={`p-1 text-alabaster-100`}
+                onClick={(e) => props?.onRequestClose?.(e)}
+                data-testid="close-modal"
+              >
+                <PlusIcon className="rotate-45 transform" />
+              </button>
+            </div>
+          )}
+          <div
+            tabIndex={-1}
+            className={`focus:outline-none`}
+            onKeyDown={onKeyDown}
+          >
+            {children}
           </div>
-        )}
-        <div
-          tabIndex={-1}
-          className={`focus:outline-none`}
-          onKeyDown={onKeyDown}
-        >
-          {children}
         </div>
-      </div>
-    </ReactModal>
+      </ReactModal>
+    </AnimatePresence>
   );
 };

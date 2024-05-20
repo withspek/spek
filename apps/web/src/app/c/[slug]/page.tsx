@@ -2,7 +2,8 @@ import { baseUrl } from "@/utils/constants";
 import { defaultQueryFn } from "@/utils/defaultQueryFn";
 import { Metadata, ResolvingMetadata } from "next";
 import { CommunityPageController } from "./controller";
-import { Header } from "@/components/Header";
+import { MainLayout } from "@spek/ui";
+import { LeftPanel } from "@/components/Panels";
 
 type Props = {
   params: { slug: string };
@@ -42,9 +43,9 @@ export async function generateMetadata(
 
 export default async function CommunityPage({ params }: Props) {
   return (
-    <>
-      <Header />
+    <MainLayout leftPanel={<LeftPanel />}>
       <CommunityPageController slug={params.slug} />
-    </>
+      <div />
+    </MainLayout>
   );
 }

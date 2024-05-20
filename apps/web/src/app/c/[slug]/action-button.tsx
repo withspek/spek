@@ -1,6 +1,6 @@
 import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 import { useTypeSafeUpdateQuery } from "@/hooks/useTypeSafeUpdateQuery";
-import { Button } from "@/ui/button";
+import { Button } from "@spek/ui";
 import { CommunityWithPermissions, User } from "@spek/client";
 import { useRouter } from "next/navigation";
 

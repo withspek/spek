@@ -2,6 +2,8 @@ import { defaultQueryFn } from "@/utils/defaultQueryFn";
 import { UserDm } from "@spek/client";
 import { Metadata, ResolvingMetadata } from "next";
 import { DmPageController } from "./controller";
+import { MainLayout } from "@spek/ui";
+import { LeftPanel } from "@/components/Panels";
 
 type Props = {
   params: { id: string };
@@ -20,8 +22,9 @@ export async function generateMetadata(
 
 export default function DmPage({ params }: Props) {
   return (
-    <>
+    <MainLayout leftPanel={<LeftPanel />}>
       <DmPageController dmId={params.id} />
-    </>
+      <div />
+    </MainLayout>
   );
 }

@@ -1,8 +1,7 @@
 import { useRouter } from "next/navigation";
 import { useTokenStore } from "@/stores/useTokenStore";
-import { Button } from "@/ui/button";
+import { Button } from "@spek/ui";
 import { User } from "@spek/client";
-// import { Avatar } from "@/ui/avatar";
 import { useState } from "react";
 import { EditProfileModal } from "./EditProfileModal";
 import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
@@ -43,6 +42,7 @@ export const UserProfileWrapper: React.FC<UserProfileWrapperProps> = ({
                 .setTokens({ accessToken: "", refreshToken: "" });
               push("/logout");
             }}
+            color="destructive"
           >
             Logout
           </Button>

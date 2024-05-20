@@ -1,7 +1,8 @@
-import { Header } from "@/components/Header";
 import { defaultQueryFn } from "@/utils/defaultQueryFn";
 import { Metadata } from "next";
 import { ChannelPageController } from "./controller";
+import { MainLayout } from "@spek/ui";
+import { LeftPanel } from "@/components/Panels";
 
 interface Props {
   params: { channelId: string; slug: string };
@@ -20,12 +21,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default function ChannelPage({ params }: Props) {
   return (
-    <>
-      <Header />
+    <MainLayout leftPanel={<LeftPanel />}>
       <ChannelPageController
         communitySlug={params.slug}
         channelId={params.channelId}
       />
-    </>
+      <div />
+    </MainLayout>
   );
 }
