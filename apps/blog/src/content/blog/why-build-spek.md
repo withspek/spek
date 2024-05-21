@@ -1,6 +1,7 @@
 ---
 title: Why build spek?
-excerpt: In recent years, the way we work has undergone a significant transformation, largely due to advancements in technology and changing attitudes toward work-life balance. One of the most notable changes has been the rise of remote work, allowing employees to work from the comfort of their own homes.
+excerpt: I’ve been in large communities on platforms like Discord and Slack for years, and it was not the best experience whenever the communities start growing for example discussions with hundreds and thousands of people who contribute from all around the world.
+Even when everything is as carefully organized as can be things start to break down as these groups grow
 publishDate: 'May 19 2024'
 isFeatured: true
 tags:
