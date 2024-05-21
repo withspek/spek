@@ -2,7 +2,7 @@ import { User } from "@spek/client";
 import React, { useRef, useState } from "react";
 
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
-import { Avatar } from "@/ui/avatar";
+import { Avatar } from "@spek/ui";
 import { format } from "date-fns";
 import { useConn } from "@/hooks/useConn";
 
@@ -47,15 +47,19 @@ const Page = React.forwardRef(
       <>
         {data.messages.map((m) => (
           <div key={m.id} className={`flex gap-4 px-3 py-4`}>
-            <Avatar src={m.user.avatarUrl} size="md" isOnline={m.user.online} />
+            <Avatar
+              imageSrc={m.user.avatarUrl}
+              size="md"
+              alt={m.user.username}
+            />
             <div>
-              <p>
+              <p className="text-sm">
                 {m.user.displayName}{" "}
-                <span className="text-alabaster-500">
+                <span className="text-primary-700">
                   {format(new Date(m.inserted_at), "dd/MM/yy H:mm a")}
                 </span>
               </p>
-              <p className="text-alabaster-300">{m.text}</p>
+              <p className="text-primary-800 text-sm">{m.text}</p>
             </div>
           </div>
         ))}

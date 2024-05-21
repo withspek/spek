@@ -37,7 +37,7 @@ export const TabsTitles: React.FC<TabTitleProps> = ({ titles }) => {
             setCurrentIndex(index);
           }}
           className={`mb-3 bg-alabaster-700 px-3 ${
-            currentIndex === index ? "bg-alabaster-950" : ""
+            currentIndex === index ? "border-b border-primary-900" : ""
           }`}
         >
           {title}

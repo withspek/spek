@@ -14,6 +14,7 @@
     "@artsy/fresnel": "^7.1.4",
     "@spek/client": "workspace:*",
     "@spek/ui": "workspace:*",
+    "@spek/lib": "workspace:*",
     "@tanstack/react-virtual": "^3.2.0",
     "@tsparticles/engine": "^3.4.0",
     "@tsparticles/react": "^3.0.0",

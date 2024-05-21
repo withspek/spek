@@ -5,7 +5,7 @@ import { WebSocketWrapper } from "@/components/WebSocketWrapper";
 import { WaitForConn } from "@/components/check-auth";
 import { ConnnectionContextProvider } from "@/contexts/ConnectionContext";
 import { queryClient } from "@/utils/queryClient";
-import { TooltipProvider } from "@spek/ui";
+import { TooltipProvider, Toaster } from "@spek/ui";
 import ReactModal from "react-modal";
 import { QueryClientProvider } from "react-query";
 
@@ -25,6 +25,7 @@ export const Providers: React.FC<Props> = ({ children }) => {
               <TooltipProvider>
                 {children}
                 <ConfirmModal />
+                <Toaster id={"toaster"} />
               </TooltipProvider>
             </WebSocketWrapper>
           </WaitForConn>

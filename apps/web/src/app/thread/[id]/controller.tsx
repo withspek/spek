@@ -4,15 +4,17 @@ import React from "react";
 import Link from "next/link";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
+import { Avatar, toast } from "@spek/ui";
+import { WEBAPP_URL } from "@spek/lib/constants";
 
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { MessageInput } from "@/components/thread/MessageInput";
 import { MessagesList } from "@/components/thread/MessagesList";
 import { LinkIcon, NotificationIcon, PlusIcon } from "@/icons";
-import { Avatar } from "@/ui/avatar";
 import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 import { useConn } from "@/hooks/useConn";
 import { useTypeSafeUpdateQuery } from "@/hooks/useTypeSafeUpdateQuery";
+import { copyTextToClipboard } from "@/utils/copyToClipboard";
 
 interface ThreadPageControllerProps {
   threadId: string;
@@ -47,14 +49,14 @@ export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
 
   return (
     <div className="flex flex-col gap-3 h-full">
-      <div className="bg-background z-20 backdrop-blur-md sticky top-0 py-3">
+      <div className="z-20 backdrop-blur-md sticky top-0 py-3">
         <div className="flex justify-between items-center">
           <div className="flex gap-4 mt-4">
             <Link href={`/u/${data?.creator.id}`}>
               <Avatar
-                src={data?.creator.avatarUrl!}
-                size="md"
-                isOnline={data?.creator.online}
+                imageSrc={data?.creator.avatarUrl!}
+                size="mdLg"
+                alt={data?.creator.username!}
               />
             </Link>
             <div>
@@ -77,7 +79,7 @@ export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
             <button
               disabled={subscribeLoading || unsubscribeLoading}
               type="button"
-              className="flex gap-2 items-center bg-alabaster-900 py-1 px-2 rounded-md"
+              className="flex gap-2 items-center bg-primary-900 text-primary-50 py-1 px-2 rounded-md"
               onClick={async () => {
                 if (data?.youSubscribed) {
                   const resp = await unsubscribe([threadId]);
@@ -112,7 +114,7 @@ export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
           ) : (
             <button
               type="button"
-              className="flex gap-2 items-center bg-alabaster-900 py-1 px-2 rounded-md"
+              className="flex gap-2 items-center bg-primary-900 text-primary-50 py-1 px-2 rounded-md"
               onClick={() => {
                 router.push(`/?next=/thread/${data?.id}`);
               }}
@@ -122,7 +124,14 @@ export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
             </button>
           )}
           <div className="cursor-pointer">
-            <LinkIcon />
+            <span
+              onClick={() => {
+                copyTextToClipboard(`${WEBAPP_URL}/thread/${data?.id}`);
+                toast("Text copied successfully");
+              }}
+            >
+              <LinkIcon />
+            </span>
           </div>
         </div>
       </div>
