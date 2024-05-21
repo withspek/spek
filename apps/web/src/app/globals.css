@@ -46,6 +46,12 @@ h3 {
   --color-secondary-700: #a21caf;
   --color-secondary-800: #86198f;
   --color-secondary-900: #701a75;
+
+  --screen-height-reduction: 0px;
+}
+
+.h-screen {
+  height: calc(100vh - var(--screen-height-reduction));
 }
 
 body {
@@ -59,6 +65,32 @@ body {
   width: 100%;
   height: 100%;
   display: flex;
+}
+
+html {
+  position: fixed;
+}
+
+/* for firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary-700) rgba(0, 0, 0, 0);
+}
+
+/* for non-firefox */
+::-webkit-scrollbar {
+  overflow: overlay;
+  width: 8px;
+  /* shouldnt hardcode width, pls find way to make it dynamic, thin wasn't working for me...*/
+}
+
+::-webkit-scrollbar-track {
+  display: initial;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary-700);
+  border-radius: 5px;
 }
 
 @layer utilities {

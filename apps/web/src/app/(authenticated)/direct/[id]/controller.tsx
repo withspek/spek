@@ -30,7 +30,7 @@ export const DmPageController: React.FC<Props> = ({ dmId }) => {
 
   return (
     <div className="flex flex-col gap-3 h-full">
-      <div className="flex justify-between items-center bg-background sticky top-0 py-3">
+      <div className="flex justify-between items-center bg-primary-50 z-50 sticky top-0 py-3">
         <div className="flex gap-3 items-center">
           <div className="flex -space-x-4 rtl:space-x-reverse">
             {data?.peoplePreviewList
