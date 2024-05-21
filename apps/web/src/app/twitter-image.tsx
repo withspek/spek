@@ -17,16 +17,17 @@ export default async function Image() {
       <div
         style={{
           fontSize: 128,
-          background: "#222326",
+          background: "#111827",
           width: "100%",
           color: "white",
           height: "100%",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          padding: 30,
         }}
       >
-        Real-time public communities
+        Public developer communities
       </div>
     ),
     // ImageResponse options
