@@ -1,4 +1,4 @@
-export const AVATAR_FALLBACK = "/avatar.jpg";
+export const AVATAR_FALLBACK = "https://avatar.vercel.sh";
 export const PROD = process.env.NODE_ENV === "production";
 
 export const WEBAPP_URL = PROD

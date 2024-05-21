@@ -3,6 +3,7 @@ import { UserDm } from "@spek/client";
 import { useTypeSafePrefetch } from "@/hooks/useTypeSafePrefetch";
 import { useRouter } from "next/navigation";
 import { useConn } from "@/hooks/useConn";
+import { Avatar } from "@spek/ui";
 
 interface Props {
   conversations: UserDm[];
@@ -30,16 +31,11 @@ export const ConversationsList: React.FC<Props> = ({ conversations }) => {
               {c.peoplePreviewList
                 .filter((u) => u.id !== user.id)
                 .map((p) => (
-                  <div className="relative" key={p.id}>
-                    <img
-                      className="w-10 h-10 border-2 border-alabaster-300 rounded-full"
-                      src={p.avatarUrl}
-                      alt={p.displayName}
-                    />
-                    {p.online ? (
-                      <span className="bottom-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
-                    ) : null}
-                  </div>
+                  <Avatar
+                    key={p.id}
+                    alt={p.displayName}
+                    imageSrc={p.avatarUrl}
+                  />
                 ))}
             </div>
             <div>

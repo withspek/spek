@@ -83,7 +83,11 @@ export function Avatar(props: AvatarProps) {
             {props.fallback ? (
               props.fallback
             ) : (
-              <img src={AVATAR_FALLBACK} alt={alt} className={rootClass} />
+              <img
+                src={`${AVATAR_FALLBACK}/${alt}`}
+                alt={alt}
+                className={rootClass}
+              />
             )}
           </>
         </AvatarPrimitive.Fallback>
