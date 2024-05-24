@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { Channel, CommunityWithPermissions } from "@spek/client";
 
 import { EditForm } from "./EditForm";
-import { Button } from "@/ui/button";
+import { Button } from "@spek/ui";
 import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 import { confirmModal } from "../ConfirmModal";
 
@@ -23,7 +23,6 @@ export const Overview: React.FC<OverviewProps> = ({ community }) => {
       <EditForm community={community} />
       <h3>Danger zone</h3>
       <Button
-        color="primary"
         loading={deleteLoading}
         onClick={() => {
           confirmModal(

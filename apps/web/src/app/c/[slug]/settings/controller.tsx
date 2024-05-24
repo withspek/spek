@@ -9,7 +9,7 @@ import { Overview } from "@/components/communitySettings/Overview";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import Tabs, { TabsContents, TabsTitles } from "@/ui/tabs";
 import { MembersList } from "@/components/community/members-list";
-import { Button } from "@/ui/button";
+import { Button } from "@spek/ui";
 import { CreateChannelModal } from "@/components/communitySettings/CreateChannelModal";
 
 interface PageControllerProps {
@@ -60,9 +60,7 @@ export const PageController: React.FC<PageControllerProps> = ({ slug }) => {
             {
               content: (
                 <>
-                  <Button size="sm" onClick={() => setOpen(!open)}>
-                    Create
-                  </Button>
+                  <Button onClick={() => setOpen(!open)}>Create</Button>
                   <ChannelsList
                     channels={data.channels}
                     community={data.community}

@@ -1,6 +1,6 @@
 import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 import { useTypeSafeUpdateQuery } from "@/hooks/useTypeSafeUpdateQuery";
-import { Button } from "@/ui/button";
+import { Button } from "@spek/ui";
 import { InputField } from "@/ui/form-field";
 import { CommunityWithPermissions } from "@spek/client";
 import { Formik } from "formik";
