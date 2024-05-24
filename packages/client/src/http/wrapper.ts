@@ -16,6 +16,7 @@ import { GetTopCommunitiesResponse } from "./responses";
 export const wrap = (connection: Connection) => ({
   query: {
     getUsers: (): Promise<User[]> => connection.send("/dev", "GET"),
+    getAllUsers: (): Promise<User[]> => connection.send("/admin", "GET"),
     getCommunity: (
       slug: string
     ): Promise<{ community: CommunityWithPermissions; channels: Channel[] }> =>
