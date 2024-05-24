@@ -27,6 +27,7 @@ export default function AdminPage() {
           <div>
             <p className="text-primary-50">{d.username}</p>
             <p className="text-primary-200">{d.bio}</p>
+            <p className="text-primary-400">&gt;{d.email}</p>
           </div>
         </Link>
       ))}
