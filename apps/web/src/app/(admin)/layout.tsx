@@ -10,12 +10,15 @@ import { useEffect } from "react";
 
 const Header: React.FC = () => {
   return (
-    <div className="flex gap-4 mb-5 mt-3">
+    <div className="flex gap-6 mb-5 mt-3">
       <Link href={"/admin"}>
         <HomeIcon />
       </Link>
-      <Link href={"/users"}>
+      <Link href={"/communities"}>
         <Icon name="users" />
+      </Link>
+      <Link href={"/logs"}>
+        <Icon name="book" />
       </Link>
     </div>
   );
