@@ -73,7 +73,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
           isConnecting.current = false;
         });
     }
-  }, [conn, shouldConnect, hasTokens, replace]);
+  }, [conn, shouldConnect, hasTokens, replace, setUser]);
 
   useEffect(() => {
     if (!conn) {

@@ -36,7 +36,7 @@ export default function AuthenticatedLayout({
     if (user.username !== "irere123" && prod) {
       replace("/home");
     }
-  }, []);
+  }, [replace, user]);
 
   if (user.username !== "irere123" && prod) {
     return null;

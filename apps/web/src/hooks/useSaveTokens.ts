@@ -41,5 +41,5 @@ export const useSaveTokens = () => {
         setTimeout(() => push(nextPath), 100);
       } catch {}
     }
-  }, [params]);
+  }, [errorParam, accessTokenParam, refreshTokenParam, push]);
 };
