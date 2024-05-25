@@ -22,12 +22,14 @@ export default function AdminPage() {
           <Avatar
             imageSrc={d.avatarUrl}
             alt={d.displayName}
-            title={d.username}
+            title={d.displayName}
           />
           <div>
-            <p className="text-primary-50">{d.username}</p>
+            <p className="text-primary-50">
+              {d.username} - {d.online ? "Online" : "Offline"}
+            </p>
             <p className="text-primary-200">{d.bio}</p>
-            <p className="text-primary-400">&gt;{d.email}</p>
+            {d.email && <p className="text-primary-400">&gt;{d.email}</p>}
           </div>
         </Link>
       ))}

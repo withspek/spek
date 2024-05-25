@@ -11,7 +11,7 @@ export default function AdminCommunities() {
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       {data?.map((d) => (
         <Link
           href={`/u/${d.id}`}
@@ -19,8 +19,8 @@ export default function AdminCommunities() {
           className="flex gap-4 bg-primary-800 px-3 py-4 rounded-lg"
         >
           <div>
-            <p>{d.name}</p>
-            <p>{d.memberCount}</p>
+            <p className="text-primary-100">{d.name}</p>
+            <p className="text-primary-100">{d.memberCount}</p>
           </div>
         </Link>
       ))}
