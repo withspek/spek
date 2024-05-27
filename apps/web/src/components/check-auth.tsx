@@ -3,7 +3,6 @@
 import ConnectionContext from "@/contexts/ConnectionContext";
 import { useVerifyLoggedIn } from "@/hooks/useVerifyLoggedIn";
 import React, { useContext } from "react";
-import { CenterLoader } from "./CenterLoader";
 import { Spinner } from "@spek/ui";
 
 interface AuthenticatedProps {
