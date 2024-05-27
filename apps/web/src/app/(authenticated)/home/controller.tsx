@@ -4,6 +4,7 @@ import React from "react";
 
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { useRouter } from "next/navigation";
+import { Badge } from "@spek/ui";
 
 interface ControllerProps {}
 
@@ -22,15 +23,14 @@ export const HomeController: React.FC<ControllerProps> = () => {
         {data?.communities.map((c) => (
           <div
             key={c.id}
-            className="flex flex-col bg-alabaster-950 border border-alabaster-600 px-5 py-4 cursor-pointer rounded-lg"
+            className="flex flex-col bg-primary-800 hover:bg-primary-950 px-5 py-4 cursor-pointer rounded-lg"
             onClick={() => push(`c/${c.slug}`)}
           >
-            <p className="font-bold">{c.name}</p>
-            <p>{c.description}</p>
-            <p className="text-alabaster-600">
-              <span className="text-alabaster-100">{c.memberCount}</span>{" "}
-              members
-            </p>
+            <div className="flex w-full justify-between">
+              <p className="font-bold uppercase">{c.name}</p>
+              <Badge withDot={true}>{c.memberCount} people</Badge>
+            </div>
+            <p className="text-primary-300">{c.description}</p>
           </div>
         ))}
       </div>

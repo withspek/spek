@@ -29,6 +29,7 @@ h3 {
   --color-primary-700: #374151;
   --color-primary-800: #1f2937;
   --color-primary-900: #111827;
+  --color-primary-950: #020617;
 
   /* Accent color */
   --color-accent: #14b8a6;
@@ -55,8 +56,8 @@ h3 {
 }
 
 body {
-  background-color: var(--color-primary-50);
-  color: var(--color-primary-900);
+  background-color: var(--color-primary-950);
+  color: var(--color-primary-100);
   margin: 0;
 }
 
@@ -74,7 +75,7 @@ html {
 /* for firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-primary-700) rgba(0, 0, 0, 0);
+  scrollbar-color: var(--color-primary-400) rgba(0, 0, 0, 0);
 }
 
 /* for non-firefox */

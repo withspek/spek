@@ -15,7 +15,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       className="grid w-full h-full justify-center min-h-screen overflow-y-auto"
       style={{ gridTemplateColumns: "minmax(60px, 200px) 760px 300px" }}
     >
-      <div className="flex bg-primary-50 justify-center sticky top-0 h-screen">
+      <div className="flex justify-center sticky top-0 h-screen">
         {leftPanel}
       </div>
       {children}

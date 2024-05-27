@@ -50,6 +50,7 @@ const config: Config = {
         700: "var(--color-primary-700)",
         800: "var(--color-primary-800)",
         900: "var(--color-primary-900)",
+        950: "var(--color-primary-950)",
       },
       secondary: {
         50: "var(--color-secondary-50)",
