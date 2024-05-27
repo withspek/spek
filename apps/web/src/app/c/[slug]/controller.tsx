@@ -9,6 +9,7 @@ import { ActionButton } from "./action-button";
 import { SettingsIcon } from "@/icons";
 import { useRouter } from "next/navigation";
 import { ChannelsList } from "@/components/community/ChannelsList";
+import { CenterLoader } from "@/components/CenterLoader";
 
 interface Props {
   slug: string;
@@ -22,7 +23,7 @@ export const CommunityPageController: React.FC<Props> = ({ slug }: Props) => {
   ]);
 
   if (isLoading || !data) {
-    return <div>loading...</div>;
+    return <CenterLoader />;
   }
 
   const channel = data.channels.find((c) => c.isDefault == true);

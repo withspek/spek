@@ -1,5 +1,6 @@
 "use client";
 
+import { CenterLoader } from "@/components/CenterLoader";
 import { confirmModal } from "@/components/ConfirmModal";
 import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
@@ -62,7 +63,7 @@ export const SettingsPageController: React.FC<SettingsPageControllerProps> = ({
   const update = useTypeSafeUpdateQuery();
 
   if (isLoading || !data) {
-    return <div>loading...</div>;
+    return <CenterLoader />;
   }
 
   if (!data.channel.isAdmin) {

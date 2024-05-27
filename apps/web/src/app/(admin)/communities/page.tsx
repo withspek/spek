@@ -1,13 +1,15 @@
 "use client";
 
-import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import Link from "next/link";
+
+import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
+import { CenterLoader } from "@/components/CenterLoader";
 
 export default function AdminCommunities() {
   const { data, isLoading } = useTypeSafeQuery("getAllCommnunities");
 
   if (isLoading) {
-    return <div>loading...</div>;
+    return <CenterLoader />;
   }
 
   return (

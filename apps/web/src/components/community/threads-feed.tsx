@@ -6,6 +6,7 @@ import { CreateInput } from "./create-input";
 import { AvatarGroup } from "@/ui/avatar-group";
 import { useRouter } from "next/navigation";
 import { useTypeSafePrefetch } from "@/hooks/useTypeSafePrefetch";
+import { CenterLoader } from "../CenterLoader";
 
 interface ThreadsFeedProps {
   communityId: string;
@@ -30,7 +31,7 @@ export const ThreadsFeed: React.FC<ThreadsFeedProps> = ({
   const prefetch = useTypeSafePrefetch();
 
   if (isLoading) {
-    return <div>loading..</div>;
+    return <CenterLoader />;
   }
 
   return (

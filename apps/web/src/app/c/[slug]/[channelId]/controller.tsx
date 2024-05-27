@@ -1,5 +1,6 @@
 "use client";
 
+import { CenterLoader } from "@/components/CenterLoader";
 import { ThreadsFeed } from "@/components/community/threads-feed";
 import { useConn } from "@/hooks/useConn";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
@@ -23,7 +24,7 @@ export const ChannelPageController: React.FC<ChannelPageControllerProps> = ({
   );
 
   if (isLoading || !data) {
-    return null;
+    return <CenterLoader />;
   }
 
   return (

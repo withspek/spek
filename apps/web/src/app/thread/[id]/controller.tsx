@@ -15,6 +15,7 @@ import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 import { useConn } from "@/hooks/useConn";
 import { useTypeSafeUpdateQuery } from "@/hooks/useTypeSafeUpdateQuery";
 import { copyTextToClipboard } from "@/utils/copyToClipboard";
+import { CenterLoader } from "@/components/CenterLoader";
 
 interface ThreadPageControllerProps {
   threadId: string;
@@ -37,8 +38,7 @@ export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
   const updateQuery = useTypeSafeUpdateQuery();
 
   if (isLoading) {
-    // TODO: make this better
-    return <div>loading...</div>;
+    return <CenterLoader />;
   }
 
   if (!data) {

@@ -1,14 +1,16 @@
 "use client";
 
-import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
-import { Avatar } from "@spek/ui";
 import Link from "next/link";
+import { Avatar } from "@spek/ui";
+
+import { CenterLoader } from "@/components/CenterLoader";
+import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 
 export default function AdminPage() {
   const { data, isLoading } = useTypeSafeQuery("getAllUsers");
 
   if (isLoading) {
-    return <div>loading...</div>;
+    return <CenterLoader />;
   }
 
   return (

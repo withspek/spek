@@ -5,6 +5,7 @@ import React from "react";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { ThreadCard } from "@spek/ui";
 import Link from "next/link";
+import { CenterLoader } from "@/components/CenterLoader";
 
 interface ControllerProps {}
 
@@ -12,7 +13,7 @@ export const HomeController: React.FC<ControllerProps> = () => {
   const { data, isLoading } = useTypeSafeQuery("getTopActiveThreads");
 
   if (isLoading) {
-    return <div>loading....</div>;
+    return <CenterLoader />;
   }
 
   return (
