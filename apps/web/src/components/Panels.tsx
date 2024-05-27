@@ -1,12 +1,6 @@
 "use client";
 import { useConn } from "@/hooks/useConn";
-import {
-  HomeIcon,
-  InboxIcon,
-  NotificationIcon,
-  PlusIcon,
-  SearchIcon,
-} from "@/icons";
+import { HomeIcon, InboxIcon, PlusIcon, SearchIcon } from "@/icons";
 import { Modal } from "@/ui/modal";
 import { Avatar, Tooltip } from "@spek/ui";
 import Link from "next/link";

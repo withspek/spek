@@ -3,14 +3,12 @@
 import React from "react";
 
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
-import { useRouter } from "next/navigation";
 import { ThreadCard } from "@spek/ui";
 import Link from "next/link";
 
 interface ControllerProps {}
 
 export const HomeController: React.FC<ControllerProps> = () => {
-  const { push } = useRouter();
   const { data, isLoading } = useTypeSafeQuery("getTopActiveThreads");
 
   if (isLoading) {
