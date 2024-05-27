@@ -17,6 +17,19 @@ defmodule Models.Community do
     end
   end
 
+  defmodule Preview do
+    use Ecto.Schema
+
+    @derive {Jason.Encoder, only: ~w(id name description slug)a}
+    @primary_key false
+    embedded_schema do
+      field(:id, :binary_id)
+      field(:name, :string)
+      field(:description, :string)
+      field(:slug, :string)
+    end
+  end
+
   @derive {Jason.Encoder,
            only:
              ~w(id name slug description coverPhoto isAdmin isMod isMember isBlocked isPrivate memberCount membersOnlineCount peoplePreviewList)a}

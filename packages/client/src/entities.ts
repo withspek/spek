@@ -70,6 +70,20 @@ export type Thread = {
   inserted_at: string;
 };
 
+export type TopThread = {
+  id: string;
+  name: string;
+  messageCount: string;
+  creator: {
+    id: string;
+    displayName: string;
+    avatarUrl: string;
+  };
+  peoplePreviewList: UserPreview[];
+  community: { id: string; name: string };
+  channel: { id: string; name: string; description: string; slug: string };
+};
+
 export type Message = {
   id: string;
   text: string;

@@ -16,18 +16,23 @@ export interface ThreadCardProps {
     alt?: string;
     href?: string | null;
   }[];
+  onClick?: () => void;
 }
 
 export const ThreadCard: React.FC<ThreadCardProps> = ({
   avatars,
   conversation,
+  onClick,
 }) => {
   const message =
     conversation.messageCount > 1
       ? `${conversation.messageCount} messages`
       : `${conversation.messageCount} message`;
   return (
-    <div className="border-b border-primary-200">
+    <div
+      className="border-b border-primary-700 cursor-pointer"
+      onClick={onClick}
+    >
       <div className="flex gap-2">
         <p className="uppercase">{conversation.communityName}</p>
         <Badge>{conversation.channelName}</Badge>

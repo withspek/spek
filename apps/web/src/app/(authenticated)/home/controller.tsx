@@ -4,13 +4,14 @@ import React from "react";
 
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { useRouter } from "next/navigation";
-import { Badge } from "@spek/ui";
+import { ThreadCard } from "@spek/ui";
+import Link from "next/link";
 
 interface ControllerProps {}
 
 export const HomeController: React.FC<ControllerProps> = () => {
   const { push } = useRouter();
-  const { data, isLoading } = useTypeSafeQuery("getTopCommunities");
+  const { data, isLoading } = useTypeSafeQuery("getTopActiveThreads");
 
   if (isLoading) {
     return <div>loading....</div>;
@@ -20,18 +21,22 @@ export const HomeController: React.FC<ControllerProps> = () => {
     <div className="flex flex-col flex-1">
       <h2>Feed</h2>
       <div className="flex flex-col gap-4 mt-3">
-        {data?.communities.map((c) => (
-          <div
-            key={c.id}
-            className="flex flex-col bg-primary-800 hover:bg-primary-950 px-5 py-4 cursor-pointer rounded-lg"
-            onClick={() => push(`c/${c.slug}`)}
-          >
-            <div className="flex w-full justify-between">
-              <p className="font-bold uppercase">{c.name}</p>
-              <Badge withDot={true}>{c.memberCount} people</Badge>
-            </div>
-            <p className="text-primary-300">{c.description}</p>
-          </div>
+        {data?.map((thread) => (
+          <Link key={thread.id} href={`/thread/${thread.id}`}>
+            <ThreadCard
+              avatars={thread.peoplePreviewList.map((p) => ({
+                image: p.avatarUrl,
+                alt: p.displayName,
+              }))}
+              conversation={{
+                channelName: thread.channel.name,
+                communityName: thread.community.name,
+                description: thread.name,
+                messageCount: 21,
+                name: thread.name,
+              }}
+            />
+          </Link>
         ))}
       </div>
     </div>

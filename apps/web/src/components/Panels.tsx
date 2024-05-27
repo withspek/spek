@@ -45,14 +45,6 @@ export const LeftPanel: React.FC = () => {
         </Link>
 
         <Link
-          className={`${pathname == "/notifications" ? "text-accent" : ""}`}
-          href={"/notifications"}
-        >
-          <Tooltip content={"Notifications"} placement="right">
-            <NotificationIcon />
-          </Tooltip>
-        </Link>
-        <Link
           className={`${pathname == "/new/community" ? "text-accent" : ""}`}
           href={"/new/community"}
         >

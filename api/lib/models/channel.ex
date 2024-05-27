@@ -4,6 +4,17 @@ defmodule Models.Channel do
   use Ecto.Schema
   import Ecto.Changeset
 
+  defmodule Preview do
+    use Ecto.Schema
+
+    @derive {Jason.Encoder, only: ~w(id name)a}
+    @primary_key false
+    embedded_schema do
+      field(:id, :binary_id)
+      field(:name, :string)
+    end
+  end
+
   @derive {Jason.Encoder,
            only:
              ~w(id name slug description community isPrivate isDefault isMember isAdmin memberCount)a}

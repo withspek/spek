@@ -168,6 +168,13 @@ defmodule Routes.Threads do
     end
   end
 
+  get "/get/all" do
+    threads = Channels.get_top_active_threads()
+
+    conn
+    |> send_resp(200, Jason.encode!(threads))
+  end
+
   post "/subscribe" do
     has_user_id = Map.has_key?(conn.assigns, :user_id)
 

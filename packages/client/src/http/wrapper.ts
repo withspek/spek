@@ -7,6 +7,7 @@ import {
   Message,
   SearchReponse,
   Thread,
+  TopThread,
   User,
   UserDm,
 } from "../entities";
@@ -37,6 +38,8 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/threads/all/${channelId}`, "GET"),
     getThread: (threadId: string): Promise<Thread> =>
       connection.send(`/threads/${threadId}`, "GET"),
+    getTopActiveThreads: (): Promise<TopThread[]> =>
+      connection.send(`/threads/get/all`, "GET"),
     getDm: (dmId: string): Promise<UserDm> =>
       connection.send(`/dms/${dmId}`, "GET"),
     getThreadMessages: (

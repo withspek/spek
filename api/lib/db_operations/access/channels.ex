@@ -1,10 +1,10 @@
 defmodule Operations.Access.Channels do
   import Ecto.Query, warn: false
 
-  alias Models.Channel
   alias Models.Message
+  alias Models.Community
+  alias Models.Channel
   alias Models.Subscriber
-  alias Models.User
   alias Models.User
   alias Models.ChannelMember
   alias Models.Thread
@@ -51,13 +51,39 @@ defmodule Operations.Access.Channels do
 
   def get_top_active_threads() do
     # select * from threads as t left join messages as m on t.id=m.threadId left join channels as c on c.id=t.channelId order by d.
-    from(t in Thread,
-      left_join: m in Message,
-      on: t.id == m.threadId,
-      left_join: c in Channel,
-      on: c.id == t.channelId
-    )
-    |> Repo.all()
+    threads =
+      from(t in Thread,
+        left_join: c in Channel,
+        on: c.id == t.channelId,
+        left_join: co in Community,
+        on: co.id == t.communityId,
+        join: u in User,
+        on: u.id == t.creatorId,
+        left_join: m in Message,
+        on: m.threadId == t.id,
+        order_by: m.inserted_at,
+        select: %Thread.Preview{
+          id: t.id,
+          name: t.name,
+          channel: %Channel.Preview{id: c.id, name: c.name},
+          peoplePreviewList: t.peoplePreviewList,
+          community: %Community.Preview{
+            id: co.id,
+            name: co.name,
+            description: co.description,
+            slug: co.slug
+          },
+          creator: %User.Preview{
+            id: u.id,
+            avatarUrl: u.avatarUrl,
+            bio: u.bio,
+            displayName: u.displayName
+          }
+        }
+      )
+      |> Repo.all()
+
+    threads
   end
 
   def get_threads_by_channel_id(id) do
