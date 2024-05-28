@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@spek/ui";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -30,10 +31,10 @@ export default function ErrorPage({
   }
 
   return (
-    <div>
+    <div className="flex justify-center items-center">
       <p>{error}</p>
-      <button onClick={() => reset()}>Try again</button>
-      <button onClick={() => push("/home")}>Go Home</button>
+      <Button onClick={() => reset()}>Try again</Button>
+      <Button onClick={() => push("/home")}>Go Home</Button>
     </div>
   );
 }

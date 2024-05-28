@@ -47,13 +47,16 @@ const Page: React.FC<PageProps> = ({
   return (
     <>
       {data.messages.map((m, idx) => (
-        <div key={idx} className={`flex items-center px-3 py-4 gap-3`}>
+        <div
+          key={idx}
+          className={`flex flex-1 items-center px-3 rounded-md py-4 gap-3`}
+        >
           <Avatar src={m.user.avatarUrl} size={"sm"} isOnline={m.user.online} />
           <div className="flex flex-col gap-1">
             <p className="font-bold">
               {m.user.displayName}
               <span className="font-normal ml-3">
-                {format(new Date(m.user.inserted_at), "dd/H:mm a")}
+                {format(new Date(m.user.inserted_at), "MMM dd HH:mm a")}
               </span>
             </p>
             <p>{m.text}</p>

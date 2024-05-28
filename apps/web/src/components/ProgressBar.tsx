@@ -32,7 +32,7 @@ export const ProgressBar = ({
   zIndex = 1600,
   showAtBottom = false,
 }: LoaderProps): JSX.Element => {
-  const defaultColor = "var(--color-primary-900)";
+  const defaultColor = "var(--color-primary-300)";
   const defaultHeight = 3;
 
   const color = propColor ?? defaultColor;

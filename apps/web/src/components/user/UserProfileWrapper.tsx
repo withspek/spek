@@ -28,7 +28,10 @@ export const UserProfileWrapper: React.FC<UserProfileWrapperProps> = ({
         accepted={true}
         size="xl"
       />
-      <p className="text-xl font-bold">{user.displayName}</p>
+      <div>
+        <p className="text-xl font-bold">{user.displayName}</p>
+        <p>@{user.username}</p>
+      </div>
       <p>{user.bio}</p>
       {currentUser && currentUser.id === user.id ? (
         <div className="flex gap-4">

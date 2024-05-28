@@ -31,13 +31,13 @@ export const DmPageController: React.FC<Props> = ({ dmId }) => {
 
   return (
     <div className="flex flex-col gap-3 h-full">
-      <div className="flex justify-between items-center bg-primary-50 z-50 sticky top-0 py-3">
+      <div className="flex justify-between items-center bg-primary-950 z-50 sticky top-0 py-3">
         <div className="flex gap-3 items-center">
           <div className="flex -space-x-4 rtl:space-x-reverse">
             {data?.peoplePreviewList
               .filter((p) => user.id !== p.id)
               .map((p) => (
-                <Avatar key={p.id} alt={p.avatarUrl} imageSrc={p.avatarUrl} />
+                <Avatar key={p.id} alt={p.displayName} imageSrc={p.avatarUrl} />
               ))}
           </div>
           <p className="font-bold">

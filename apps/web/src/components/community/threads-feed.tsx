@@ -50,10 +50,14 @@ export const ThreadsFeed: React.FC<ThreadsFeedProps> = ({
               router.push(`/thread/${thread.id}`);
             }}
           >
-            <div className="bg-alabaster-950 border-alabaster-500 border px-3 py-5 rounded-lg">
-              <p>{thread.name}</p>
-              <p>{format(thread.inserted_at, "MMMM d, hh:mm a")}</p>
-              <AvatarGroup srcArray={avatarSrc} />
+            <div className="bg-alabaster-950 px-3 py-5 rounded-lg">
+              <div className="flex flex-1 justify-between mb-2">
+                <p>{thread.name}</p>
+                <AvatarGroup srcArray={avatarSrc} />
+              </div>
+              <p className="text-sm text-primary-400">
+                {format(thread.inserted_at, "MMMM d, hh:mm a")}
+              </p>
             </div>
           </div>
         );

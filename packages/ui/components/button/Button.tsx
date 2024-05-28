@@ -7,21 +7,18 @@ const buttonClasses = cva("rounded-md flex gap-2 items-center", {
   variants: {
     color: {
       primary: [
-        "border",
         "bg-primary-900",
         "text-primary-100",
         "hover:bg-primary-800 disabled:bg-primary-700",
         "focus:ring-2 focus:ring-primary-600",
       ],
       secondary: [
-        "border",
         "bg-transparent hover:bg-primary-100",
-        "text-primary-900",
-        "border-primary-200",
+        "text-primary-100",
         "focus:ring-2",
         "focus:ring-primary-600",
       ],
-      minimal: ["bg-transparent", "text-primary-900"],
+      minimal: ["bg-transparent", "text-primary-200 hover:text-primary-900"],
       destructive: ["bg-transparent", "text-red-600"],
     },
     size: {
