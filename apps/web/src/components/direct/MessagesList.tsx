@@ -1,6 +1,6 @@
 import { useConn } from "@/hooks/useConn";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
-import { Avatar } from "@/ui/avatar";
+import { Avatar } from "@spek/ui";
 import { User } from "@spek/client";
 import { format } from "date-fns";
 import { useState } from "react";
@@ -51,11 +51,16 @@ const Page: React.FC<PageProps> = ({
           key={idx}
           className={`flex flex-1 items-center px-3 rounded-md py-4 gap-3`}
         >
-          <Avatar src={m.user.avatarUrl} size={"sm"} isOnline={m.user.online} />
+          <Avatar
+            imageSrc={m.user.avatarUrl}
+            size={"md"}
+            alt={m.user.displayName}
+            title={`@${m.user.username}`}
+          />
           <div className="flex flex-col gap-1">
-            <p className="font-bold">
+            <p className="font-bold text-sm">
               {m.user.displayName}
-              <span className="font-normal ml-3">
+              <span className="font-normal ml-3 text-sm">
                 {format(new Date(m.user.inserted_at), "MMM dd HH:mm a")}
               </span>
             </p>

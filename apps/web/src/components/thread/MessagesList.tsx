@@ -55,11 +55,11 @@ const Page = React.forwardRef(
             <div>
               <p className="text-sm">
                 {m.user.displayName}{" "}
-                <span className="text-primary-700">
+                <span className="text-primary-500">
                   {format(new Date(m.inserted_at), "dd/MM/yy H:mm a")}
                 </span>
               </p>
-              <p className="text-primary-800 text-sm">{m.text}</p>
+              <p className="text-primary-400 text-sm">{m.text}</p>
             </div>
           </div>
         ))}

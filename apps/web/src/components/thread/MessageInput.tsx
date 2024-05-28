@@ -1,6 +1,7 @@
 import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 import { Input } from "@/ui/input";
 import { User } from "@spek/client";
+import { Icon } from "@spek/ui";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -49,11 +50,12 @@ export const MessageInput: React.FC<MessageInputProps> = ({
       ) : (
         <div className="px-3">
           <div
-            className="bg-alabaster-600 px-3 py-3 text-xl text-center rounded-md cursor-pointer"
+            className="flex justify-center gap-5 items-center bg-primary-800 px-3 py-3 text-lg text-center rounded-md cursor-pointer"
             onClick={() => {
               push("/login");
             }}
           >
+            <Icon name="rocket" />
             <p>Sign up to start chatting in this thread</p>
           </div>
         </div>
