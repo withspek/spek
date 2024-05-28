@@ -24,7 +24,7 @@ I’ve been in large communities on platforms like Discord and Slack for years, 
 - You want to talk about this one topic somebody mentioned five hours ago but the message is now 15 pages up and nobody knows what you’re talking about anymore. Don’t even get me started on topics from days or even, gasp, weeks ago!
 - This is amplified by the fact that searching and linking to old messages is often a pain. Many times valuable and interesting conversations are lost forever, or the knowledge is trapped in the tool itself, never to be discovered from the outside.
 
-Based on my own experience, and all those groups I have approached, we approached the problem hands-on and built [Spek](https://spek.vercel.app) diffently, tailor made for the purpse:
+Based on my own experience, and all those groups I have approached, we approached the problem hands-on and built [Spek](https://spek.vercel.app) diffently, tailor made for the purpose:
 
 - All conversations in communities which are public are search engine indexable which makes it so all the valuable information is not lost behind the walls of the platform but accessible to the whole internet to use.
 
@@ -42,6 +42,7 @@ Based on my own experience, and all those groups I have approached, we approache
 | :------------------------ | :-----------------: |
 | [api](api)                |     Elixir API      |
 | [web](apps/web)           |  Next.js frontend   |
+| [blog](apps/blog)         |    Astro.js blog    |
 | [client](packages/client) | Internal API Client |
 
 ## Branches
