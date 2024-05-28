@@ -22,11 +22,12 @@ export const SearchBar: React.FC<{ defaultValue: string }> = ({
 
   return (
     <form onSubmit={handleSearch}>
-      <div className="flex bg-alabaster-700 items-center px-3 rounded-md">
-        <SearchIcon height={20} width={20} />
+      <div className="flex bg-primary-800 border border-primary-700 items-center px-3 rounded-md">
+        <SearchIcon height={20} width={20} className="text-primary-300" />
         <Input
-          placeholder="search communities, threads and users"
+          placeholder="Search communities, threads and users"
           value={query}
+          transparent
           onChange={(e) => setQuery(e.target.value)}
         />
       </div>

@@ -1,17 +1,32 @@
 "use client";
+
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
 import { useConn } from "@/hooks/useConn";
 import { HomeIcon, InboxIcon, PlusIcon, SearchIcon } from "@/icons";
 import { Modal } from "@/ui/modal";
 import { Avatar, Tooltip } from "@spek/ui";
-import Link from "next/link";
-import { useState } from "react";
 import { SearchBar } from "./SearchBar";
-import { usePathname } from "next/navigation";
 
 export const LeftPanel: React.FC = () => {
   const { user } = useConn();
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+
+  // Toggle the menu when ⌘K is pressed
+  useEffect(() => {
+    const down = (e: any) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen((open) => !open);
+      }
+    };
+
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
 
   return (
     <div className="flex flex-col justify-between border-r border-primary-800 px-3">
@@ -58,8 +73,12 @@ export const LeftPanel: React.FC = () => {
           </Tooltip>
         ) : null}
       </div>
-      <Modal isOpen={open} onRequestClose={() => setOpen(!open)}>
-        <SearchBar defaultValue="" />
+      <Modal
+        isOpen={open}
+        onRequestClose={() => setOpen(!open)}
+        variant="search"
+      >
+        <SearchBar defaultValue=" " />
       </Modal>
     </div>
   );
