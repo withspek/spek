@@ -13,8 +13,8 @@
   "dependencies": {
     "@artsy/fresnel": "^7.1.4",
     "@spek/client": "workspace:*",
-    "@spek/ui": "workspace:*",
     "@spek/lib": "workspace:*",
+    "@spek/ui": "workspace:*",
     "@tanstack/react-virtual": "^3.2.0",
     "@tsparticles/engine": "^3.4.0",
     "@tsparticles/react": "^3.0.0",
@@ -24,6 +24,7 @@
     "formik": "^2.4.5",
     "framer-motion": "^11.1.7",
     "fs": "0.0.1-security",
+    "ip": "2.0.1",
     "next": "14.1.1",
     "nprogress": "^0.2.0",
     "react": "^18",
