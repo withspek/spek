@@ -10,7 +10,7 @@ defmodule Models.ChannelMember do
     belongs_to(:channel, Channel, foreign_key: :channelId, type: :binary_id)
     belongs_to(:user, User, foreign_key: :userId, type: :binary_id)
 
-    timestamps()
+    timestamps(type: :utc_datetime_usec)
   end
 
   def changeset(member, params \\ %{}) do

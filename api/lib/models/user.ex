@@ -40,7 +40,7 @@ defmodule Models.User do
     field(:online, :boolean, default: false)
     field(:lastOnline, :utc_datetime_usec)
 
-    timestamps()
+    timestamps(type: :utc_datetime_usec)
   end
 
   def edit_changeset(user, attrs) do

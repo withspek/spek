@@ -1,9 +1,11 @@
-import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
-import { Input } from "@/ui/input";
+import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
+import { debounce } from "lodash";
 import { User } from "@spek/client";
 import { Icon } from "@spek/ui";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+
+import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
+import { Input } from "@/ui/input";
 
 interface MessageInputProps {
   threadId: string;
@@ -17,6 +19,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   communityId,
 }) => {
   const [text, setText] = useState<string>("");
+  const ref = useRef<HTMLInputElement>(null);
   const { push } = useRouter();
   const { mutateAsync, isLoading } = useTypeSafeMutation("createThreadMessage");
 
@@ -33,6 +36,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
     await mutateAsync([data]);
 
     setText("");
+    ref.current!.focus();
   };
 
   return (
@@ -42,6 +46,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           <Input
             placeholder="Send a message"
             autoFocus
+            ref={ref}
             disabled={isLoading}
             onChange={(e) => setText(e.target.value)}
             value={text}

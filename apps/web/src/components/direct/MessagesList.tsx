@@ -1,9 +1,9 @@
 import { useConn } from "@/hooks/useConn";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { Avatar } from "@spek/ui";
-import { User } from "@spek/client";
+import { DmMessage, User } from "@spek/client";
 import { format } from "date-fns";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 interface MessagesListProps {
   dmId: string;
@@ -17,6 +17,33 @@ interface PageProps {
   isLastPage: boolean;
   isOnlyPage: boolean;
 }
+
+const Message: React.FC<{ message: DmMessage }> = ({ message }) => {
+  const dt = useMemo(
+    () => new Date(message.inserted_at),
+    [message.inserted_at]
+  );
+
+  return (
+    <div className={`flex flex-1 items-center px-3 rounded-md py-4 gap-3`}>
+      <Avatar
+        imageSrc={message.user.avatarUrl}
+        size={"md"}
+        alt={message.user.displayName}
+        title={`@${message.user.username}`}
+      />
+      <div className="flex flex-col gap-1">
+        <p className="font-bold text-sm">
+          {message.user.displayName}
+          <span className="font-normal ml-3 text-sm">
+            {format(dt, "MMM dd HH:mm")}
+          </span>
+        </p>
+        <p>{message.text}</p>
+      </div>
+    </div>
+  );
+};
 
 const Page: React.FC<PageProps> = ({
   dmId,
@@ -47,26 +74,7 @@ const Page: React.FC<PageProps> = ({
   return (
     <>
       {data.messages.map((m, idx) => (
-        <div
-          key={idx}
-          className={`flex flex-1 items-center px-3 rounded-md py-4 gap-3`}
-        >
-          <Avatar
-            imageSrc={m.user.avatarUrl}
-            size={"md"}
-            alt={m.user.displayName}
-            title={`@${m.user.username}`}
-          />
-          <div className="flex flex-col gap-1">
-            <p className="font-bold text-sm">
-              {m.user.displayName}
-              <span className="font-normal ml-3 text-sm">
-                {format(new Date(m.user.inserted_at), "MMM dd HH:mm a")}
-              </span>
-            </p>
-            <p>{m.text}</p>
-          </div>
-        </div>
+        <Message key={idx} message={m} />
       ))}
       {data.nextCursor && isLastPage ? (
         <div className="flex w-full justify-center">

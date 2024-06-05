@@ -36,7 +36,7 @@ defmodule Models.Thread do
 
     embeds_many(:peoplePreviewList, User.Preview)
 
-    timestamps()
+    timestamps(type: :utc_datetime_usec)
   end
 
   def changeset(thread, params \\ %{}) do

@@ -13,7 +13,7 @@ defmodule Models.Message do
     belongs_to(:user, User, foreign_key: :userId, type: :binary_id)
     belongs_to(:thread, Thread, foreign_key: :threadId, type: :binary_id)
 
-    timestamps()
+    timestamps(type: :utc_datetime_usec)
   end
 
   def changeset(message, params \\ %{}) do

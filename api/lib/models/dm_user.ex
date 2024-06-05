@@ -10,7 +10,7 @@ defmodule Models.DmUser do
     belongs_to(:dm, Dm, foreign_key: :dmId, type: :binary_id)
     belongs_to(:user, User, foreign_key: :userId, type: :binary_id)
 
-    timestamps()
+    timestamps(type: :utc_datetime_usec)
   end
 
   def changeset(user, attrs \\ %{}) do

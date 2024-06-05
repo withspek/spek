@@ -12,7 +12,7 @@ defmodule Models.Subscriber do
     # the person who is subscribed
     belongs_to(:subscriber, User, foreign_key: :subscriberId, type: :binary_id)
 
-    timestamps()
+    timestamps(type: :utc_datetime_usec)
   end
 
   def changeset(sub, attrs \\ %{}) do

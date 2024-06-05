@@ -22,8 +22,7 @@ defmodule Spek.Repo.Migrations.MostTables do
       add(:tokenVersion, :integer, default: 0)
       add(:bio, :text, default: "")
 
-      add(:inserted_at, :utc_datetime_usec, null: false, default: fragment("now()"))
-      add(:updated_at, :utc_datetime_usec, null: false, default: fragment("now()"))
+      timestamps(type: :utc_datetime_usec)
     end
 
     create(unique_index(:users, [:githubId]))
@@ -41,8 +40,7 @@ defmodule Spek.Repo.Migrations.MostTables do
       add(:ownerId, references(:users, on_delete: :delete_all, type: :uuid), null: false)
       add(:peoplePreviewList, {:array, :map}, default: [])
 
-      add(:inserted_at, :utc_datetime_usec, null: false, default: fragment("now()"))
-      add(:updated_at, :utc_datetime_usec, null: false, default: fragment("now()"))
+      timestamps(type: :utc_datetime_usec)
     end
 
     # CHANNELS
@@ -60,8 +58,7 @@ defmodule Spek.Repo.Migrations.MostTables do
       )
 
       add(:archivedAt, :utc_datetime_usec, null: true)
-      add(:inserted_at, :utc_datetime_usec, null: false, default: fragment("now()"))
-      add(:updated_at, :utc_datetime_usec, null: false, default: fragment("now()"))
+      timestamps(type: :utc_datetime_usec)
     end
 
     create table("community_members", primary_key: false) do
@@ -72,16 +69,14 @@ defmodule Spek.Repo.Migrations.MostTables do
         null: false
       )
 
-      add(:inserted_at, :utc_datetime_usec, null: false, default: fragment("now()"))
-      add(:updated_at, :utc_datetime_usec, null: false, default: fragment("now()"))
+      timestamps(type: :utc_datetime_usec)
     end
 
     create table("channel_members", primary_key: false) do
       add(:id, :uuid, primary_key: true, default: fragment("uuid_generate_v4()"))
       add(:userId, references(:users, on_delete: :delete_all, type: :uuid), null: false)
       add(:channelId, references(:channels, on_delete: :delete_all, type: :uuid), null: false)
-      add(:inserted_at, :utc_datetime_usec, null: false, default: fragment("now()"))
-      add(:updated_at, :utc_datetime_usec, null: false, default: fragment("now()"))
+      timestamps(type: :utc_datetime_usec)
     end
 
     create table("community_permissions", primary_key: false) do
@@ -97,8 +92,7 @@ defmodule Spek.Repo.Migrations.MostTables do
       add(:isMember, :boolean, default: false)
       add(:isBlocked, :boolean, default: false)
 
-      add(:inserted_at, :utc_datetime_usec, null: false, default: fragment("now()"))
-      add(:updated_at, :utc_datetime_usec, null: false, default: fragment("now()"))
+      timestamps(type: :utc_datetime_usec)
     end
 
     create table("threads", primary_key: false) do
@@ -114,8 +108,7 @@ defmodule Spek.Repo.Migrations.MostTables do
 
       add(:peoplePreviewList, {:array, :map}, default: [])
 
-      add(:inserted_at, :utc_datetime_usec, null: false, default: fragment("now()"))
-      add(:updated_at, :utc_datetime_usec, null: false, default: fragment("now()"))
+      timestamps(type: :utc_datetime_usec)
     end
 
     create table("messages", primary_key: false) do
@@ -125,8 +118,7 @@ defmodule Spek.Repo.Migrations.MostTables do
       add(:userId, references(:users, on_delete: :delete_all, type: :uuid), null: false)
       add(:threadId, references(:threads, on_delete: :delete_all, type: :uuid), null: false)
 
-      add(:inserted_at, :utc_datetime_usec, null: false, default: fragment("now()"))
-      add(:updated_at, :utc_datetime_usec, null: false, default: fragment("now()"))
+      timestamps(type: :utc_datetime_usec)
     end
 
     create(index(:messages, [:text]))
@@ -140,8 +132,7 @@ defmodule Spek.Repo.Migrations.MostTables do
       add(:id, :uuid, primary_key: true, default: fragment("uuid_generate_v4()"))
       add(:peoplePreviewList, {:array, :map}, default: [])
 
-      add(:inserted_at, :utc_datetime_usec, null: false, default: fragment("now()"))
-      add(:updated_at, :utc_datetime_usec, null: false, default: fragment("now()"))
+      timestamps(type: :utc_datetime_usec)
     end
 
     create table("dm_messages", primary_key: false) do
@@ -151,8 +142,7 @@ defmodule Spek.Repo.Migrations.MostTables do
       add(:userId, references(:users, on_delete: :delete_all, type: :uuid), null: false)
       add(:dmId, references(:dms, on_delete: :delete_all, type: :uuid), null: false)
 
-      add(:inserted_at, :utc_datetime_usec, null: false, default: fragment("now()"))
-      add(:updated_at, :utc_datetime_usec, null: false, default: fragment("now()"))
+      timestamps(type: :utc_datetime_usec)
     end
 
     create table(:dm_users, primary_key: false) do
@@ -160,8 +150,7 @@ defmodule Spek.Repo.Migrations.MostTables do
       add(:dmId, references(:dms, on_delete: :delete_all, type: :uuid), null: false)
       add(:userId, references(:users, on_delete: :delete_all, type: :uuid), null: false)
 
-      add(:inserted_at, :utc_datetime_usec, null: false, default: fragment("now()"))
-      add(:updated_at, :utc_datetime_usec, null: false, default: fragment("now()"))
+      timestamps(type: :utc_datetime_usec)
     end
 
     create table("subscribers", primary_key: false) do
@@ -170,8 +159,7 @@ defmodule Spek.Repo.Migrations.MostTables do
       add(:threadId, references(:threads, on_delete: :delete_all, type: :uuid), null: false)
       add(:subscriberId, references(:users, on_delete: :delete_all, type: :uuid), null: false)
 
-      add(:inserted_at, :utc_datetime_usec, null: false, default: fragment("now()"))
-      add(:updated_at, :utc_datetime_usec, null: false, default: fragment("now()"))
+      timestamps(type: :utc_datetime_usec)
     end
   end
 end

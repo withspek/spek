@@ -1,5 +1,5 @@
-import { User } from "@spek/client";
-import React, { useRef, useState } from "react";
+import { Message as ThreadMessage, User } from "@spek/client";
+import React, { useMemo, useRef, useState } from "react";
 
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { Avatar } from "@spek/ui";
@@ -19,6 +19,33 @@ interface PageProps {
   isLastPage: boolean;
   isOnlyPage: boolean;
 }
+
+const Message: React.FC<{ message: ThreadMessage }> = ({ message }) => {
+  const dt = useMemo(
+    () => new Date(message.inserted_at),
+    [message.inserted_at]
+  );
+
+  return (
+    <div className={`flex flex-1 items-center px-3 rounded-md py-4 gap-3`}>
+      <Avatar
+        imageSrc={message.user.avatarUrl}
+        size={"md"}
+        alt={message.user.displayName}
+        title={`@${message.user.username}`}
+      />
+      <div className="flex flex-col gap-1">
+        <p className="font-bold text-sm">
+          {message.user.displayName}
+          <span className="font-normal ml-3 text-sm">
+            {format(dt, "MMM dd HH:mm")}
+          </span>
+        </p>
+        <p>{message.text}</p>
+      </div>
+    </div>
+  );
+};
 
 const Page = React.forwardRef(
   (
@@ -46,22 +73,7 @@ const Page = React.forwardRef(
     return (
       <>
         {data.messages.map((m) => (
-          <div key={m.id} className={`flex gap-4 px-3 py-4`}>
-            <Avatar
-              imageSrc={m.user.avatarUrl}
-              size="md"
-              alt={m.user.username}
-            />
-            <div>
-              <p className="text-sm">
-                {m.user.displayName}{" "}
-                <span className="text-primary-500">
-                  {format(new Date(m.inserted_at), "dd/MM/yy H:mm a")}
-                </span>
-              </p>
-              <p className="text-primary-400 text-sm">{m.text}</p>
-            </div>
-          </div>
+          <Message key={m.id} message={m} />
         ))}
         {data.nextCursor && isLastPage ? (
           <div className="flex w-full justify-center">
