@@ -55,8 +55,8 @@ export const CommunityPageController: React.FC<Props> = ({ slug }: Props) => {
                 content: (
                   <ThreadsFeed
                     communityId={data?.community.id!}
-                    isAdmin={true}
-                    isMember={true}
+                    isAdmin={data.community.isAdmin}
+                    isMember={data.community.isMember}
                     currentUser={user}
                     channel={channel}
                   />
