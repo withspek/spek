@@ -1,6 +1,5 @@
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import { debounce } from "lodash";
 import { User } from "@spek/client";
 import { Icon } from "@spek/ui";
 
