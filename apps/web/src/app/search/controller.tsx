@@ -18,6 +18,8 @@ export const SearchPageController: React.FC<{ query: string }> = ({
     push("/home");
   }
 
+  console.log(data);
+
   const results = data
     ? [...data.threads, ...data.communities, ...data.users]
     : [];

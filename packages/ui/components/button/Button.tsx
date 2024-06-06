@@ -18,7 +18,7 @@ const buttonClasses = cva("rounded-md flex gap-2 items-center", {
         "focus:ring-2",
         "focus:ring-primary-600",
       ],
-      minimal: ["bg-transparent", "text-primary-200 hover:text-primary-900"],
+      minimal: ["bg-transparent", "text-primary-200 hover:text-primary-400"],
       destructive: ["bg-transparent", "text-red-600"],
     },
     size: {

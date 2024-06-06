@@ -20,7 +20,7 @@ export const InputField: React.FC<
   return (
     <div className={`h-full w-full block ${className}`}>
       {label ? (
-        <div className={`flex mb-2 text-alabaster-100`}>{label}</div>
+        <div className={`flex mb-2 text-primary-300`}>{label}</div>
       ) : null}
       <Input error={meta.error} textarea={textarea} {...field} {...props} />
       {meta.error && meta.touched ? (

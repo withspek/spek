@@ -5,5 +5,5 @@ interface InputErrorMsgProps {
 }
 
 export const InputErrorMsg: React.FC<InputErrorMsgProps> = ({ children }) => {
-  return <div className={`flex text-alabaster-100`}>{children}</div>;
+  return <div className={`flex text-secondary-400`}>{children}</div>;
 };
