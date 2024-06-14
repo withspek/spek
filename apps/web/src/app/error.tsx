@@ -22,7 +22,7 @@ export default function ErrorPage({
     <div className="flex w-full h-full justify-center items-center">
       <div className="flex flex-col gap-4 sm:max-w-96 w-full justify-center items-center">
         <h2 className="text-balance text-center">Something went wrong!</h2>
-        <p className="text-balance text-center text-primary-700">
+        <p className="text-balance text-center text-primary-400">
           Attempt to recover by trying again or going back home
         </p>
         <div className="flex gap-4">
