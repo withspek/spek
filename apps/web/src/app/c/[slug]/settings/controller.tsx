@@ -1,23 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { ChannelsList } from "@/components/community/ChannelsList";
-import { Header } from "@/components/communitySettings/Header";
 import { Overview } from "@/components/communitySettings/Overview";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
-import Tabs, { TabsContents, TabsTitles } from "@/ui/tabs";
-import { MembersList } from "@/components/community/members-list";
-import { Button } from "@spek/ui";
-import { CreateChannelModal } from "@/components/communitySettings/CreateChannelModal";
+import { Header } from "@/components/communitySettings/Header";
 
 interface PageControllerProps {
   slug: string;
 }
 
 export const PageController: React.FC<PageControllerProps> = ({ slug }) => {
-  const [open, setOpen] = useState(false);
   const router = useRouter();
   const { data, isLoading } = useTypeSafeQuery(["getCommunity", slug], {}, [
     slug,
@@ -31,54 +24,14 @@ export const PageController: React.FC<PageControllerProps> = ({ slug }) => {
     router.replace("/home");
   }
 
-  const subheading = {
-    label: `Return to ${data.community.name}`,
-    description: `Manage your community settings by changing name or description.
-    You can manage members and channels in the community here`,
-    to: `/c/${data.community.slug}`,
-  };
-
   return (
     <div>
-      <Header heading="Settings" subheading={subheading} avatar="" />
-      <Tabs>
-        <TabsTitles titles={["Overview", "Members", "Channels"]} />
-        <TabsContents
-          items={[
-            {
-              content: (
-                <Overview
-                  channels={data.channels}
-                  community={data.community}
-                  communitySlug={slug}
-                />
-              ),
-            },
-            {
-              content: <MembersList communityId={data.community.id} />,
-            },
-            {
-              content: (
-                <>
-                  <Button onClick={() => setOpen(!open)}>Create</Button>
-                  <ChannelsList
-                    channels={data.channels}
-                    community={data.community}
-                    communitySlug={slug}
-                  />
-                </>
-              ),
-            },
-          ]}
-        />
-      </Tabs>
-      {open ? (
-        <CreateChannelModal
-          communityId={data.community.id}
-          open={open}
-          onRequestClose={() => setOpen(!open)}
-        />
-      ) : null}
+      <Header heading="Overview" />
+      <Overview
+        channels={data.channels}
+        community={data.community}
+        communitySlug={slug}
+      />
     </div>
   );
 };

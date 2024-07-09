@@ -26,7 +26,6 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
     <>
       {isTeamMember ? (
         <>
-          <p>You are a member</p>
           {!community.isAdmin && (
             <Button
               loading={isLeaveLoading}

@@ -1,23 +1,22 @@
-import Link from "next/link";
+import { Icon } from "@spek/ui";
+import { useRouter } from "next/navigation";
 
 interface HeaderProps {
-  avatar?: string;
-  subheading: { to: string; label: string; description: string };
   heading: string;
 }
 
-export const Header: React.FC<HeaderProps> = ({
-  heading,
-  subheading,
-  avatar,
-}) => {
+export const Header: React.FC<HeaderProps> = ({ heading }) => {
+  const router = useRouter();
+
   return (
-    <div>
-      <Link href={subheading.to}>
-        <h3 className="text-primary-800">{subheading.label}</h3>
-      </Link>
+    <div className="flex justify-between py-3 items-center">
       <h2>{heading}</h2>
-      <p className="text-primary-700">{subheading.description}</p>
+      <div
+        className="h-10 w-10 hover:bg-primary-800 hover:ring-2 cursor-pointer transition-all border border-primary-800 ring-primary-400 flex justify-center items-center rounded-full"
+        onClick={() => router.back()}
+      >
+        <Icon name="plus" className="rotate-45" />
+      </div>
     </div>
   );
 };

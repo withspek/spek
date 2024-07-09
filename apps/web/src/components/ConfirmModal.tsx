@@ -2,7 +2,7 @@ import React from "react";
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
 import { Modal } from "@/ui/modal";
-import { Button } from "@/ui/button";
+import { Button } from "@spek/ui";
 
 interface Props {}
 
@@ -12,7 +12,7 @@ const useConfirmModalStore = create(
   combine({ message: "", onConfirm: undefined as undefined | Fn }, (set) => ({
     close: () => set({ message: "", onConfirm: undefined }),
     set,
-  })),
+  }))
 );
 
 export const confirmModal = (message: string, onConfirm: Fn) => {
@@ -37,7 +37,7 @@ export const ConfirmModal: React.FC<Props> = () => {
           >
             Yes
           </Button>
-          <Button type="button" onClick={close}>
+          <Button type="button" color="secondary" onClick={close}>
             No
           </Button>
         </div>

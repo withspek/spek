@@ -20,7 +20,7 @@ const customStyles = {
       borderRadius: 8,
       padding: "40px 40px 40px 40px",
       transform: "translate(-50%, -50%)",
-      backgroundColor: "var(--color-primary-900)",
+      backgroundColor: "var(--color-primary-950)",
       border: "none",
       maxHeight: "80vh",
       width: "90%",

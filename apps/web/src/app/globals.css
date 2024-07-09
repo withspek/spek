@@ -19,22 +19,22 @@ h3 {
   font-size: 16px;
 
   /* Primary colors */
-  --color-primary-50: #f9fafb;
-  --color-primary-100: #f3f4f6;
-  --color-primary-200: #e5e7eb;
-  --color-primary-300: #d1d5db;
-  --color-primary-400: #9ca3af;
-  --color-primary-500: #6b7280;
-  --color-primary-600: #6b7280;
-  --color-primary-700: #374151;
-  --color-primary-800: #1f2937;
-  --color-primary-900: #111827;
-  --color-primary-950: #020617;
+  --color-primary-50: #fafafa;
+  --color-primary-100: #f4f4f5;
+  --color-primary-200: #e4e4e7;
+  --color-primary-300: #d4d4d8;
+  --color-primary-400: #a1a1aa;
+  --color-primary-500: #71717a;
+  --color-primary-600: #52525b;
+  --color-primary-700: #3f3f46;
+  --color-primary-800: #27272a;
+  --color-primary-900: #18181b;
+  --color-primary-950: #09090b;
 
   /* Accent color */
-  --color-accent: #14b8a6;
-  --color-accent-hover: #2dd4bf;
-  --color-accent-disabled: #5eead4;
+  --color-accent: #0ea5e9;
+  --color-accent-hover: #0284c7;
+  --color-accent-disabled: #0369a1;
 
   /* Secondary colors */
   --color-secondary-50: #fdf4ff;

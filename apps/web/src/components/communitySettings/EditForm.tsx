@@ -51,11 +51,8 @@ export const EditForm: React.FC<EditFormProps> = ({ community }) => {
     >
       {({ handleSubmit, values, touched }) => (
         <>
-          <div>
-            <h3 className="text-2xl">Community</h3>
-            <p className="text-alabaster-300">
-              Manage the community credentials
-            </p>
+          <div className="text-primary-300 mb-4">
+            <p>Manage community profile and other settings</p>
           </div>
           <InputField label="Name" name="name" value={values.name} />
           <InputField

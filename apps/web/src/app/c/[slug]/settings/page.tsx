@@ -1,4 +1,6 @@
 import { Metadata } from "next";
+import { CommunitySettingsLayout } from "@spek/ui";
+
 import { PageController } from "./controller";
 
 interface PageProps {
@@ -15,8 +17,8 @@ export async function generateMetadata({
 
 export default function CommunitySettingsPage({ params }: PageProps) {
   return (
-    <>
+    <CommunitySettingsLayout communitySlug={params.slug}>
       <PageController slug={params.slug} />
-    </>
+    </CommunitySettingsLayout>
   );
 }

@@ -35,7 +35,7 @@ export const ThreadsFeed: React.FC<ThreadsFeedProps> = ({
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mt-2">
       {currentUser && isMember ? (
         <CreateInput channelId={channel?.id!} communityId={communityId} />
       ) : null}
@@ -50,7 +50,7 @@ export const ThreadsFeed: React.FC<ThreadsFeedProps> = ({
               router.push(`/thread/${thread.id}`);
             }}
           >
-            <div className="bg-alabaster-950 px-3 py-5 rounded-lg">
+            <div className="px-3 py-5 rounded-lg">
               <div className="flex flex-1 justify-between mb-2">
                 <p>{thread.name}</p>
                 <AvatarGroup srcArray={avatarSrc} />

@@ -13,7 +13,7 @@ const buttonClasses = cva("rounded-md flex gap-2 items-center", {
         "focus:ring-2 focus:ring-primary-600",
       ],
       secondary: [
-        "bg-transparent hover:bg-primary-100",
+        "bg-transparent hover:bg-primary-800",
         "text-primary-100",
         "focus:ring-2",
         "focus:ring-primary-600",

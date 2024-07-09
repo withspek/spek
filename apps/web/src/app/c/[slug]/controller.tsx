@@ -30,7 +30,7 @@ export const CommunityPageController: React.FC<Props> = ({ slug }: Props) => {
 
   return (
     <div className="mt-2">
-      <div className="mb-3 px-3 rounded-lg py-2">
+      <div className="space-y-2 mb-3 px-3 rounded-lg py-2 transition-all cursor-pointer bg-gradient-to-tr from-primary-800 via-primary-600 to-primary-900">
         <div className="flex justify-between">
           <h1 className="text-xl">{data?.community.name}</h1>
           {data?.community.isAdmin && (
@@ -44,8 +44,8 @@ export const CommunityPageController: React.FC<Props> = ({ slug }: Props) => {
         </div>
         <p>{data?.community.description}</p>
         <p>{data?.community.memberCount} members</p>
+        <ActionButton currentUser={user} community={data?.community!} />
       </div>
-      <ActionButton currentUser={user} community={data?.community!} />
       <div>
         <Tabs>
           <TabsTitles titles={["Threads", "Members", "Channels"]} />

@@ -51,19 +51,6 @@ export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
     <div className="flex flex-col gap-3 h-full">
       <div className="z-20 backdrop-blur-md sticky top-0 py-3">
         <div className="flex justify-between items-center">
-          <div className="flex gap-4 mt-4">
-            <Link href={`/u/${data?.creator.id}`}>
-              <Avatar
-                imageSrc={data?.creator.avatarUrl!}
-                size="mdLg"
-                alt={data?.creator.username!}
-              />
-            </Link>
-            <div>
-              <p>{data?.creator.displayName}</p>
-              <p className="text-alabaster-400">@{data?.creator.username}</p>
-            </div>
-          </div>
           <div className="cursor-pointer" onClick={() => router.back()}>
             <PlusIcon className="rotate-45" width={28} height={28} />
           </div>
