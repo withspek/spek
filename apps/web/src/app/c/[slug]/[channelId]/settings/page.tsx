@@ -1,4 +1,6 @@
 import { Metadata } from "next";
+import { MainLayout } from "@spek/ui";
+
 import { SettingsPageController } from "./controller";
 
 interface Props {
@@ -11,11 +13,11 @@ export const metadata: Metadata = {
 
 export default function ChannelSettingsPage({ params }: Props) {
   return (
-    <>
+    <MainLayout>
       <SettingsPageController
         channelId={params.channelId}
         communitySlug={params.slug}
       />
-    </>
+    </MainLayout>
   );
 }
