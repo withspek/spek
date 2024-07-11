@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@artsy/fresnel": "^7.1.4",
+    "@lexical/react": "^0.16.1",
     "@spek/client": "workspace:*",
     "@spek/lib": "workspace:*",
     "@spek/ui": "workspace:*",
@@ -24,6 +25,7 @@
     "formik": "^2.4.5",
     "framer-motion": "^11.1.7",
     "fs": "0.0.1-security",
+    "lexical": "^0.16.1",
     "next": "14.2.3",
     "nprogress": "^0.2.0",
     "react": "^18.3.1",

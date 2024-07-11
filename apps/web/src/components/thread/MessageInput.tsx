@@ -18,7 +18,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   communityId,
 }) => {
   const [text, setText] = useState<string>("");
-  const ref = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const { push } = useRouter();
   const { mutateAsync, isLoading } = useTypeSafeMutation("createThreadMessage");
 
@@ -35,21 +35,26 @@ export const MessageInput: React.FC<MessageInputProps> = ({
     await mutateAsync([data]);
 
     setText("");
-    ref.current!.focus();
+    inputRef.current?.focus();
   };
 
   return (
     <>
       {currentUser ? (
-        <form onSubmit={handleSubmit}>
+        <form
+          onSubmit={handleSubmit}
+          className="flex gap-2 items-center bg-primary-800 px-3 rounded-md"
+        >
+          <Icon name="image" />
           <Input
             placeholder="Send a message"
             autoFocus
-            ref={ref}
+            ref={inputRef}
             disabled={isLoading}
             onChange={(e) => setText(e.target.value)}
             value={text}
           />
+          <Icon name="smile" />
         </form>
       ) : (
         <div className="px-3">

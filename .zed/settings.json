@@ -1,0 +1,9 @@
+{
+  "lsp": {
+    "elixir-ls": {
+      "settings": {
+        "elixirLs.projectDir": "api"
+      }
+    }
+  }
+}

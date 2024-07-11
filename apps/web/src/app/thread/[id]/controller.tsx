@@ -1,21 +1,21 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
-import { Avatar, toast } from "@spek/ui";
-import { WEBAPP_URL } from "@spek/lib/constants";
+// import { toast } from "@spek/ui";
+// import { WEBAPP_URL } from "@spek/lib/constants";
 
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { MessageInput } from "@/components/thread/MessageInput";
 import { MessagesList } from "@/components/thread/MessagesList";
-import { LinkIcon, NotificationIcon, PlusIcon } from "@/icons";
-import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
+import { PlusIcon } from "@/icons";
+// import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 import { useConn } from "@/hooks/useConn";
-import { useTypeSafeUpdateQuery } from "@/hooks/useTypeSafeUpdateQuery";
-import { copyTextToClipboard } from "@/utils/copyToClipboard";
+// import { useTypeSafeUpdateQuery } from "@/hooks/useTypeSafeUpdateQuery";
+// import { copyTextToClipboard } from "@/utils/copyToClipboard";
 import { CenterLoader } from "@/components/CenterLoader";
+import { useScroll } from "@/hooks/useScroll";
 
 interface ThreadPageControllerProps {
   threadId: string;
@@ -25,17 +25,18 @@ export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
   threadId,
 }) => {
   const { user } = useConn();
+  const scrolled = useScroll(50);
   const router = useRouter();
   const { data, isLoading } = useTypeSafeQuery(
     ["joinThreadAndGetInfo", threadId],
     { staleTime: Infinity, refetchOnMount: "always" },
     [threadId]
   );
-  const { mutateAsync: unsubscribe, isLoading: unsubscribeLoading } =
-    useTypeSafeMutation("unsubscribeToThread");
-  const { mutateAsync: subscribe, isLoading: subscribeLoading } =
-    useTypeSafeMutation("subscribeToThread");
-  const updateQuery = useTypeSafeUpdateQuery();
+  // const { mutateAsync: unsubscribe, isLoading: unsubscribeLoading } =
+  //   useTypeSafeMutation("unsubscribeToThread");
+  // const { mutateAsync: subscribe, isLoading: subscribeLoading } =
+  //   useTypeSafeMutation("subscribeToThread");
+  // const updateQuery = useTypeSafeUpdateQuery();
 
   if (isLoading) {
     return <CenterLoader />;
@@ -49,7 +50,9 @@ export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
 
   return (
     <div className="flex flex-col gap-3 h-full">
-      <div className="z-20 backdrop-blur-md sticky top-0 py-3">
+      <div
+        className={`z-20 sticky top-0 py-3 bg-primary-950 ${scrolled ? "bg-primary-950  border-b-2 border-b-primary-800 shadow-lg" : ""}`}
+      >
         <div className="flex justify-between items-center">
           <div className="cursor-pointer" onClick={() => router.back()}>
             <PlusIcon className="rotate-45" width={28} height={28} />
@@ -61,7 +64,7 @@ export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
             {format(dt, "MMM dd, yyyy - hh:MM a")}
           </p>
         </div>
-        <div className="flex gap-2 items-center">
+        {/* <div className="flex gap-2 items-center">
           {user ? (
             <button
               disabled={subscribeLoading || unsubscribeLoading}
@@ -120,7 +123,7 @@ export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
               <LinkIcon />
             </span>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="flex flex-1 flex-col-reverse gap-4">
         <MessagesList threadId={data?.id!} currentUser={user} />
