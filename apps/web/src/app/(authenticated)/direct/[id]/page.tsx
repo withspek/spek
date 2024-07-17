@@ -11,7 +11,7 @@ type Props = {
 
 export async function generateMetadata(
   { params }: Props,
-  _parent: ResolvingMetadata
+  _parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const dm: UserDm = await defaultQueryFn({ queryKey: `dms/${params.id}` });
 
@@ -24,7 +24,6 @@ export default function DmPage({ params }: Props) {
   return (
     <MainLayout leftPanel={<LeftPanel />}>
       <DmPageController dmId={params.id} />
-      <div />
     </MainLayout>
   );
 }

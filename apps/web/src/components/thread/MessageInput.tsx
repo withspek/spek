@@ -45,10 +45,9 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           onSubmit={handleSubmit}
           className="flex gap-2 items-center bg-primary-800 px-3 rounded-md"
         >
-          <Icon name="image" />
           <Input
             placeholder="Send a message"
-            autoFocus
+            autoFocus={true}
             ref={inputRef}
             disabled={isLoading}
             onChange={(e) => setText(e.target.value)}

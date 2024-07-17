@@ -22,7 +22,7 @@ export const DmPageController: React.FC<Props> = ({ dmId }) => {
       staleTime: Infinity,
       refetchOnMount: "always",
     },
-    [dmId]
+    [dmId],
   );
 
   if (isLoading) {
@@ -58,7 +58,7 @@ export const DmPageController: React.FC<Props> = ({ dmId }) => {
       <div className="flex flex-col flex-1 justify-end">
         <MessagesList dmId={dmId} />
       </div>
-      <div className="mb-3 sticky bottom-0">
+      <div className="py-3 bg-primary-950 sticky bottom-0">
         <MessageInput dmId={dmId} />
       </div>
     </div>

@@ -30,7 +30,7 @@ export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
   const { data, isLoading } = useTypeSafeQuery(
     ["joinThreadAndGetInfo", threadId],
     { staleTime: Infinity, refetchOnMount: "always" },
-    [threadId]
+    [threadId],
   );
   // const { mutateAsync: unsubscribe, isLoading: unsubscribeLoading } =
   //   useTypeSafeMutation("unsubscribeToThread");
@@ -128,7 +128,7 @@ export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
       <div className="flex flex-1 flex-col-reverse gap-4">
         <MessagesList threadId={data?.id!} currentUser={user} />
       </div>
-      <div className="mb-3 sticky bottom-0">
+      <div className="w-full py-3 sticky bottom-0 bg-primary-950">
         <MessageInput
           currentUser={user}
           threadId={data?.id!}
