@@ -18,7 +18,7 @@ defmodule Spek.MixProject do
 
     [
       mod: {Spek, []},
-      extra_applications: [:logger] ++ dev_only_apps
+      extra_applications: [:logger, :prometheus_ex] ++ dev_only_apps
     ]
   end
 
@@ -31,7 +31,9 @@ defmodule Spek.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:lettuce, "~> 0.3.0", only: :dev},
       {:poison, "~> 5.0"},
-      {:oauth2, "~> 2.0"}
+      {:oauth2, "~> 2.0"},
+      {:prometheus_ex, "~> 3.0"},
+      {:prometheus_plugs, "~> 1.1.1"}
     ]
   end
 

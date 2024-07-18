@@ -3,11 +3,16 @@ defmodule Spek do
 
   # start vm
   def start(_type, _args) do
+    Spek.Metrics.PrometheusExporter.setup()
+    Spek.Metrics.PipelineInstrumenter.setup()
+    Spek.Metrics.UserSessions.setup()
+
     children = [
       Spek.Supervisors.UserSession,
       Spek.Supervisors.ThreadSession,
       Spek.Supervisors.DmSession,
       {Spek.Repo, []},
+      Spek.Telemetry,
       Plug.Cowboy.child_spec(
         scheme: :http,
         plug: Router,

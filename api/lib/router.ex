@@ -6,6 +6,7 @@ defmodule Router do
   alias Routes.DevOnly
 
   plug(Plugs.Cors)
+  plug(Spek.Metrics.PrometheusExporter)
   plug(:match)
   plug(Plug.Static, at: "/public", from: "/media")
 

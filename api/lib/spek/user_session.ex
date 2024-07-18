@@ -30,7 +30,7 @@ defmodule Spek.UserSession do
 
   def child_spec(init), do: %{super(init) | id: Keyword.get(init, :user_id)}
 
-  def count, do: Registry.count(Spek.UserSessionRegistery)
+  def count, do: Registry.count(Spek.UserSessionRegistry)
 
   ###############################################################################
   ## INITIALIZATION BOILERPLATE
