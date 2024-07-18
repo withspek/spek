@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ["@spek/client", "@spek/ui"],
+  transpilePackages: ["@spek/client"],
   images: {
     remotePatterns: [
       {
