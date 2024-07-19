@@ -4,7 +4,7 @@ import { UserAvatar as Avatar } from "@spek/ui";
 
 const meta: Meta<typeof Avatar> = {
   component: Avatar,
-  title: "Components/Avatar",
+  title: "Components/UserAvatar",
 };
 
 export default meta;

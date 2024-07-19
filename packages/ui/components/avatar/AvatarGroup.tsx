@@ -14,7 +14,10 @@ export type AvatarGroupProps = {
   truncateAfter?: number;
 };
 
-export const AvatarGroup = function AvatarGroup(props: AvatarGroupProps) {
+export const AvatarGroup = function AvatarGroup({
+  size = "sm",
+  ...props
+}: AvatarGroupProps) {
   const LENGTH = props.items.length;
   const truncateAfter = props.truncateAfter || 4;
   /**
@@ -38,7 +41,7 @@ export const AvatarGroup = function AvatarGroup(props: AvatarGroupProps) {
             imageSrc={item.image}
             title={item.title}
             alt={item.alt || ""}
-            size={props.size}
+            size={size}
             href={item.href}
           />
         </li>
@@ -47,13 +50,13 @@ export const AvatarGroup = function AvatarGroup(props: AvatarGroupProps) {
         <li
           className={classNames(
             "bg-primary-800 relative -mr-1 inline-flex justify-center  overflow-hidden rounded-full",
-            props.size === "sm" ? "min-w-6 h-6" : "min-w-16 h-16"
+            size === "sm" ? "min-w-6 h-6" : "min-w-16 h-16"
           )}
         >
           <span
             className={classNames(
               " text-primary-100 m-auto flex h-full w-full items-center justify-center text-center",
-              props.size === "sm" ? "text-[12px]" : "text-2xl"
+              size === "sm" ? "text-[12px]" : "text-2xl"
             )}
           >
             +{numTruncatedAvatars}
