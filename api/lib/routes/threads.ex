@@ -1,6 +1,7 @@
 defmodule Routes.Threads do
   use Plug.Router
 
+  alias Operations.Communities
   alias Operations.Subs
   alias Operations.Messages
   alias Operations.Channels
@@ -169,7 +170,7 @@ defmodule Routes.Threads do
   end
 
   get "/get/all" do
-    threads = Channels.get_top_active_threads()
+    threads = Communities.get_top_threads_with_message_counts()
 
     conn
     |> send_resp(200, Jason.encode!(threads))

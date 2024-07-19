@@ -12,7 +12,7 @@ export const badgeStyles = cva(
     variants: {
       variant: {
         default: "bg-primary-900 text-primary-100",
-        success: "bg-accent text-primary-900",
+        success: "bg-green-300 text-green-900",
         error: "bg-red-300 text-red-900",
       },
       size: {

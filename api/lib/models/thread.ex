@@ -9,16 +9,13 @@ defmodule Models.Thread do
   defmodule Preview do
     use Ecto.Schema
 
-    @derive {Jason.Encoder,
-             only: ~w(id name messageCount creator channel community peoplePreviewList)a}
+    @derive {Jason.Encoder, only: ~w(id name message_count community peoplePreviewList)a}
     @primary_key false
     embedded_schema do
       field(:id, :binary_id)
 
       field(:name, :string)
-      field(:messageCount, :integer, virtual: true)
-      belongs_to(:creator, User.Preview)
-      belongs_to(:channel, Channel.Preview)
+      field(:message_count, :integer, virtual: true)
       belongs_to(:community, Community)
       embeds_many(:peoplePreviewList, User.Preview)
     end
