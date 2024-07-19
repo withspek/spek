@@ -65,6 +65,7 @@ const config: Config = {
         900: "var(--color-secondary-900)",
       },
       red: colors.red,
+      green: colors.green,
     },
     extend: {
       spacing: {

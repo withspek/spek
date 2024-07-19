@@ -7,7 +7,7 @@ import { classNames } from "@spek/lib";
 import { Icon, type IconName } from "../..";
 
 export const badgeStyles = cva(
-  "font-medium inline-flex items-center justify-center cursor-pointer rounded gap-x-1",
+  "font-medium inline-flex items-center justify-center cursor-pointer rounded-full gap-x-1",
   {
     variants: {
       variant: {

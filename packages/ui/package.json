@@ -26,6 +26,7 @@
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-tooltip": "^1.0.7",
     "@spek/lib": "workspace:*",
+    "@spek/client": "workspace:*",
     "class-variance-authority": "^0.7.0",
     "cmdk": "^1.0.0",
     "downshift": "^9.0.4",
