@@ -1,14 +1,11 @@
 "use client";
 import { AvatarGroup } from "../avatar";
-import { Badge } from "../badge";
 
 export interface ThreadCardProps {
   conversation: {
     messageCount: number;
-    channelName: string;
     communityName: string;
     name: string;
-    description: string;
   };
   avatars: {
     image: string;
@@ -30,19 +27,16 @@ export const ThreadCard: React.FC<ThreadCardProps> = ({
       : `${conversation.messageCount} message`;
   return (
     <div
-      className="border-b border-primary-700 cursor-pointer"
+      className="bg-primary-900 rounded-md px-4 py-2 cursor-pointer"
       onClick={onClick}
     >
       <div className="flex gap-2">
         <p className="uppercase">{conversation.communityName}</p>
-        <Badge>{conversation.channelName}</Badge>
       </div>
-      <div className="py-3">
-        <p>{conversation.name}</p>
-      </div>
+      <p className="text-primary-400">{conversation.name}</p>
       <div className="flex justify-between items-center py-3">
         <AvatarGroup items={avatars} size="sm" truncateAfter={3} />
-        <p className="text-primary-700">{message}</p>
+        <p className="text-primary-200">{message}</p>
       </div>
     </div>
   );

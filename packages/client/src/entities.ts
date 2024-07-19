@@ -73,15 +73,9 @@ export type Thread = {
 export type TopThread = {
   id: string;
   name: string;
-  messageCount: string;
-  creator: {
-    id: string;
-    displayName: string;
-    avatarUrl: string;
-  };
+  message_count: number;
   peoplePreviewList: UserPreview[];
   community: { id: string; name: string };
-  channel: { id: string; name: string; description: string; slug: string };
 };
 
 export type Message = {
