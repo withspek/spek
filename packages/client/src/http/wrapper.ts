@@ -119,7 +119,6 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/threads/create`, "POST", { ...data }),
     createDM: (userIds: string[]): Promise<UserDm> =>
       connection.send(`/dms/create`, "POST", { userIds }),
-
     createDirectMessage: (data: {
       dmId: string;
       text: string;

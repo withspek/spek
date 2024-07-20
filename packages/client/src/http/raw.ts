@@ -14,7 +14,7 @@ export type Connection = {
     body?: unknown,
     opts?: unknown
   ) => Promise<any>;
-  sendFile: (endpoint: Endpoint, formData: FormData) => Promise<any>;
+  sendWithFiles: (endpoint: Endpoint, formData: FormData) => Promise<any>;
 };
 
 export const connect = (
@@ -55,11 +55,10 @@ export const connect = (
       const connection: Connection = {
         user: data.user,
         send: apiSend,
-        sendFile: async (endpoint: string, formData: FormData) => {
+        sendWithFiles: async (endpoint: string, formData: FormData) => {
           return await fetch(`${url}${endpoint}`, {
             method: "POST",
             headers: {
-              "Content-Type": "multipart/form-data",
               "X-Access-Token": token,
               "X-Refresh-Token": refreshToken,
             },

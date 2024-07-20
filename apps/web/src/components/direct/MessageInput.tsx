@@ -1,6 +1,7 @@
+import React, { useRef, useState } from "react";
+
 import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 import { Input } from "@/ui/input";
-import React, { useRef, useState } from "react";
 
 interface InputProps {
   dmId: string;
@@ -22,7 +23,10 @@ export const MessageInput: React.FC<InputProps> = ({ dmId }) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form
+        className="flex gap-1 items-center bg-primary-800 pl-3 rounded-md"
+        onSubmit={handleSubmit}
+      >
         <Input
           placeholder="Send message"
           name="message"

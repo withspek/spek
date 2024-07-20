@@ -11,8 +11,8 @@ defmodule Router do
   plug(Plug.Static, at: "/public", from: "/media")
 
   plug(Plug.Parsers,
-    parsers: [:json, :urlencoded, {:multipart, length: 20_000_000}],
-    pass: ["application/json", "text/*"],
+    parsers: [:urlencoded, :multipart, :json],
+    pass: ["*/*"],
     json_decoder: Jason
   )
 
