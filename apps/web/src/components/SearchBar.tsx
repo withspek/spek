@@ -28,6 +28,7 @@ export const SearchBar: React.FC<{ defaultValue: string }> = ({
           placeholder="Search communities, threads and users"
           value={query}
           transparent
+          autoFocus
           onChange={(e) => setQuery(e.target.value)}
         />
       </div>

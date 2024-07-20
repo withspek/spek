@@ -78,7 +78,7 @@ export const LeftPanel: React.FC = () => {
         onRequestClose={() => setOpen(!open)}
         variant="search"
       >
-        <SearchBar defaultValue=" " />
+        <SearchBar defaultValue="" />
       </Modal>
     </div>
   );
