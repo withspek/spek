@@ -10,10 +10,9 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <MainLayout leftPanel={<LeftPanel />}>
-      <div className="flex flex-col gap-2 px-3 pt-4">
+      <div className="flex flex-col gap-2 px-3 pt-4 w-full">
         <HomeController />
       </div>
-      <div />
     </MainLayout>
   );
 }
