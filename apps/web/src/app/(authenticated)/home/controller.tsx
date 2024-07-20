@@ -23,6 +23,7 @@ export const HomeController: React.FC<ControllerProps> = () => {
       <div className="flex flex-col gap-4 mt-3">
         {data?.map((thread) => (
           <ThreadCard
+            key={thread.id}
             avatars={thread.peoplePreviewList.map((user) => ({
               image: user.avatarUrl,
               alt: user.displayName,
