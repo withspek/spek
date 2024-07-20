@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 interface MainLayoutProps {
@@ -12,6 +14,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   leftPanel = <div />,
   rightPanel = <div />,
 }) => {
+  // const { isTablet } = useMediaQuery();
   return (
     <div
       className="grid w-full h-full justify-center min-h-screen overflow-y-auto"

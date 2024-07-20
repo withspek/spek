@@ -44,7 +44,7 @@ export function useMediaQuery() {
     return () => {
       window.removeEventListener("resize", checkDevice);
     };
-  });
+  }, []);
 
   return {
     device,
