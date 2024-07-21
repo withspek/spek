@@ -25,13 +25,14 @@ defmodule Breeze do
   forward("/auth", to: Routes.OAuth)
 
   # API V1 Routes
-  forward("/community", to: Routes.V1.Communities)
-  forward("/channels", to: Routes.V1.Channels)
-  forward("/user", to: Routes.V1.Users)
-  forward("/threads", to: Routes.V1.Threads)
-  forward("/dms", to: Routes.V1.Dms)
+  forward("/api/v1/communities", to: Routes.V1.Communities)
+  forward("/api/v1/channels", to: Routes.V1.Channels)
+  forward("/api/v1/users", to: Routes.V1.Users)
+  forward("/api/v1/threads", to: Routes.V1.Threads)
+  forward("/api/v1/dms", to: Routes.V1.Dms)
+  forward("/api/v1/admins", to: Routes.V1.Metrics)
+
   forward("/misc", to: Routes.Misc)
-  forward("/admin", to: Routes.V1.Metrics)
 
   match _ do
     conn

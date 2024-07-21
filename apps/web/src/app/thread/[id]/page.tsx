@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id;
 
   const thread: Thread = await await defaultQueryFn({
-    queryKey: `/threads/${id}`,
+    queryKey: `/api/v1/threads/${id}`,
   });
 
   return {

@@ -18,7 +18,9 @@ export async function generateMetadata(
 
   // fetch data
 
-  const { community } = await defaultQueryFn({ queryKey: `community/${slug}` });
+  const { community } = await defaultQueryFn({
+    queryKey: `api/v1/communities/${slug}`,
+  });
 
   return {
     title: community.name,

@@ -9,7 +9,9 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { user } = await defaultQueryFn({ queryKey: `/user/${params.userId}` });
+  const { user } = await defaultQueryFn({
+    queryKey: `api/v1/users/${params.userId}`,
+  });
 
   return {
     title: user.username,

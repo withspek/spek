@@ -10,7 +10,7 @@ defmodule Breeze.Routes.V1.Users do
   plug(:dispatch)
 
   if Mix.env() == :dev do
-    get "/all" do
+    get "/" do
       users = Users.get_users()
 
       conn |> send_resp(200, Jason.encode!(users))
@@ -54,7 +54,7 @@ defmodule Breeze.Routes.V1.Users do
     end
   end
 
-  put "/update" do
+  put "/" do
     has_user_id = Map.has_key?(conn.assigns, :user_id)
 
     if has_user_id do

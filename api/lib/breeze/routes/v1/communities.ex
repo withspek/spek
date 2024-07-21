@@ -10,8 +10,7 @@ defmodule Breeze.Routes.V1.Communities do
   plug(Breeze.Plugs.CheckAuth, %{shouldThrow: false})
   plug(:dispatch)
 
-  # TODO: fix warning
-  get "/all" do
+  get "/" do
     communities = Communities.get_top_communities(40)
 
     conn

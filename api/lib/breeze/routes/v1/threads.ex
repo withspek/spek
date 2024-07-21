@@ -11,6 +11,13 @@ defmodule Breeze.Routes.V1.Threads do
   plug(Breeze.Plugs.CheckAuth, %{shouldThrow: false})
   plug(:dispatch)
 
+  get "/" do
+    threads = Communities.get_top_threads_with_message_counts()
+
+    conn
+    |> send_resp(200, Jason.encode!(threads))
+  end
+
   get "/:id" do
     %Plug.Conn{params: %{"id" => id}} = conn
 
@@ -58,7 +65,7 @@ defmodule Breeze.Routes.V1.Threads do
     end
   end
 
-  post "/:id/message" do
+  post "/:id/send-message" do
     has_user_id = Map.has_key?(conn.assigns, :user_id)
 
     if has_user_id do
@@ -167,13 +174,6 @@ defmodule Breeze.Routes.V1.Threads do
         conn
         |> send_resp(401, Jason.encode!(%{error: "invalid id"}))
     end
-  end
-
-  get "/get/all" do
-    threads = Communities.get_top_threads_with_message_counts()
-
-    conn
-    |> send_resp(200, Jason.encode!(threads))
   end
 
   post "/subscribe" do

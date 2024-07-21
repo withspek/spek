@@ -46,7 +46,7 @@ export const connect = (
           .catch((err) => console.log(err));
       };
 
-      const data = await apiSend("/user/me", "GET")
+      const data = await apiSend("/api/v1/users/me", "GET")
         .then((user: any) => user)
         .catch((err) => {
           reject(err);

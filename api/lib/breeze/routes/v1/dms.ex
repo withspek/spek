@@ -118,7 +118,7 @@ defmodule Breeze.Routes.V1.Dms do
     end
   end
 
-  post "/:id/message" do
+  post "/:id/send-message" do
     has_user_id = Map.has_key?(conn.assigns, :user_id)
 
     case has_user_id do

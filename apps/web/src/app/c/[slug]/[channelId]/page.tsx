@@ -10,7 +10,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { channel } = await defaultQueryFn({
-    queryKey: `/channels/${params.channelId}`,
+    queryKey: `api/v1/channels/${params.channelId}`,
   });
 
   return {

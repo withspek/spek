@@ -164,8 +164,8 @@ defmodule Breeze.Routes.V1.Channels do
     end
   end
 
-  delete "/delete" do
-    %Plug.Conn{params: %{"channelId" => id}} = conn
+  delete "/:id" do
+    %Plug.Conn{params: %{"id" => id}} = conn
     has_user_id = Map.has_key?(conn.assigns, :user_id)
 
     if has_user_id do
