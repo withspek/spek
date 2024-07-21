@@ -1,5 +1,10 @@
 defmodule Spek.Release do
+  @moduledoc """
+  Used for executing DB release tasks when run in production without Mix
+  installed.
+  """
   @app :spek
+
   def migrate do
     load_app()
 

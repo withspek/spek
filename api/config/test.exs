@@ -2,7 +2,7 @@ import Config
 
 database_url = "postgres://postgres:postgres@localhost:5432/spek_repo_test"
 
-config :spek, Spek.Repo, url: database_url, pool: Ecto.Adapters.SQL.Sandbox
+config :spek, Telescope.Repo, url: database_url, pool: Ecto.Adapters.SQL.Sandbox
 
 config :logger, level: :error
 

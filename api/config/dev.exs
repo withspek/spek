@@ -2,12 +2,12 @@ import Config
 
 database_url = "postgres://postgres:postgres@localhost/spek_repo"
 
-config :spek, Spek.Repo, url: database_url
+config :spek, Telescope.Repo, url: database_url
 
 config :lettuce,
   folders_to_watch: ["lib", "config"]
 
-config :spek, OAuth.Gitlab,
+config :spek, Breeze.OAuth.Gitlab,
   client_id:
     System.get_env("GITLAB_APP_ID") ||
       raise("GITLAB_APP_ID not set"),
@@ -18,7 +18,7 @@ config :spek, OAuth.Gitlab,
     System.get_env("GITLAB_REDIRECT_URI") ||
       raise("GITLAB_REDIRECT_URI not set")
 
-config :spek, OAuth.Github,
+config :spek, Breeze.OAuth.Github,
   client_id:
     System.get_env("GITHUB_CLIENT_ID") ||
       raise("""

@@ -33,7 +33,9 @@ defmodule Spek.MixProject do
       {:poison, "~> 5.0"},
       {:oauth2, "~> 2.0"},
       {:prometheus_ex, "~> 3.0"},
-      {:prometheus_plugs, "~> 1.1.1"}
+      {:prometheus_plugs, "~> 1.1.1"},
+      # style ENFORCEMENT
+      {:credo, "~> 1.5.5"}
     ]
   end
 

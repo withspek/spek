@@ -1,5 +1,5 @@
 defmodule Spek.Utils.TokenUtils do
-  alias Models.User
+  alias Telescope.Schemas.User
 
   def tokens_to_user_id(accessToken, refreshToken) do
     accessToken = if is_nil(accessToken), do: "", else: accessToken
@@ -21,7 +21,7 @@ defmodule Spek.Utils.TokenUtils do
                Joken.Signer.create("HS256", refresh_token_secret)
              ) do
           {:ok, refreshClaims} ->
-            user = User |> Spek.Repo.get(refreshClaims["userId"])
+            user = User |> Telescope.Repo.get(refreshClaims["userId"])
 
             if is_nil(user) or user.tokenVersion != refreshClaims["tokenVersion"] do
               {nil, nil}
