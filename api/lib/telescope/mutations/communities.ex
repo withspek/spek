@@ -75,7 +75,6 @@ defmodule Telescope.Mutations.Community do
     case community do
       community ->
         member = Communities.is_member?(communityId, userId)
-        IO.inspect(member)
 
         if not member do
           Query.start()

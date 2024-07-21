@@ -35,7 +35,7 @@ defmodule Spek.MixProject do
       {:prometheus_ex, "~> 3.0"},
       {:prometheus_plugs, "~> 1.1.1"},
       # style ENFORCEMENT
-      {:credo, "~> 1.5.5"}
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
     ]
   end
 
