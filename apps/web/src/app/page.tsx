@@ -1,12 +1,15 @@
 "use client";
 
-import { Buttons } from "./login/buttons";
-import { useRouter } from "next/navigation";
-import { useTokenStore } from "@/stores/useTokenStore";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+import { Buttons } from "./login/buttons";
+import { useTokenStore } from "@/stores/useTokenStore";
 import { ParticlesComp } from "@/components/Particles";
+import { useSaveTokens } from "@/hooks/useSaveTokens";
 
 export default function Home() {
+  useSaveTokens();
   const { push } = useRouter();
   const hasTokens = useTokenStore((s) => !!(s.accessToken && s.refreshToken));
 

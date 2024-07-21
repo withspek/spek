@@ -1,14 +1,12 @@
 "use client";
-
-import { useTokenStore } from "@/stores/useTokenStore";
-import { Buttons } from "./buttons";
-import { useSaveTokens } from "@/hooks/useSaveTokens";
-import { useConn } from "@/hooks/useConn";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+import { useTokenStore } from "@/stores/useTokenStore";
+import { Buttons } from "./buttons";
+import { useConn } from "@/hooks/useConn";
+
 export default function LoginPage() {
-  useSaveTokens();
   const conn = useConn();
   const router = useRouter();
   const hasTokens = useTokenStore((s) => !!(s.accessToken && s.refreshToken));

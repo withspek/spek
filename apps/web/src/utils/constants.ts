@@ -6,4 +6,4 @@ export const apiUrl = !prod
 export const isServer = typeof window == "undefined";
 export const baseUrl = !prod
   ? "http://localhost:3000"
-  : "https://spek.vercel.app";
+  : "https://spek-alpha.netlify.app";
