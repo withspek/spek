@@ -11,9 +11,11 @@ type Props = {
 
 export async function generateMetadata(
   { params }: Props,
-  _parent: ResolvingMetadata,
+  _parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const dm: UserDm = await defaultQueryFn({ queryKey: `dms/${params.id}` });
+  const dm: UserDm = await defaultQueryFn({
+    queryKey: `api/v1/dms/${params.id}`,
+  });
 
   return {
     title: dm.peoplePreviewList.map((p) => p.displayName).join(", "),
