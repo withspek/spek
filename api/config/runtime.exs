@@ -15,7 +15,10 @@ if config_env() == :prod do
       For example: ecto://USER:PASSWORD@HOST:PORT/DATABASE
       """
 
-  config :spek, Telescope.Repo, url: database_url
+  config :spek, Telescope.Repo,
+    url: database_url,
+    socket_options: [:inet6],
+    ssl: false
 
   config :spek, Breeze.OAuth.Gitlab,
     client_id:
