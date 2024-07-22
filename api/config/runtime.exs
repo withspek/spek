@@ -17,7 +17,7 @@ if config_env() == :prod do
 
   config :spek, Telescope.Repo,
     url: database_url,
-    ssl: [cacerts: :public_key.cacerts_get()]
+    ssl: [verify: :verify_none]
 
   config :spek, Breeze.OAuth.Gitlab,
     client_id:
