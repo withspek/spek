@@ -15,9 +15,31 @@ if config_env() == :prod do
       For example: ecto://USER:PASSWORD@HOST:PORT/DATABASE
       """
 
+  %URI{host: database_host} = URI.parse(database_url)
+
+  # Location of root certificates to verify database SSL connection.
+  # For example: /opt/homebrew/etc/openssl@3/cert.pem
+  database_ca_cert_filepath =
+    System.get_env("DATABASE_CA_CERT_FILEPATH") || "/etc/secrets/cakey.pem"
+
+  maybe_ipv6 = if System.get_env("ECTO_IPV6"), do: [:inet6], else: []
+
   config :spek, Telescope.Repo,
     url: database_url,
-    ssl: false
+    # Our production database requires SSL to be enabled to connect. This enables verifying the Postgres server has a valid certificate.
+    ssl: true,
+    ssl_opts: [
+      verify: :verify_peer,
+      cacertfile: database_ca_cert_filepath,
+      # see https://pspdfkit.com/blog/2022/using-ssl-postgresql-connections-elixir/
+      server_name_indication: to_charlist(database_host),
+      customize_hostname_check: [
+        # Our hosting provider uses a wildcard certificate. By default, Erlang does not support wildcard certificates. This function supports validating wildcard hosts
+        match_fun: :public_key.pkix_verify_hostname_match_fun(:https)
+      ]
+    ],
+    pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
+    socket_options: maybe_ipv6
 
   config :spek, Breeze.OAuth.Gitlab,
     client_id:
