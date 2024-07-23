@@ -1,10 +1,9 @@
+import { useRouter } from "next/navigation";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+
 import { useTokenStore } from "@/stores/useTokenStore";
 import { apiUrl } from "@/utils/constants";
-import { websocket } from "@spek/client";
-import { WSConnection } from "@spek/client/dist/websocket";
-import { useRouter } from "next/navigation";
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
-import ConnectionContext from "./ConnectionContext";
+import { User, websocket } from "@spek/client";
 
 interface WebSocketProviderProps {
   shouldConnect: boolean;
@@ -15,18 +14,21 @@ type V = websocket.WSConnection | null;
 
 export const WebSocketContext = React.createContext<{
   conn: V;
-  setConn: (u: WSConnection | null) => void;
+  setUser: (u: User) => void;
+  setConn: (u: websocket.WSConnection | null) => void;
 }>({
   conn: null,
+  setUser: () => {},
   setConn: () => {},
 });
+
+export default WebSocketContext;
 
 export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
   shouldConnect,
   children,
 }) => {
   const hasTokens = useTokenStore((s) => s.accessToken && s.refreshToken);
-  const { setUser } = useContext(ConnectionContext);
   const [conn, setConn] = useState<V>(null);
   const { replace } = useRouter();
   const isConnecting = useRef(false);
@@ -62,7 +64,6 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
         })
         .then((x) => {
           setConn(x);
-          setUser(x.user);
         })
         .catch((err) => {
           if (err.code === 4001) {
@@ -73,7 +74,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
           isConnecting.current = false;
         });
     }
-  }, [conn, shouldConnect, hasTokens, replace, setUser]);
+  }, [conn, shouldConnect, hasTokens, replace]);
 
   useEffect(() => {
     if (!conn) {
@@ -97,6 +98,14 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
         () => ({
           conn,
           setConn,
+          setUser: (u: User) => {
+            if (conn) {
+              setConn({
+                ...conn,
+                user: u,
+              });
+            }
+          },
         }),
         [conn]
       )}

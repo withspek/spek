@@ -1,21 +1,21 @@
 import { useCallback } from "react";
 import { useQueryClient } from "react-query";
-import { wrap } from "@spek/client";
+import { http } from "@spek/client";
 
-import { useWrappedConn } from "./useConn";
+import { useWrappedFetch } from "./useFetch";
 
-type Keys = keyof ReturnType<typeof wrap>["query"];
+type Keys = keyof ReturnType<typeof http.wrap>["query"];
 
 type PaginatedKey<K extends Keys> = [K, string | number];
 
 export const useTypeSafePrefetch = () => {
-  const conn = useWrappedConn();
+  const conn = useWrappedFetch();
   const client = useQueryClient();
 
   return useCallback(
     <K extends Keys>(
       key: K | PaginatedKey<K>,
-      params?: Parameters<ReturnType<typeof wrap>["query"][K]>
+      params?: Parameters<ReturnType<typeof http.wrap>["query"][K]>
     ) =>
       client.prefetchQuery(
         key,

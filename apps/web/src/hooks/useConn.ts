@@ -1,11 +1,12 @@
-import ConnectionContext from "@/contexts/ConnectionContext";
-import { wrap } from "@spek/client";
+import { websocket } from "@spek/client";
 import { useContext } from "react";
 
+import WebSocketContext from "@/contexts/WebSocketContext";
+
 export const useConn = () => {
-  return useContext(ConnectionContext).conn!;
+  return useContext(WebSocketContext).conn!;
 };
 
 export const useWrappedConn = () => {
-  return wrap(useContext(ConnectionContext).conn!);
+  return websocket.wrap(useContext(WebSocketContext).conn!);
 };

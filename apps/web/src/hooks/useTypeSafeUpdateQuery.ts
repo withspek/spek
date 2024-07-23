@@ -1,7 +1,8 @@
-import { Await } from "@/utils/util-types";
 import { wrap } from "@spek/client";
 import { useCallback } from "react";
 import { useQueryClient } from "react-query";
+
+import { Await } from "@/utils/util-types";
 
 type Keys = keyof ReturnType<typeof wrap>["query"];
 

@@ -3,7 +3,7 @@ import { Modal } from "@/ui/modal";
 import { Form, Formik } from "formik";
 import { InputField } from "@/ui/form-field";
 import { Button } from "@spek/ui";
-import ConnectionContext from "@/contexts/ConnectionContext";
+import WebSocketContext from "@/contexts/WebSocketContext";
 import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 
 interface EditProfileProps {
@@ -21,7 +21,7 @@ export const EditProfileModal: React.FC<EditProfileProps> = ({
   isOpen,
   onRequestClose,
 }) => {
-  const { conn, setUser } = useContext(ConnectionContext);
+  const { conn, setUser } = useContext(WebSocketContext);
   const { mutateAsync } = useTypeSafeMutation("updateProfile");
 
   if (!conn) {

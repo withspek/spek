@@ -1,3 +1,3 @@
 export * from "./entities";
-export * from "./http";
+export * as http from "./http";
 export * as websocket from "./websocket";

@@ -1,19 +1,20 @@
-import { Await } from "@/utils/util-types";
-import { wrap } from "@spek/client";
+import { http } from "@spek/client";
 import { UseQueryOptions, useQuery } from "react-query";
-import { useWrappedConn } from "./useConn";
 
-type Keys = keyof ReturnType<typeof wrap>["query"];
+import { Await } from "@/utils/util-types";
+import { useWrappedFetch } from "./useFetch";
+
+type Keys = keyof ReturnType<typeof http.wrap>["query"];
 type PaginatedKey<K extends Keys> = [K, ...(string | number | boolean)[]];
 
 export const useTypeSafeQuery = <K extends Keys>(
   key: K | PaginatedKey<K>,
   opts?: UseQueryOptions,
-  params?: Parameters<ReturnType<typeof wrap>["query"][K]>
+  params?: Parameters<ReturnType<typeof http.wrap>["query"][K]>
 ) => {
-  const conn = useWrappedConn();
+  const conn = useWrappedFetch();
 
-  return useQuery<Await<ReturnType<ReturnType<typeof wrap>["query"][K]>>>(
+  return useQuery<Await<ReturnType<ReturnType<typeof http.wrap>["query"][K]>>>(
     key,
     async () => {
       const fn = conn!.query[typeof key === "string" ? key : key[0]] as any;

@@ -1,7 +1,8 @@
-import { useTokenStore } from "@/stores/useTokenStore";
-import { loginNextPathKey } from "@/utils/constants";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+
+import { useTokenStore } from "@/stores/useTokenStore";
+import { loginNextPathKey } from "@/utils/constants";
 
 export const useSaveTokens = () => {
   const params = useSearchParams();

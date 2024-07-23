@@ -1,9 +1,15 @@
-import { Authenticated } from "@/components/check-auth";
+"use client";
+
+import { useVerifyLoggedIn } from "@/hooks/useVerifyLoggedIn";
 
 export default function AuthenticatedLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <Authenticated>{children}</Authenticated>;
+  if (!useVerifyLoggedIn()) {
+    return null;
+  }
+
+  return <>{children}</>;
 }

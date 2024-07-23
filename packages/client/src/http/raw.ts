@@ -1,5 +1,4 @@
 import fetch from "isomorphic-fetch";
-import { User } from "../entities";
 
 const apiUrl = "https://api.spek.app";
 
@@ -7,7 +6,6 @@ type Endpoint = string;
 type Token = string;
 
 export type Connection = {
-  user: User;
   send: (
     endpoint: Endpoint,
     method: string,
@@ -43,17 +41,14 @@ export const connect = (
           body: body ? JSON.stringify(body) : undefined,
         })
           .then((resp) => resp.json())
-          .catch((err) => console.log(err));
+          .catch((error) => console.error(error));
       };
 
-      const data = await apiSend("/api/v1/users/me", "GET")
-        .then((user: any) => user)
-        .catch((err) => {
-          reject(err);
-        });
+      apiSend("/api/health-check", "GET")
+        .then((resp) => resp)
+        .catch((error) => reject(error));
 
       const connection: Connection = {
-        user: data.user,
         send: apiSend,
         sendWithFiles: async (endpoint: string, formData: FormData) => {
           return await fetch(`${url}${endpoint}`, {
@@ -65,7 +60,7 @@ export const connect = (
             body: formData,
           })
             .then((resp) => resp.json())
-            .catch((err) => console.log(err));
+            .catch((error) => console.error(error));
         },
       };
 

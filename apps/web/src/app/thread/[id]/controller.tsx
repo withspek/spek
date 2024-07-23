@@ -15,7 +15,6 @@ import { useConn } from "@/hooks/useConn";
 // import { useTypeSafeUpdateQuery } from "@/hooks/useTypeSafeUpdateQuery";
 // import { copyTextToClipboard } from "@/utils/copyToClipboard";
 import { CenterLoader } from "@/components/CenterLoader";
-import { useScroll } from "@/hooks/useScroll";
 
 interface ThreadPageControllerProps {
   threadId: string;
@@ -25,12 +24,11 @@ export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
   threadId,
 }) => {
   const { user } = useConn();
-  const scrolled = useScroll(50);
   const router = useRouter();
   const { data, isLoading } = useTypeSafeQuery(
     ["joinThreadAndGetInfo", threadId],
     { staleTime: Infinity, refetchOnMount: "always" },
-    [threadId],
+    [threadId]
   );
   // const { mutateAsync: unsubscribe, isLoading: unsubscribeLoading } =
   //   useTypeSafeMutation("unsubscribeToThread");
@@ -50,9 +48,7 @@ export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
 
   return (
     <div className="flex flex-col gap-3 h-full">
-      <div
-        className={`z-20 sticky top-0 py-3 bg-primary-950 ${scrolled ? "bg-primary-950  border-b-2 border-b-primary-800 shadow-lg" : ""}`}
-      >
+      <div className={`z-20 sticky top-0 py-3 bg-primary-950`}>
         <div className="flex justify-between items-center">
           <div className="cursor-pointer" onClick={() => router.back()}>
             <PlusIcon className="rotate-45" width={28} height={28} />

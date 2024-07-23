@@ -22,7 +22,7 @@ export const DmPageController: React.FC<Props> = ({ dmId }) => {
       staleTime: Infinity,
       refetchOnMount: "always",
     },
-    [dmId],
+    [dmId]
   );
 
   if (isLoading) {

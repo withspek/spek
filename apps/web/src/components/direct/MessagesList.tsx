@@ -1,9 +1,10 @@
-import { useConn } from "@/hooks/useConn";
-import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
-import { Avatar } from "@spek/ui";
-import { DmMessage, User } from "@spek/client";
 import { format } from "date-fns";
 import { useMemo, useState } from "react";
+import { Avatar } from "@spek/ui";
+import { DmMessage, User } from "@spek/client";
+
+import { useConn } from "@/hooks/useConn";
+import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 
 interface MessagesListProps {
   dmId: string;

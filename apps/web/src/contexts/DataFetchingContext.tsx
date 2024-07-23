@@ -1,29 +1,39 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 
-import { User, raw } from "@spek/client";
+import { http } from "@spek/client";
 import { apiUrl } from "@/utils/constants";
 import { useTokenStore } from "@/stores/useTokenStore";
 
-type V = raw.Connection | null;
+type V = http.raw.Connection | null;
 
-export const ConnectionContext = React.createContext<{
+export const DataFetchingContext = React.createContext<{
   conn: V;
-  setUser: (u: User) => void;
-  setConn: (u: raw.Connection | null) => void;
+  setConn: (u: http.raw.Connection | null) => void;
 }>({
   conn: null,
-  setUser: () => {},
   setConn: () => {},
 });
 
-export default ConnectionContext;
+export default DataFetchingContext;
 
-interface ConnectionContextProviderProps {
+interface DataFetchingContextProviderProps {
   children: React.ReactNode;
 }
 
-export const ConnnectionContextProvider: React.FC<
-  ConnectionContextProviderProps
+const WaitForConnection: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const { conn } = useContext(DataFetchingContext);
+
+  if (!conn) {
+    return null;
+  }
+
+  return <>{children}</>;
+};
+
+export const DataFetchingContextProvider: React.FC<
+  DataFetchingContextProviderProps
 > = ({ children }) => {
   const [conn, setConn] = useState<V>(null);
   const tokens = useTokenStore.getState();
@@ -33,7 +43,7 @@ export const ConnnectionContextProvider: React.FC<
     if (!conn && !isConnecting.current) {
       isConnecting.current = true;
 
-      raw
+      http.raw
         .connect(tokens.accessToken, tokens.refreshToken, {
           url: apiUrl,
         })
@@ -56,24 +66,16 @@ export const ConnnectionContextProvider: React.FC<
   }, [conn]);
 
   return (
-    <ConnectionContext.Provider
+    <DataFetchingContext.Provider
       value={useMemo(
         () => ({
           conn,
           setConn,
-          setUser: (u: User) => {
-            if (conn) {
-              setConn({
-                ...conn,
-                user: u,
-              });
-            }
-          },
         }),
         [conn]
       )}
     >
-      {children}
-    </ConnectionContext.Provider>
+      <WaitForConnection>{children}</WaitForConnection>
+    </DataFetchingContext.Provider>
   );
 };

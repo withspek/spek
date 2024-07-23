@@ -1,13 +1,16 @@
 "use client";
 
-import { ConfirmModal } from "@/components/ConfirmModal";
-import { WebSocketWrapper } from "@/components/WebSocketWrapper";
-import { WaitForConn } from "@/components/check-auth";
-import { ConnnectionContextProvider } from "@/contexts/ConnectionContext";
-import { queryClient } from "@/utils/queryClient";
-import { TooltipProvider, Toaster } from "@spek/ui";
 import ReactModal from "react-modal";
+import { TooltipProvider, Toaster } from "@spek/ui";
 import { QueryClientProvider } from "react-query";
+
+import { ConfirmModal } from "@/components/ConfirmModal";
+import { DataFetchingContextProvider } from "@/contexts/DataFetchingContext";
+import { queryClient } from "@/utils/queryClient";
+import { WaitForWsAndAuth } from "@/components/auth/WaitForWsAndAuth";
+import { useTokenStore } from "@/stores/useTokenStore";
+import { WebSocketProvider } from "@/contexts/WebSocketContext";
+import { MainWsHandlerProvider } from "@/hooks/useMainWsHandler";
 
 interface Props {
   children?: React.ReactNode;
@@ -16,21 +19,23 @@ interface Props {
 ReactModal.setAppElement("body");
 
 export const Providers: React.FC<Props> = ({ children }) => {
+  const hasTokens = useTokenStore((s) => !!(s.accessToken && s.refreshToken));
+
   return (
-    <>
-      <ConnnectionContextProvider>
-        <QueryClientProvider client={queryClient}>
-          <WaitForConn>
-            <WebSocketWrapper>
+    <QueryClientProvider client={queryClient}>
+      <WebSocketProvider shouldConnect={hasTokens}>
+        <WaitForWsAndAuth>
+          <DataFetchingContextProvider>
+            <MainWsHandlerProvider>
               <TooltipProvider>
                 {children}
                 <ConfirmModal />
                 <Toaster id={"toaster"} />
               </TooltipProvider>
-            </WebSocketWrapper>
-          </WaitForConn>
-        </QueryClientProvider>
-      </ConnnectionContextProvider>
-    </>
+            </MainWsHandlerProvider>
+          </DataFetchingContextProvider>
+        </WaitForWsAndAuth>
+      </WebSocketProvider>
+    </QueryClientProvider>
   );
 };
