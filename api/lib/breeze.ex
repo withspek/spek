@@ -23,6 +23,7 @@ defmodule Breeze do
 
   forward("/dev", to: Routes.DevOnly)
   forward("/auth", to: Routes.OAuth)
+  forward("/api/health-check", to: Routes.HealthCheck)
 
   # API V1 Routes
   forward("/api/v1/communities", to: Routes.V1.Communities)
