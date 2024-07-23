@@ -18,8 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ProgressBar />
-        <Providers>{children}</Providers>
+        <div id="__app">
+          <ProgressBar />
+          <Providers>{children}</Providers>
+        </div>
       </body>
     </html>
   );
