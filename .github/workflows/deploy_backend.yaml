@@ -1,11 +1,11 @@
-name: api:deploy_master_branch
+name: Build API Docker Image
 on:
   push:
     paths:
       - "api/**"
       - ".github/**"
     branches:
-      - master
+      - prod
 
 jobs:
   docker:
