@@ -24,7 +24,7 @@ if config_env() == :prod do
     # Our production database requires SSL to be enabled to connect.
     ssl: true,
     ssl_opts: [
-      verify: :none,
+      verify: :verify_none,
       server_name_indication: to_charlist(database_host),
       customize_hostname_check: [
         match_fun: :public_key.pkix_verify_hostname_match_fun(:https)
