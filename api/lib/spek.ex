@@ -50,7 +50,7 @@ defmodule Spek do
   end
 
   defp start_dms() do
-    Enum.each(Telescope.Dms.all_dms_ids(), fn id ->
+    Enum.each(Telescope.Lodges.get_all_lodges(), fn id ->
       Pulse.DmSession.start_supervised(dm_id: id)
     end)
   end

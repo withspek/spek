@@ -107,6 +107,50 @@ defmodule Breeze.Routes.V1.Lodges do
     end
   end
 
+  post "/:lodge_id/send-message" do
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    case has_user_id do
+      true ->
+        lodge_id = conn.params["lodge_id"]
+        text = conn.body_params["text"]
+        user_id = conn.assigns.user_id
+
+        message = Lodges.create_lodge_message(lodge_id, user_id, text)
+
+        DmSession.broadcast_ws(lodge_id, %{op: "new_dm_message", d: %{message: message}})
+
+        conn
+        |> send_resp(200, Jason.encode!(message))
+
+      false ->
+        conn
+        |> send_resp(401, Jason.encode!(%{error: "UNAUTHORIZED"}))
+    end
+  end
+
+  get "/:lodge_id/messages" do
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    case has_user_id do
+      true ->
+        lodge_id = conn.params["lodge_id"]
+        cursor = String.to_integer(conn.params["cursor"])
+
+        {messages, next_cursor} = Lodges.get_lodge_messages(lodge_id, cursor)
+
+        conn
+        |> send_resp(
+          200,
+          Jason.encode!(%{messages: messages, nextCursor: next_cursor, initial: cursor == 0})
+        )
+
+      false ->
+        conn
+        |> send_resp(401, Jason.encode!(%{error: "UNAUTHORIZED"}))
+    end
+  end
+
   match _ do
     conn
     |> send_resp(404, "Not found")

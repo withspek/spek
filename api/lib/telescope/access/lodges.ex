@@ -1,10 +1,18 @@
 defmodule Telescope.Access.Lodges do
+  @fetch_limit 21
+
   import Ecto.Query
 
   alias Telescope.Repo
   alias Telescope.Queries.Lodges, as: Query
   alias Telescope.Schemas.Lodge
   alias Telescope.Schemas.User
+  alias Telescope.Schemas.DmMessage
+
+  def get_all_lodges() do
+    Query.start()
+    |> Repo.all()
+  end
 
   def get_user_lodges(user_id) do
     from(l in Lodge,
@@ -32,5 +40,20 @@ defmodule Telescope.Access.Lodges do
     Query.start()
     |> Query.filter_by_id(id)
     |> Repo.one()
+  end
+
+  def get_lodge_messages(lodge_id, offset \\ 20) do
+    messages =
+      from(m in DmMessage,
+        where: m.lodge_id == ^lodge_id,
+        limit: ^@fetch_limit,
+        offset: ^offset,
+        order_by: [desc: m.inserted_at]
+      )
+      |> Repo.all()
+      |> Repo.preload(:user)
+
+    {Enum.slice(messages, 0, -1 + @fetch_limit),
+     if(length(messages) == @fetch_limit, do: -1 + offset + @fetch_limit, else: nil)}
   end
 end

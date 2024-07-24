@@ -5,6 +5,7 @@ defmodule Telescope.Mutations.Lodges do
   alias Telescope.Users
   alias Telescope.Schemas.Lodge
   alias Telescope.Schemas.User
+  alias Telescope.Schemas.DmMessage
   alias Telescope.Queries.Lodges, as: Query
 
   def create_lodge(recipients, owner_id, type \\ 1) do
@@ -91,5 +92,11 @@ defmodule Telescope.Mutations.Lodges do
       ]
     )
     |> Repo.update_all([])
+  end
+
+  def create_lodge_message(lodge_id, user_id, text) do
+    DmMessage.changeset(%DmMessage{user_id: user_id, text: text, lodge_id: lodge_id})
+    |> Repo.insert!()
+    |> Repo.preload(:user)
   end
 end

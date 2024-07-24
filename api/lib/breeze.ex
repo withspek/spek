@@ -30,7 +30,6 @@ defmodule Breeze do
   forward("/api/v1/channels", to: Routes.V1.Channels)
   forward("/api/v1/users", to: Routes.V1.Users)
   forward("/api/v1/threads", to: Routes.V1.Threads)
-  forward("/api/v1/dms", to: Routes.V1.Dms)
   forward("/api/v1/admins", to: Routes.V1.Metrics)
   forward("/api/v1/lodges", to: Routes.V1.Lodges)
 
