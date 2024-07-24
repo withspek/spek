@@ -11,12 +11,12 @@ defmodule Telescope.Schemas.Lodge do
 
   alias Telescope.Schemas.User
 
-  @derive {Jason.Encoder, only: ~w(id type name member_count nsfw recipients)a}
+  @derive {Jason.Encoder,
+           only: ~w(id type message_count last_message_id member_count nsfw recipients)a}
   @primary_key {:id, :binary_id, []}
   @timestamps_opts [:utc_datetime_usec]
   schema "lodges" do
     field(:type, :integer, default: 1)
-    field(:name, :string, virtual: true)
     field(:member_count, :integer)
     field(:nsfw, :boolean, default: false)
     field(:message_count, :integer, virtual: true)
