@@ -103,9 +103,7 @@ defmodule Telescope.Mutations.Channels do
         avatarUrl: user.avatarUrl,
         id: user.id,
         bio: user.bio,
-        displayName: user.displayName,
-        online: user.online,
-        lastOnline: user.lastOnline
+        displayName: user.displayName
       }
     ]
 

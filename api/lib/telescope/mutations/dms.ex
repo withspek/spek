@@ -18,9 +18,7 @@ defmodule Telescope.Mutations.Dms do
           id: user.id,
           avatarUrl: user.avatarUrl,
           bio: user.bio,
-          displayName: user.displayName,
-          online: user.online,
-          lastOnline: user.lastOnline
+          displayName: user.displayName
         }
       end)
 
