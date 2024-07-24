@@ -18,10 +18,9 @@ export interface User {
 export type UserPreview = {
   id: string;
   displayName: string;
+  username: string;
   avatarUrl: string;
   bio: string;
-  online: boolean;
-  lastOnline: string;
 };
 
 export interface Community {
@@ -108,4 +107,17 @@ export type SearchReponse = {
   threads: Thread[];
   communities: Community[];
   items: User[] & Thread[] & Community[];
+};
+
+export type Lodge = {
+  id: string;
+  type: number;
+  message_count: number;
+  member_count: number;
+  recipients: UserPreview[];
+  nsfw: boolean;
+  user_limit: number;
+  last_message_id: string;
+  inserted_at?: string;
+  updated_at?: string;
 };

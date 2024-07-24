@@ -9,6 +9,7 @@ export const defaultQueryFn = async ({ queryKey }: { queryKey: string }) => {
       "X-Access-Token": accessToken,
       "X-Refresh-Token": refreshToken,
     },
+    next: { revalidate: 3600 },
   });
 
   if (resp.status !== 200) {

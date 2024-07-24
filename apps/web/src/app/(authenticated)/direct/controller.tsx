@@ -5,7 +5,7 @@ import { ConversationsList } from "@/components/direct/ConversationsList";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 
 export const DirectMessagePageController: React.FC = ({}) => {
-  const { data, isLoading } = useTypeSafeQuery("getUserDms");
+  const { data, isLoading } = useTypeSafeQuery("getUserLodges");
 
   if (isLoading) {
     return <CenterLoader />;

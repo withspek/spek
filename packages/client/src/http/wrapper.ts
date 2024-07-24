@@ -4,6 +4,7 @@ import {
   CommunityPermissions,
   CommunityWithPermissions,
   DmMessage,
+  Lodge,
   Message,
   SearchReponse,
   Thread,
@@ -69,6 +70,12 @@ export const wrap = (connection: Connection) => ({
       connection.send("/api/v1/threads/join-info", "POST", { threadId }),
     search: (query: string): Promise<SearchReponse> =>
       connection.send(`/misc/search?query=${query}`, "GET"),
+    getUserLodges: (): Promise<Lodge[]> =>
+      connection.send(`/api/v1/users/@me/lodges`, "GET"),
+    getLodgeMembers: (lodgeId: string): Promise<Lodge[]> =>
+      connection.send(`/api/v1/lodges/${lodgeId}/members`, "GET"),
+    joinLodgeAndGetInfo: (lodgeId: string): Promise<Lodge> =>
+      connection.send(`/api/v1/lodges/${lodgeId}/join-info`, "GET"),
   },
   mutation: {
     updateProfile: (data: {
@@ -148,5 +155,24 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/api/v1/threads/subscribe`, "POST", { threadId }),
     unsubscribeToThread: (threadId: string): Promise<{ success: boolean }> =>
       connection.send(`/api/v1/threads/unsubscribe`, "POST", { threadId }),
+    createLodge: (userIds: string[]): Promise<{ lodge: Lodge }> =>
+      connection.send(`/api/v1/lodges/create`, "POST", { users: userIds }),
+
+    deleteLodge: (lodgeId: string): Promise<{ success: boolean }> =>
+      connection.send(`/api/v1/lodges/${lodgeId}`, "DELETE"),
+    addLodgeRecipient: (
+      lodgeId: string,
+      userId: string
+    ): Promise<{ success: boolean }> =>
+      connection.send(`/api/v1/lodges/${lodgeId}/add-recipient`, "POST", {
+        userId,
+      }),
+    removeLodgeRecipient: (
+      lodgeId: string,
+      userId: string
+    ): Promise<{ success: boolean }> =>
+      connection.send(`/api/v1/lodges/${lodgeId}/remove-recipient`, "POST", {
+        userId,
+      }),
   },
 });

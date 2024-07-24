@@ -11,7 +11,6 @@ export default function DirectMessagesPage() {
   return (
     <MainLayout leftPanel={<LeftPanel />}>
       <DirectMessagePageController />
-      <div />
     </MainLayout>
   );
 }

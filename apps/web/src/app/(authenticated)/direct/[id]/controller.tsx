@@ -13,11 +13,12 @@ import { Avatar } from "@spek/ui";
 interface Props {
   dmId: string;
 }
+
 export const DmPageController: React.FC<Props> = ({ dmId }) => {
   const router = useRouter();
   const { user } = useConn();
   const { data, isLoading } = useTypeSafeQuery(
-    ["joinDmAndGetInfo", dmId],
+    ["joinLodgeAndGetInfo", dmId],
     {
       staleTime: Infinity,
       refetchOnMount: "always",
@@ -34,14 +35,14 @@ export const DmPageController: React.FC<Props> = ({ dmId }) => {
       <div className="flex justify-between items-center bg-primary-950 z-50 sticky top-0 py-3">
         <div className="flex gap-3 items-center">
           <div className="flex -space-x-4 rtl:space-x-reverse">
-            {data?.peoplePreviewList
+            {data?.recipients
               .filter((p) => user.id !== p.id)
               .map((p) => (
                 <Avatar key={p.id} alt={p.displayName} imageSrc={p.avatarUrl} />
               ))}
           </div>
           <p className="font-bold">
-            {data?.peoplePreviewList
+            {data?.recipients
               .filter((p) => user.id !== p.id)
               .map((p) => p.displayName)
               .join(", ")}
