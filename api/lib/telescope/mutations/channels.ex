@@ -96,7 +96,7 @@ defmodule Telescope.Mutations.Channels do
   end
 
   def create_thread(data) do
-    user = Users.get_user_id(data.creatorId)
+    user = Users.get_by_user_id(data.creatorId)
 
     previewList = [
       %{

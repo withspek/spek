@@ -81,7 +81,7 @@ defmodule Breeze.Routes.V1.Communities do
     has_user_id = Map.has_key?(conn.assigns, :user_id)
 
     if has_user_id do
-      user = Users.get_user_id(conn.assigns.user_id)
+      user = Users.get_by_user_id(conn.assigns.user_id)
 
       data = %{
         "ownerId" => user.id,

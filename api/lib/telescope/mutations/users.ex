@@ -7,7 +7,7 @@ defmodule Telescope.Mutations.Users do
 
   def update_profile(user_id, data) do
     user_id
-    |> Telescope.Users.get_user_id()
+    |> Telescope.Users.get_by_user_id()
     |> User.edit_changeset(data)
     |> Repo.update()
   end

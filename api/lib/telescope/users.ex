@@ -9,7 +9,7 @@ defmodule Telescope.Users do
   defdelegate search_username(username), to: Telescope.Access.Users
 
   # ACCESS
-  defdelegate get_user_id(user_id), to: Telescope.Access.Users
+  defdelegate get_by_user_id(user_id), to: Telescope.Access.Users
   defdelegate get_users, to: Telescope.Access.Users
   defdelegate get_by_username(username), to: Telescope.Access.Users
 end

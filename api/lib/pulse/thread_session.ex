@@ -86,7 +86,7 @@ defmodule Pulse.ThreadSession do
       ws_fan(state.users, %{
         op: "new_user_join_thread",
         d: %{
-          user: Users.get_user_id(user_id),
+          user: Users.get_by_user_id(user_id),
           threadId: state.thread_id
         }
       })

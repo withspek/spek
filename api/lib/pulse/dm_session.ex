@@ -84,7 +84,7 @@ defmodule Pulse.DmSession do
       ws_fan(state.users, %{
         op: "new_user_join_dm",
         d: %{
-          user: Users.get_user_id(user_id),
+          user: Users.get_by_user_id(user_id),
           dmId: state.dm_id
         }
       })

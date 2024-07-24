@@ -104,7 +104,7 @@ defmodule Breeze.SocketHandler do
             x ->
               {user_id, tokens, user} =
                 case x do
-                  {user_id, tokens} -> {user_id, tokens, Users.get_user_id(user_id)}
+                  {user_id, tokens} -> {user_id, tokens, Users.get_by_user_id(user_id)}
                   y -> y
                 end
 

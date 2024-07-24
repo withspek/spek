@@ -12,7 +12,7 @@ defmodule Telescope.Mutations.Dms do
   def create_dm(user_ids) do
     peoplePreviewList =
       Enum.map(user_ids, fn id ->
-        user = Users.get_user_id(id)
+        user = Users.get_by_user_id(id)
 
         %{
           id: user.id,

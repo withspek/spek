@@ -2,6 +2,7 @@ defmodule Breeze.Routes.V1.Users do
   use Plug.Router
 
   alias Telescope.Users
+  alias Telescope.Lodges
   alias Pulse.UserSession
   alias Breeze.Plugs
 
@@ -21,7 +22,7 @@ defmodule Breeze.Routes.V1.Users do
     has_user_id = Map.has_key?(conn.assigns, :user_id)
 
     if has_user_id do
-      user = Users.get_user_id(conn.assigns.user_id)
+      user = Users.get_by_user_id(conn.assigns.user_id)
 
       conn
       |> send_resp(200, Jason.encode!(%{"user" => user}))
@@ -38,7 +39,7 @@ defmodule Breeze.Routes.V1.Users do
 
     case Ecto.UUID.cast(id) do
       {:ok, uuid} ->
-        user = Users.get_user_id(uuid)
+        user = Users.get_by_user_id(uuid)
 
         if is_nil(user) do
           conn
@@ -84,6 +85,22 @@ defmodule Breeze.Routes.V1.Users do
           conn
           |> send_resp(200, Jason.encode!(%{error: "This username is taken"}))
       end
+    else
+      conn
+      |> send_resp(401, Jason.encode!(%{error: "UNAUTHORIZED"}))
+    end
+  end
+
+  get "/@me/lodges" do
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    if has_user_id do
+      user_id = conn.assigns.user_id
+
+      lodges = Lodges.get_user_lodges(user_id)
+
+      conn
+      |> send_resp(200, Jason.encode!(lodges))
     else
       conn
       |> send_resp(401, Jason.encode!(%{error: "UNAUTHORIZED"}))

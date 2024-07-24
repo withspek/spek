@@ -5,7 +5,7 @@ defmodule Telescope.Access.Users do
   alias Telescope.Repo
   alias Telescope.Schemas.User
 
-  def get_user_id(user_id) do
+  def get_by_user_id(user_id) do
     Query.start()
     |> Query.filter_by_id(user_id)
     |> Query.limit_one()
