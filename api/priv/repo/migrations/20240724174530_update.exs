@@ -2,6 +2,8 @@ defmodule Telescope.Repo.Migrations.Update do
   use Ecto.Migration
 
   def change do
+    execute("DELETE FROM dm_messages;")
+
     alter table(:dm_messages) do
       remove(:dmId)
       remove(:userId)
@@ -10,7 +12,6 @@ defmodule Telescope.Repo.Migrations.Update do
       add(:user_id, references(:users, on_delete: :delete_all, type: :uuid), null: false)
     end
 
-    execute("DELETE FROM dm_messages;")
     drop(table(:dm_users))
     drop(table(:dms))
   end
