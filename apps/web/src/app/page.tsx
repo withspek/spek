@@ -10,14 +10,14 @@ import { useSaveTokens } from "@/hooks/useSaveTokens";
 
 export default function Home() {
   useSaveTokens();
-  const { push } = useRouter();
+  const router = useRouter();
   const hasTokens = useTokenStore((s) => !!(s.accessToken && s.refreshToken));
 
   useEffect(() => {
     if (hasTokens) {
-      push("/home");
+      router.push("/home");
     }
-  }, [hasTokens, push]);
+  }, [hasTokens, router]);
 
   return (
     <>
@@ -28,7 +28,7 @@ export default function Home() {
       >
         <div className="hidden sm:flex" />
         <div className="md:hidden flex justify-center w-full mt-6">
-          <h1>Spek</h1>
+          <h1 className="text-3xl">Spek</h1>
         </div>
         <div className="flex flex-col gap-4 mx-auto w-56">
           <h1 className="text-balance text-center">Login</h1>

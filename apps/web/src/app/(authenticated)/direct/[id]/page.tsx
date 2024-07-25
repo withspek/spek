@@ -3,6 +3,7 @@ import { MainLayout } from "@spek/ui";
 
 import { DmPageController } from "./controller";
 import { LeftPanel } from "@/components/Panels";
+import { WaitForWsAndAuth } from "@/components/auth/WaitForWsAndAuth";
 
 type Props = {
   params: { id: string };
@@ -14,8 +15,10 @@ export const metadata: Metadata = {
 
 export default function DmPage({ params }: Props) {
   return (
-    <MainLayout leftPanel={<LeftPanel />}>
-      <DmPageController lodgeId={params.id} />
-    </MainLayout>
+    <WaitForWsAndAuth>
+      <MainLayout leftPanel={<LeftPanel />}>
+        <DmPageController lodgeId={params.id} />
+      </MainLayout>
+    </WaitForWsAndAuth>
   );
 }

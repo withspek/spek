@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { ChannelPageController } from "./controller";
 import { MainLayout } from "@spek/ui";
 import { LeftPanel } from "@/components/Panels";
+import { WaitForWsAndAuth } from "@/components/auth/WaitForWsAndAuth";
 
 interface Props {
   params: { channelId: string; slug: string };
@@ -21,12 +22,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default function ChannelPage({ params }: Props) {
   return (
-    <MainLayout leftPanel={<LeftPanel />}>
-      <ChannelPageController
-        communitySlug={params.slug}
-        channelId={params.channelId}
-      />
-      <div />
-    </MainLayout>
+    <WaitForWsAndAuth>
+      <MainLayout leftPanel={<LeftPanel />}>
+        <ChannelPageController
+          communitySlug={params.slug}
+          channelId={params.channelId}
+        />
+        <div />
+      </MainLayout>
+    </WaitForWsAndAuth>
   );
 }

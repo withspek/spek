@@ -99,6 +99,7 @@ export const connect = (
       logger("in", message.op, message.d, e.data);
 
       if (message.op == "auth-good") {
+        console.log(message.d);
         const connection: WSConnection = {
           close: () => socket.close(),
           user: message.d.user,

@@ -3,7 +3,6 @@
 import { Spinner } from "@spek/ui";
 import React, { useContext, useEffect, useState } from "react";
 
-import { useVerifyLoggedIn } from "@/hooks/useVerifyLoggedIn";
 import WebSocketContext from "@/contexts/WebSocketContext";
 
 interface WaitForWsAndAuthProps {
@@ -19,10 +18,6 @@ export const WaitForWsAndAuth: React.FC<WaitForWsAndAuthProps> = ({
   useEffect(() => {
     setIsClient(true);
   }, []);
-
-  if (!useVerifyLoggedIn()) {
-    return null;
-  }
 
   if (!conn) {
     return isClient ? (

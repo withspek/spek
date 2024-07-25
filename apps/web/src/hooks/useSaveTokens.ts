@@ -28,7 +28,7 @@ export const useSaveTokens = () => {
         refreshToken: refreshTokenParam,
       });
 
-      let nextPath = "/";
+      let nextPath = "/home";
 
       try {
         let loginNextPath = localStorage.getItem(loginNextPathKey);

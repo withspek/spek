@@ -1,5 +1,6 @@
 "use client";
 
+import { WaitForWsAndAuth } from "@/components/auth/WaitForWsAndAuth";
 import { CommunitySettingsLayout } from "@spek/ui";
 
 interface PageProps {
@@ -8,10 +9,12 @@ interface PageProps {
 
 export default function CommunityMembersPage({ params }: PageProps) {
   return (
-    <CommunitySettingsLayout communitySlug={params.slug}>
-      <div>
-        <p>Members</p>
-      </div>
-    </CommunitySettingsLayout>
+    <WaitForWsAndAuth>
+      <CommunitySettingsLayout communitySlug={params.slug}>
+        <div>
+          <p>Members</p>
+        </div>
+      </CommunitySettingsLayout>
+    </WaitForWsAndAuth>
   );
 }

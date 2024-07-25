@@ -6,7 +6,6 @@ import { apiUrl } from "@/utils/constants";
 import { User, websocket } from "@spek/client";
 
 interface WebSocketProviderProps {
-  shouldConnect: boolean;
   children: React.ReactNode;
 }
 
@@ -25,16 +24,14 @@ export const WebSocketContext = React.createContext<{
 export default WebSocketContext;
 
 export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
-  shouldConnect,
   children,
 }) => {
-  const hasTokens = useTokenStore((s) => s.accessToken && s.refreshToken);
   const [conn, setConn] = useState<V>(null);
   const { replace } = useRouter();
   const isConnecting = useRef(false);
 
   useEffect(() => {
-    if (!conn && shouldConnect && hasTokens && !isConnecting.current) {
+    if (!conn && !isConnecting.current) {
       isConnecting.current = true;
       websocket
         .connect("", "", {
@@ -74,7 +71,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
           isConnecting.current = false;
         });
     }
-  }, [conn, shouldConnect, hasTokens, replace]);
+  }, [conn, replace]);
 
   useEffect(() => {
     if (!conn) {

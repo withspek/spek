@@ -99,7 +99,11 @@ defmodule Breeze.SocketHandler do
 
           case Spek.Utils.TokenUtils.tokens_to_user_id(accessToken, refreshToken) do
             {nil, nil} ->
-              {:reply, {:close, 4001, "invalid_authentication"}, state}
+              {:reply,
+               construct_socket_msg(state.encoding, state.compression, %{
+                 op: "auth-good",
+                 d: %{user: nil, error: "Invalid auth credentials"}
+               }), state}
 
             x ->
               {user_id, tokens, user} =
@@ -133,7 +137,11 @@ defmodule Breeze.SocketHandler do
                    d: %{user: user}
                  }), %{state | user_id: user_id, awaiting_init: false}}
               else
-                {:reply, {:close, 4001, "invalid_authentication"}, state}
+                {:reply,
+                 construct_socket_msg(state.encoding, state.compression, %{
+                   op: "auth-good",
+                   d: %{user: nil, error: "Invalid auth credentials"}
+                 }), state}
               end
           end
 

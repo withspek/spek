@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { DirectMessagePageController } from "./controller";
 import { MainLayout } from "@spek/ui";
 import { LeftPanel } from "@/components/Panels";
+import { WaitForWsAndAuth } from "@/components/auth/WaitForWsAndAuth";
 
 export const metadata: Metadata = {
   title: "Direct",
@@ -9,8 +10,10 @@ export const metadata: Metadata = {
 
 export default function DirectMessagesPage() {
   return (
-    <MainLayout leftPanel={<LeftPanel />}>
-      <DirectMessagePageController />
-    </MainLayout>
+    <WaitForWsAndAuth>
+      <MainLayout leftPanel={<LeftPanel />}>
+        <DirectMessagePageController />
+      </MainLayout>
+    </WaitForWsAndAuth>
   );
 }

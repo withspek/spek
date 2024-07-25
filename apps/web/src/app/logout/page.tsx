@@ -19,7 +19,7 @@ export default function Logout() {
   }, [hasTokens, replace]);
 
   return (
-    <div>
+    <div className="flex w-full h-full justify-center items-center">
       <Button onClick={() => setTokens({ accessToken: "", refreshToken: "" })}>
         click hare if you don't get automatically redirected
       </Button>
