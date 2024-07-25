@@ -58,12 +58,19 @@ defmodule Breeze.Routes.V1.Lodges do
 
     type = if length(data.users) > 2, do: 2, else: 1
 
-    recipients = Lodges.get_lodge_recipients(data.users)
+    case Lodges.lodge_lookup(data.users) do
+      nil ->
+        recipients = Lodges.get_lodge_recipients(data.users)
 
-    lodge = Lodges.create_lodge(recipients, data.owner_id, type)
+        lodge = Lodges.create_lodge(recipients, data.owner_id, type)
 
-    conn
-    |> send_resp(200, Jason.encode!(%{"lodge" => lodge}))
+        conn
+        |> send_resp(200, Jason.encode!(%{"lodge" => lodge}))
+
+      id ->
+        conn
+        |> send_resp(200, Jason.encode!(%{"lodge" => %{id: id}}))
+    end
   end
 
   delete "/:lodge_id" do

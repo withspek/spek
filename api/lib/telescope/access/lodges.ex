@@ -28,6 +28,18 @@ defmodule Telescope.Access.Lodges do
     |> Repo.all()
   end
 
+  def lodge_lookup(recipients) do
+    from(l in Lodge,
+      join: elem in fragment("LATERAL unnest(?)", l.recipients),
+      on: true,
+      where: fragment("?->>'id'", elem) in ^recipients,
+      group_by: l.id,
+      having: count(elem) == ^length(recipients),
+      select: l.id
+    )
+    |> Repo.one()
+  end
+
   def get_lodge_recipients(recipients_ids) do
     from(u in User,
       where: u.id in ^recipients_ids,

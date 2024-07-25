@@ -10,6 +10,7 @@ defmodule Telescope.Lodges do
   defdelegate get_lodge_by_id(lodge_id), to: Telescope.Access.Lodges
   defdelegate get_lodge_recipients(recipients_ids), to: Telescope.Access.Lodges
   defdelegate get_lodge_messages(lodge_id, cursor), to: Telescope.Access.Lodges
+  defdelegate lodge_lookup(recipients), to: Telescope.Access.Lodges
 
   # MUTATIONS functions
   defdelegate create_lodge(recipients, owner_id, type), to: Telescope.Mutations.Lodges
