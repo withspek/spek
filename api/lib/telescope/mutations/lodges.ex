@@ -23,7 +23,7 @@ defmodule Telescope.Mutations.Lodges do
       |> Lodge.changeset()
       |> Repo.insert!(returning: true)
 
-    LodgeSession.start_supervised(lodge.id)
+    LodgeSession.start_supervised(lodge_id: lodge.id)
 
     lodge
   end
