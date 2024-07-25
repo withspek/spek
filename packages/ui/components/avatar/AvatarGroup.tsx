@@ -3,7 +3,7 @@ import { classNames } from "@spek/lib";
 import { Avatar } from "./Avatar";
 
 export type AvatarGroupProps = {
-  size: "sm" | "lg";
+  size: "sm" | "lg" | "md" | "mdLg";
   items: {
     image: string;
     title?: string;
@@ -13,6 +13,13 @@ export type AvatarGroupProps = {
   className?: string;
   truncateAfter?: number;
 };
+
+const sizesPropsBySize = {
+  sm: "w-6 h-6 min-w-6 min-h-6", // 24px
+  md: "w-8 h-8 min-w-8 min-h-8", // 32px
+  mdLg: "w-10 h-10 min-w-10 min-h-10", //40px
+  lg: "w-16 h-16 min-w-16 min-h-16", // 64px
+} as const;
 
 export const AvatarGroup = function AvatarGroup({
   size = "sm",
@@ -50,13 +57,13 @@ export const AvatarGroup = function AvatarGroup({
         <li
           className={classNames(
             "bg-primary-800 relative -mr-1 inline-flex justify-center  overflow-hidden rounded-full",
-            size === "sm" ? "min-w-6 h-6" : "min-w-16 h-16"
+            sizesPropsBySize[size]
           )}
         >
           <span
             className={classNames(
               " text-primary-100 m-auto flex h-full w-full items-center justify-center text-center",
-              size === "sm" ? "text-[12px]" : "text-2xl"
+              sizesPropsBySize[size]
             )}
           >
             +{numTruncatedAvatars}

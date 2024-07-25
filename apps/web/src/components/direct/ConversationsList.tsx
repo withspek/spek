@@ -29,13 +29,15 @@ export const ConversationsList: React.FC<Props> = ({ conversations }) => {
           >
             <div className="flex -space-x-4 rtl:space-x-reverse">
               <UserAvatarGroup
-                size="lg"
+                size="md"
                 users={c.recipients.filter((r) => r.id !== user.id)}
+                truncateAfter={2}
               />
             </div>
             <div>
               <p className="font-bold">
                 {c.recipients
+                  .slice(0, 4)
                   .filter((u) => u.id !== user.id)
                   .map((p) => p.displayName)
                   .join(",")}
