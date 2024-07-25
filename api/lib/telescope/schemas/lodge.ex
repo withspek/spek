@@ -34,7 +34,7 @@ defmodule Telescope.Schemas.Lodge do
 
   def changeset(lodge, params \\ %{}) do
     lodge
-    |> cast(params, [:type, :name, :owner_id])
-    |> validate_required([:name, :owner_id])
+    |> cast(params, [:type, :owner_id])
+    |> validate_required([:owner_id])
   end
 end
