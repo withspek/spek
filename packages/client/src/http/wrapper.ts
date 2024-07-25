@@ -3,14 +3,13 @@ import {
   Community,
   CommunityPermissions,
   CommunityWithPermissions,
-  DmMessage,
+  LodgeMessage,
   Lodge,
   Message,
   SearchReponse,
   Thread,
   TopThread,
   User,
-  UserDm,
 } from "../entities";
 import { Connection } from "./raw";
 import { GetTopCommunitiesResponse } from "./responses";
@@ -42,8 +41,6 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/api/v1/threads/${threadId}`, "GET"),
     getTopActiveThreads: (): Promise<TopThread[]> =>
       connection.send(`/api/v1/threads`, "GET"),
-    getDm: (dmId: string): Promise<UserDm> =>
-      connection.send(`/api/v1/dms/${dmId}`, "GET"),
     getThreadMessages: (
       threadId: string,
       cursor: number = 0
@@ -54,18 +51,6 @@ export const wrap = (connection: Connection) => ({
       ),
     getUserProfile: (userId: string): Promise<{ user: User }> =>
       connection.send(`/api/v1/users/${userId}`, "GET"),
-    getUserDms: (): Promise<UserDm[]> => connection.send(`/api/v1/dms`, "GET"),
-    getDmMessages: (
-      dmId: string,
-      cursor: number = 0
-    ): Promise<{
-      messages: DmMessage[];
-      nextCursor: number | null;
-      initial: boolean;
-    }> =>
-      connection.send(`/api/v1/dms/${dmId}/messages?cursor=${cursor}`, "GET"),
-    joinDmAndGetInfo: (dmId: string): Promise<UserDm> =>
-      connection.send("/api/v1/dms/join-info", "POST", { dmId }),
     joinThreadAndGetInfo: (threadId: string): Promise<Thread> =>
       connection.send("/api/v1/threads/join-info", "POST", { threadId }),
     search: (query: string): Promise<SearchReponse> =>
@@ -76,6 +61,18 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/api/v1/lodges/${lodgeId}/members`, "GET"),
     joinLodgeAndGetInfo: (lodgeId: string): Promise<Lodge> =>
       connection.send(`/api/v1/lodges/${lodgeId}/join-info`, "GET"),
+    getLodgeMessages: (
+      lodgeId: string,
+      cursor: number = 0
+    ): Promise<{
+      messages: LodgeMessage[];
+      nextCursor: number | null;
+      initial: boolean;
+    }> =>
+      connection.send(
+        `/api/v1/lodges/${lodgeId}/messages?cursor=${cursor}`,
+        "GET"
+      ),
   },
   mutation: {
     updateProfile: (data: {
@@ -132,15 +129,7 @@ export const wrap = (connection: Connection) => ({
       communityId: string;
     }): Promise<Thread> =>
       connection.send(`/api/v1/threads/create`, "POST", { ...data }),
-    createDM: (userIds: string[]): Promise<UserDm> =>
-      connection.send(`/api/v1/dms/create`, "POST", { userIds }),
-    createDirectMessage: (data: {
-      dmId: string;
-      text: string;
-    }): Promise<DmMessage> =>
-      connection.send(`/api/v1/dms/${data.dmId}/send-message`, "POST", {
-        ...data,
-      }),
+
     createThreadMessage: (data: {
       communityId: string;
       threadId: string;
@@ -173,6 +162,14 @@ export const wrap = (connection: Connection) => ({
     ): Promise<{ success: boolean }> =>
       connection.send(`/api/v1/lodges/${lodgeId}/remove-recipient`, "POST", {
         userId,
+      }),
+
+    createLodgeMessage: (data: {
+      lodgeId: string;
+      text: string;
+    }): Promise<LodgeMessage> =>
+      connection.send(`/api/v1/lodges/${data.lodgeId}/send-message`, "POST", {
+        ...data,
       }),
   },
 });

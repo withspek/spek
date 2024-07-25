@@ -4,18 +4,18 @@ import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 import { Input } from "@/ui/input";
 
 interface InputProps {
-  dmId: string;
+  lodgeId: string;
 }
 
-export const MessageInput: React.FC<InputProps> = ({ dmId }) => {
+export const MessageInput: React.FC<InputProps> = ({ lodgeId }) => {
   const [message, setMessage] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const { mutateAsync } = useTypeSafeMutation("createDirectMessage");
+  const { mutateAsync } = useTypeSafeMutation("createLodgeMessage");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    await mutateAsync([{ dmId, text: message }]);
+    await mutateAsync([{ lodgeId, text: message }]);
 
     setMessage("");
     inputRef.current?.focus();

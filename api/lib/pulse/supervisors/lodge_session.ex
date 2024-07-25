@@ -1,4 +1,4 @@
-defmodule Pulse.Supervisors.DmSession do
+defmodule Pulse.Supervisors.LodgeSession do
   use Supervisor
 
   def start_link(init_arg) do
@@ -8,8 +8,8 @@ defmodule Pulse.Supervisors.DmSession do
   @impl true
   def init(_init_arg) do
     children = [
-      {Registry, keys: :unique, name: Pulse.DmSessionRegistry},
-      {DynamicSupervisor, name: Pulse.DmSessionDynamicSupervisor, strategy: :one_for_one}
+      {Registry, keys: :unique, name: Pulse.LodgeSessionRegistry},
+      {DynamicSupervisor, name: Pulse.LodgeSessionDynamicSupervisor, strategy: :one_for_one}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

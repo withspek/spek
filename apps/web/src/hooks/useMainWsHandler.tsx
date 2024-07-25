@@ -42,8 +42,8 @@ export const useMainWsHandler = () => {
         }));
       }),
 
-      conn.addListener<any>("new_dm_message", ({ message }) => {
-        updateQuery(["getDmMessages", 0], (x) => ({
+      conn.addListener<any>("new_lodge_message", ({ message }) => {
+        updateQuery(["getLodgeMessages", 0], (x) => ({
           messages: [message, ...x.messages],
           initial: x.initial,
           nextCursor: x.nextCursor,

@@ -5,6 +5,7 @@ defmodule Telescope.Lodges do
 
   # ACCESS functions
   defdelegate get_all_lodges(), to: Telescope.Access.Lodges
+  defdelegate get_all_lodges_ids(), to: Telescope.Access.Lodges
   defdelegate get_user_lodges(user_id), to: Telescope.Access.Lodges
   defdelegate get_lodge_by_id(lodge_id), to: Telescope.Access.Lodges
   defdelegate get_lodge_recipients(recipients_ids), to: Telescope.Access.Lodges

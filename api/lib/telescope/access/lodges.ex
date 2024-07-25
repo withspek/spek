@@ -14,6 +14,11 @@ defmodule Telescope.Access.Lodges do
     |> Repo.all()
   end
 
+  def get_all_lodges_ids() do
+    from(l in Lodge, select: l.id)
+    |> Repo.all()
+  end
+
   def get_user_lodges(user_id) do
     from(l in Lodge,
       join: elem in fragment("LATERAL unnest(?)", l.recipients),

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function DmPage({ params }: Props) {
   return (
     <MainLayout leftPanel={<LeftPanel />}>
-      <DmPageController dmId={params.id} />
+      <DmPageController lodgeId={params.id} />
     </MainLayout>
   );
 }

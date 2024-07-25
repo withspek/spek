@@ -3,7 +3,7 @@ defmodule Breeze.Routes.V1.Lodges do
 
   alias Breeze.Plugs
   alias Telescope.Lodges
-  alias Pulse.DmSession
+  alias Pulse.LodgeSession
 
   plug(Plugs.CheckAuth, %{shouldThrow: true})
   plug(:match)
@@ -43,7 +43,7 @@ defmodule Breeze.Routes.V1.Lodges do
     lodge = Lodges.get_lodge_by_id(lodge_id)
 
     if not is_nil(lodge) do
-      DmSession.join_dm(lodge.id, conn.assigns.user_id)
+      LodgeSession.join_lodge(lodge.id, conn.assigns.user_id)
     end
 
     conn
@@ -60,7 +60,7 @@ defmodule Breeze.Routes.V1.Lodges do
 
     recipients = Lodges.get_lodge_recipients(data.users)
 
-    {:ok, lodge} = Lodges.create_lodge(recipients, data.owner_id, type)
+    lodge = Lodges.create_lodge(recipients, data.owner_id, type)
 
     conn
     |> send_resp(200, Jason.encode!(%{"lodge" => lodge}))
@@ -112,13 +112,13 @@ defmodule Breeze.Routes.V1.Lodges do
 
     case has_user_id do
       true ->
-        lodge_id = conn.params["lodge_id"]
+        lodge_id = conn.params["lodgeId"]
         text = conn.body_params["text"]
         user_id = conn.assigns.user_id
 
         message = Lodges.create_lodge_message(lodge_id, user_id, text)
 
-        DmSession.broadcast_ws(lodge_id, %{op: "new_dm_message", d: %{message: message}})
+        LodgeSession.broadcast_ws(lodge_id, %{op: "new_lodge_message", d: %{message: message}})
 
         conn
         |> send_resp(200, Jason.encode!(message))

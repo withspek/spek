@@ -10,7 +10,7 @@ defmodule Spek do
     children = [
       Pulse.Supervisors.UserSession,
       Pulse.Supervisors.ThreadSession,
-      Pulse.Supervisors.DmSession,
+      Pulse.Supervisors.LodgeSession,
       {Telescope.Repo, []},
       Pulse.Telemetry,
       Plug.Cowboy.child_spec(
@@ -30,7 +30,7 @@ defmodule Spek do
 
     case Supervisor.start_link(children, opts) do
       {:ok, pid} ->
-        start_dms()
+        start_lodges()
         start_threads()
         {:ok, pid}
 
@@ -49,9 +49,9 @@ defmodule Spek do
     ]
   end
 
-  defp start_dms() do
-    Enum.each(Telescope.Lodges.get_all_lodges(), fn id ->
-      Pulse.DmSession.start_supervised(dm_id: id)
+  defp start_lodges() do
+    Enum.each(Telescope.Lodges.get_all_lodges_ids(), fn id ->
+      Pulse.LodgeSession.start_supervised(lodge_id: id)
     end)
   end
 

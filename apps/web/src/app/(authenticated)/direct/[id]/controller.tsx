@@ -11,19 +11,19 @@ import { useConn } from "@/hooks/useConn";
 import { Avatar } from "@spek/ui";
 
 interface Props {
-  dmId: string;
+  lodgeId: string;
 }
 
-export const DmPageController: React.FC<Props> = ({ dmId }) => {
+export const DmPageController: React.FC<Props> = ({ lodgeId }) => {
   const router = useRouter();
   const { user } = useConn();
   const { data, isLoading } = useTypeSafeQuery(
-    ["joinLodgeAndGetInfo", dmId],
+    ["joinLodgeAndGetInfo", lodgeId],
     {
       staleTime: Infinity,
       refetchOnMount: "always",
     },
-    [dmId]
+    [lodgeId]
   );
 
   if (isLoading) {
@@ -57,10 +57,10 @@ export const DmPageController: React.FC<Props> = ({ dmId }) => {
         </button>
       </div>
       <div className="flex flex-col flex-1 justify-end">
-        <MessagesList dmId={dmId} />
+        <MessagesList lodgeId={lodgeId} />
       </div>
       <div className="py-3 bg-primary-950 sticky bottom-0">
-        <MessageInput dmId={dmId} />
+        <MessageInput lodgeId={lodgeId} />
       </div>
     </div>
   );

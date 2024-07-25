@@ -1,10 +1,12 @@
 defmodule Telescope.Schemas.Lodge do
   @moduledoc """
+   Lodges provide temporary quarters for users who want to chat.
    This schema represents a DM or Group DM in the UI.
 
    The Lodge types are the following:
     1. DM Lodge represented by `1`
     2. Group DM Lodge represented by `2`
+
   """
   use Ecto.Schema
   import Ecto.Changeset

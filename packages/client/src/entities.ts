@@ -93,11 +93,11 @@ export type UserDm = {
   updated_at: string;
 };
 
-export type DmMessage = {
+export type LodgeMessage = {
   id: string;
   text: string;
   user: User;
-  dmId: string;
+  lodge_id: string;
   inserted_at: string;
   updated_at: string;
 };

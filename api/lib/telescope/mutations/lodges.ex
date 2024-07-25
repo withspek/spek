@@ -1,6 +1,7 @@
 defmodule Telescope.Mutations.Lodges do
   import Ecto.Query, warn: false
 
+  alias Pulse.LodgeSession
   alias Telescope.Repo
   alias Telescope.Users
   alias Telescope.Schemas.Lodge
@@ -11,15 +12,20 @@ defmodule Telescope.Mutations.Lodges do
   def create_lodge(recipients, owner_id, type \\ 1) do
     member_count = if type == 1, do: 2, else: length(recipients)
 
-    %Lodge{
-      type: type,
-      recipients: recipients,
-      owner_id: owner_id,
-      member_count: member_count,
-      nsfw: false
-    }
-    |> Lodge.changeset()
-    |> Repo.insert!(returning: true)
+    lodge =
+      %Lodge{
+        type: type,
+        recipients: recipients,
+        owner_id: owner_id,
+        member_count: member_count,
+        nsfw: false
+      }
+      |> Lodge.changeset()
+      |> Repo.insert!(returning: true)
+
+    LodgeSession.start_supervised(lodge.id)
+
+    lodge
   end
 
   def delete_lodge(lodge_id, user_id) do

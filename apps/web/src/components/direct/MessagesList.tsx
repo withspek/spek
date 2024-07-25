@@ -1,17 +1,17 @@
 import { format } from "date-fns";
 import { useMemo, useState } from "react";
 import { Avatar } from "@spek/ui";
-import { DmMessage, User } from "@spek/client";
+import { LodgeMessage, User } from "@spek/client";
 
 import { useConn } from "@/hooks/useConn";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 
 interface MessagesListProps {
-  dmId: string;
+  lodgeId: string;
 }
 
 interface PageProps {
-  dmId: string;
+  lodgeId: string;
   cursor: number;
   user: User;
   onLoadMore: (cursor: number) => void;
@@ -19,7 +19,7 @@ interface PageProps {
   isOnlyPage: boolean;
 }
 
-const Message: React.FC<{ message: DmMessage }> = ({ message }) => {
+const Message: React.FC<{ message: LodgeMessage }> = ({ message }) => {
   const dt = useMemo(
     () => new Date(message.inserted_at),
     [message.inserted_at]
@@ -47,7 +47,7 @@ const Message: React.FC<{ message: DmMessage }> = ({ message }) => {
 };
 
 const Page: React.FC<PageProps> = ({
-  dmId,
+  lodgeId,
   cursor,
   isLastPage,
   isOnlyPage,
@@ -55,9 +55,9 @@ const Page: React.FC<PageProps> = ({
   onLoadMore,
 }) => {
   const { data, isLoading } = useTypeSafeQuery(
-    ["getDmMessages", cursor],
+    ["getLodgeMessages", cursor],
     { staleTime: Infinity, refetchOnMount: "always" },
-    [dmId, cursor]
+    [lodgeId, cursor]
   );
 
   if (isLoading) {
@@ -94,7 +94,7 @@ const Page: React.FC<PageProps> = ({
   );
 };
 
-export const MessagesList: React.FC<MessagesListProps> = ({ dmId }) => {
+export const MessagesList: React.FC<MessagesListProps> = ({ lodgeId }) => {
   const { user } = useConn();
   const [cursors, setCursors] = useState<number[]>([0]);
 
@@ -105,7 +105,7 @@ export const MessagesList: React.FC<MessagesListProps> = ({ dmId }) => {
           key={c}
           cursor={c}
           user={user}
-          dmId={dmId}
+          lodgeId={lodgeId}
           onLoadMore={(nc) => setCursors([...cursors, nc])}
           isLastPage={i === cursors.length - 1}
           isOnlyPage={cursors.length === 1}
