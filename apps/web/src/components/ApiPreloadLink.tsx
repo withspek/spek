@@ -8,7 +8,7 @@ type Prefetch = ReturnType<typeof useTypeSafePrefetch>;
 const handlers = {
   directs: () => ({
     href: "/direct",
-    onClick: (prefetch: Prefetch) => prefetch("getUserDms"),
+    onClick: (prefetch: Prefetch) => prefetch("getUserLodges"),
   }),
   profile: ({ id }: { id: string }) => ({
     href: `/u/${id}`,
