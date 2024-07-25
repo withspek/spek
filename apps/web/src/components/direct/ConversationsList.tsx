@@ -3,7 +3,7 @@ import { Lodge } from "@spek/client";
 import { useTypeSafePrefetch } from "@/hooks/useTypeSafePrefetch";
 import { useRouter } from "next/navigation";
 import { useConn } from "@/hooks/useConn";
-import { UserAvatar } from "@spek/ui";
+import { UserAvatarGroup } from "@spek/ui";
 
 interface Props {
   conversations: Lodge[];
@@ -28,17 +28,10 @@ export const ConversationsList: React.FC<Props> = ({ conversations }) => {
             }}
           >
             <div className="flex -space-x-4 rtl:space-x-reverse">
-              {c.recipients
-                .filter((u) => u.id !== user.id)
-                .map((p) => (
-                  <UserAvatar
-                    user={{
-                      avatarUrl: p.avatarUrl,
-                      displayName: p.displayName,
-                      username: p.username,
-                    }}
-                  />
-                ))}
+              <UserAvatarGroup
+                size="lg"
+                users={c.recipients.filter((r) => r.id !== user.id)}
+              />
             </div>
             <div>
               <p className="font-bold">
