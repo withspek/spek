@@ -17,7 +17,7 @@ export const UserProfileWrapper: React.FC<UserProfileWrapperProps> = ({
   user,
 }) => {
   const [openEditModal, setOpenEditModal] = useState<boolean>(false);
-  const { isLoading, mutateAsync } = useTypeSafeMutation("createDM");
+  const { isLoading, mutateAsync } = useTypeSafeMutation("createLodge");
   const { push } = useRouter();
 
   return (
@@ -57,10 +57,10 @@ export const UserProfileWrapper: React.FC<UserProfileWrapperProps> = ({
             onClick={async () => {
               if (currentUser) {
                 const userIds = [user.id, currentUser.id];
-                const dm = await mutateAsync([userIds]);
+                const { lodge } = await mutateAsync([userIds]);
 
-                if (dm) {
-                  push(`/direct/${dm.id}`);
+                if (lodge) {
+                  push(`/direct/${lodge.id}`);
                 }
               } else {
                 push(`/?next=/u/${user.id}`);
