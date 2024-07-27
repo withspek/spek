@@ -171,5 +171,13 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/api/v1/lodges/${data.lodgeId}/send-message`, "POST", {
         ...data,
       }),
+
+    leaveLodge: (
+      lodgeId: string,
+      userId: string
+    ): Promise<{ success: boolean }> =>
+      connection.send(`/api/v1/lodges/${lodgeId}/leave`, "POST", {
+        userId,
+      }),
   },
 });
