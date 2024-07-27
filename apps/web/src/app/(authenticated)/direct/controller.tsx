@@ -3,18 +3,34 @@
 import { CenterLoader } from "@/components/CenterLoader";
 import { ConversationsList } from "@/components/direct/ConversationsList";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
+import { Icon } from "@spek/ui";
+
+const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return (
+    <div className="mt-2">
+      <div className="flex justify-between">
+        <h2>Messages</h2>
+        <Icon name="mail-plus" className="cursor-pointer" />
+      </div>
+      {children}
+    </div>
+  );
+};
 
 export const DirectMessagePageController: React.FC = ({}) => {
   const { data, isLoading } = useTypeSafeQuery("getUserLodges");
 
   if (isLoading) {
-    return <CenterLoader />;
+    return (
+      <Layout>
+        <CenterLoader />
+      </Layout>
+    );
   }
 
   return (
-    <div>
-      <h2>Directs</h2>
+    <Layout>
       <ConversationsList conversations={data!} />
-    </div>
+    </Layout>
   );
 };

@@ -52,11 +52,11 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
           },
           onClearTokens: () => {
             console.log("clearing tokens...");
-            replace("/");
             useTokenStore
               .getState()
               .setTokens({ accessToken: "", refreshToken: "" });
             setConn(null);
+            replace("/logout");
           },
         })
         .then((x) => {

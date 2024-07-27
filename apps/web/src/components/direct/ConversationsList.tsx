@@ -48,7 +48,10 @@ export const ConversationsList: React.FC<Props> = ({ conversations }) => {
       ) : (
         <>
           <p>You have no direct messages yet</p>
-          <p>Tip: Visit a user profile and message them</p>
+          <p>
+            <span className="text-green-400">Tip: </span>Visit a user profile
+            and message them or just create it here.
+          </p>
         </>
       )}
     </div>

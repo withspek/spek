@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { useMemo, useState } from "react";
-import { Avatar } from "@spek/ui";
+import { UserAvatar } from "@spek/ui";
 import { LodgeMessage, User } from "@spek/client";
 
 import { useConn } from "@/hooks/useConn";
@@ -27,11 +27,15 @@ const Message: React.FC<{ message: LodgeMessage }> = ({ message }) => {
 
   return (
     <div className={`flex flex-1 items-center px-3 rounded-md py-4 gap-3`}>
-      <Avatar
-        imageSrc={message.user.avatarUrl}
+      <UserAvatar
+        user={{
+          avatarUrl: message.user.avatarUrl,
+          displayName: message.user.displayName,
+          username: message.user.username,
+        }}
         size={"md"}
         alt={message.user.displayName}
-        title={`@${message.user.username}`}
+        online={message.user.online}
       />
       <div className="flex flex-col gap-1">
         <p className="font-bold text-sm">
