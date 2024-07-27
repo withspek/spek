@@ -17,5 +17,6 @@ defmodule Telescope.Lodges do
   defdelegate delete_lodge(lodge_id, owner_id), to: Telescope.Mutations.Lodges
   defdelegate add_recipient(lodge, user_id), to: Telescope.Mutations.Lodges
   defdelegate remove_recipient(lodge, user_id), to: Telescope.Mutations.Lodges
+  defdelegate leave_lodge(lodge, user_id), to: Telescope.Mutations.Lodges
   defdelegate create_lodge_message(lodge_id, user_id, text), to: Telescope.Mutations.Lodges
 end

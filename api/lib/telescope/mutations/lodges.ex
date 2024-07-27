@@ -76,8 +76,18 @@ defmodule Telescope.Mutations.Lodges do
   def remove_recipient(lodge, user_id) do
     user = Users.get_by_user_id(user_id)
 
-    if user and lodge.owner_id != user_id and
-         Enum.find(lodge.recipients, &(&1.id == user.user_id)) and length(lodge.recipients) > 2 do
+    if user and lodge.owner_id == user_id and
+         Enum.find(lodge.recipients, &(&1.id == user_id)) and length(lodge.recipients) > 2 do
+      list = Enum.filter(lodge.recipients, &(&1.id != user_id))
+      type = if length(list) > 2, do: 2, else: 1
+      decrement_lodge_member_count(lodge.id, list, type)
+    end
+  end
+
+  def leave_lodge(lodge, user_id) do
+    user = Users.get_by_user_id(user_id)
+
+    if user and Enum.find(lodge.recipients, &(&1.id == user_id)) do
       list = Enum.filter(lodge.recipients, &(&1.id != user_id))
       type = if length(list) > 2, do: 2, else: 1
       decrement_lodge_member_count(lodge.id, list, type)

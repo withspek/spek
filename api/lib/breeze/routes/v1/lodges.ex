@@ -114,6 +114,22 @@ defmodule Breeze.Routes.V1.Lodges do
     end
   end
 
+  post "/:lodge_id/leave" do
+    %Plug.Conn{params: %{"lodge_id" => lodge_id, "userId" => user_id}} = conn
+
+    lodge = Lodges.get_lodge_by_id(lodge_id)
+
+    case Lodges.leave_lodge(lodge, user_id) do
+      nil ->
+        conn
+        |> send_resp(200, Jason.encode!(%{success: false}))
+
+      _ ->
+        conn
+        |> send_resp(200, Jason.encode!(%{success: true}))
+    end
+  end
+
   post "/:lodge_id/send-message" do
     has_user_id = Map.has_key?(conn.assigns, :user_id)
 
