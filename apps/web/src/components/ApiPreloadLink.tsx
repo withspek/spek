@@ -29,7 +29,7 @@ type DifferentProps = {
 // the purpose of this component is to start the query to the api before navigating to the page
 // this will result in less loading time for the user
 export const ApiPreloadLink: React.FC<
-  ValueOf<DifferentProps> & { children?: React.ReactNode }
+  ValueOf<DifferentProps> & { children?: React.ReactNode; className?: string }
 > = ({ children, route, data, ...props }) => {
   const prefetch = useTypeSafePrefetch();
 

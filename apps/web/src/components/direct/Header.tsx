@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { UserPreview } from "@spek/client";
 import { useRouter } from "next/navigation";
 import { Icon } from "@spek/ui";
@@ -5,10 +6,14 @@ import { Icon } from "@spek/ui";
 import { useConn } from "@/hooks/useConn";
 
 interface HeaderProps {
+  conversationId?: string;
   recipients?: UserPreview[];
 }
 
-export const Header: React.FC<HeaderProps> = ({ recipients }) => {
+export const Header: React.FC<HeaderProps> = ({
+  recipients,
+  conversationId,
+}) => {
   const { user } = useConn();
   const router = useRouter();
 
@@ -29,7 +34,9 @@ export const Header: React.FC<HeaderProps> = ({ recipients }) => {
             .join(", ")}
         </p>
       </div>
-      <Icon name="info" className="cursor-pointer" />
+      <Link href={`/direct/${conversationId}/info`}>
+        <Icon name="info" className="cursor-pointer" />
+      </Link>
     </div>
   );
 };

@@ -1,38 +1,26 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 
 import { MessageInput } from "@/components/direct/MessageInput";
 import { MessagesList } from "@/components/direct/MessagesList";
-import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { Header } from "@/components/direct/Header";
+import { ConversationContext } from "@/contexts/ConversationContext";
 
-interface Props {
-  lodgeId: string;
-}
-
-export const DmPageController: React.FC<Props> = ({ lodgeId }) => {
-  const { data, isLoading } = useTypeSafeQuery(
-    ["joinLodgeAndGetInfo", lodgeId],
-    {
-      staleTime: Infinity,
-      refetchOnMount: "always",
-    },
-    [lodgeId]
-  );
-
-  if (isLoading) {
-    return null;
-  }
+export const ConversationPageController: React.FC = () => {
+  const { conversation } = useContext(ConversationContext);
 
   return (
     <div className="flex flex-col gap-3 h-full">
-      <Header recipients={data?.recipients} />
+      <Header
+        recipients={conversation?.recipients}
+        conversationId={conversation?.id}
+      />
       <div className="flex flex-col flex-1 justify-end">
-        <MessagesList lodgeId={lodgeId} />
+        <MessagesList lodgeId={conversation?.id!} />
       </div>
       <div className="py-3 bg-primary-950 sticky bottom-0">
-        <MessageInput lodgeId={lodgeId} />
+        <MessageInput lodgeId={conversation?.id!} />
       </div>
     </div>
   );

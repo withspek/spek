@@ -1,9 +1,9 @@
 import { Lodge } from "@spek/client";
+import { AvatarGroup, UserAvatar } from "@spek/ui";
+import Link from "next/link";
 
 import { useTypeSafePrefetch } from "@/hooks/useTypeSafePrefetch";
-import { useRouter } from "next/navigation";
 import { useConn } from "@/hooks/useConn";
-import { UserAvatarGroup } from "@spek/ui";
 
 interface Props {
   conversations: Lodge[];
@@ -12,38 +12,51 @@ interface Props {
 export const ConversationsList: React.FC<Props> = ({ conversations }) => {
   const { user } = useConn();
   const prefetch = useTypeSafePrefetch();
-  const { push } = useRouter();
 
   return (
     <div className="flex flex-col gap-4 mt-4">
       {conversations.length! > 0 ? (
         conversations.map((c) => (
-          <div
+          <Link
             key={c.id}
+            href={`/direct/${c.id}`}
             className="flex gap-4 items-center cursor-pointer"
             onClick={() => {
               prefetch(["joinLodgeAndGetInfo", c.id], [c.id]);
-
-              push(`/direct/${c.id}`);
             }}
           >
             <div className="flex -space-x-4 rtl:space-x-reverse">
-              <UserAvatarGroup
-                size="md"
-                users={c.recipients.filter((r) => r.id !== user.id)}
-                truncateAfter={2}
-              />
+              {c.recipients.length > 1 ? (
+                <AvatarGroup
+                  size="md"
+                  items={c.recipients
+                    .filter((r) => r.id !== user.id)
+                    .map((r) => ({
+                      image: r.avatarUrl,
+                      alt: r.displayName,
+                    }))}
+                  truncateAfter={2}
+                />
+              ) : (
+                <UserAvatar
+                  size="md"
+                  alt={c.recipients[0].displayName}
+                  user={c.recipients[0]}
+                />
+              )}
             </div>
             <div>
               <p className="font-bold">
-                {c.recipients
-                  .slice(0, 4)
-                  .filter((u) => u.id !== user.id)
-                  .map((p) => p.displayName)
-                  .join(",")}
+                {c.recipients.length > 1
+                  ? c.recipients
+                      .slice(0, 4)
+                      .filter((u) => u.id !== user.id)
+                      .map((p) => p.displayName)
+                      .join(",")
+                  : c.recipients[0].displayName}
               </p>
             </div>
-          </div>
+          </Link>
         ))
       ) : (
         <>
