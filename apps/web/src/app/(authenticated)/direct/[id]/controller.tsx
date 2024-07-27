@@ -16,12 +16,8 @@ export const ConversationPageController: React.FC = () => {
         recipients={conversation?.recipients}
         conversationId={conversation?.id}
       />
-      <div className="flex flex-col flex-1 justify-end">
-        <MessagesList lodgeId={conversation?.id!} />
-      </div>
-      <div className="py-3 bg-primary-950 sticky bottom-0">
-        <MessageInput lodgeId={conversation?.id!} />
-      </div>
+      <MessagesList lodgeId={conversation?.id!} />
+      <MessageInput lodgeId={conversation?.id!} />
     </div>
   );
 };

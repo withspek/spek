@@ -1,14 +1,15 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 
 import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 import { Input } from "@/ui/input";
+import { useConversationStore } from "@/stores/useConversationStore";
 
 interface InputProps {
   lodgeId: string;
 }
 
 export const MessageInput: React.FC<InputProps> = ({ lodgeId }) => {
-  const [message, setMessage] = useState("");
+  const { message, setMessage } = useConversationStore();
   const inputRef = useRef<HTMLInputElement>(null);
   const { mutateAsync } = useTypeSafeMutation("createLodgeMessage");
 
@@ -22,7 +23,7 @@ export const MessageInput: React.FC<InputProps> = ({ lodgeId }) => {
   };
 
   return (
-    <div>
+    <div className="bottom-0 z-30 sticky bg-primary-950 py-2">
       <form
         className="flex gap-1 items-center bg-primary-800 pl-3 rounded-md"
         onSubmit={handleSubmit}

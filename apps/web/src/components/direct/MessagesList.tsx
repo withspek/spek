@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { UserAvatar } from "@spek/ui";
 import { LodgeMessage, User } from "@spek/client";
 
@@ -101,20 +101,28 @@ const Page: React.FC<PageProps> = ({
 export const MessagesList: React.FC<MessagesListProps> = ({ lodgeId }) => {
   const { user } = useConn();
   const [cursors, setCursors] = useState<number[]>([0]);
+  const ref = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
 
   return (
-    <div className="flex flex-col-reverse gap-1">
-      {cursors.map((c, i) => (
-        <Page
-          key={c}
-          cursor={c}
-          user={user}
-          lodgeId={lodgeId}
-          onLoadMore={(nc) => setCursors([...cursors, nc])}
-          isLastPage={i === cursors.length - 1}
-          isOnlyPage={cursors.length === 1}
-        />
-      ))}
+    <div className="flex flex-col flex-1 justify-end overflow-y-scroll">
+      <div className="flex flex-col-reverse gap-1">
+        {cursors.map((c, i) => (
+          <Page
+            key={c}
+            cursor={c}
+            user={user}
+            lodgeId={lodgeId}
+            onLoadMore={(nc) => setCursors([...cursors, nc])}
+            isLastPage={i === cursors.length - 1}
+            isOnlyPage={cursors.length === 1}
+          />
+        ))}
+        <div ref={ref} className="scroll-mb-0" />
+      </div>
     </div>
   );
 };

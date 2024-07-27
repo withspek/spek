@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 import sharedConfig from "config/tailwind.config";
 
-const config: Pick<Config, "presets"> = {
+const config: Pick<Config, "presets" | "plugins"> = {
   presets: [
     {
       ...sharedConfig,
@@ -14,5 +14,6 @@ const config: Pick<Config, "presets"> = {
       ],
     },
   ],
+  plugins: [require("tailwind-scrollbar")],
 };
 export default config;

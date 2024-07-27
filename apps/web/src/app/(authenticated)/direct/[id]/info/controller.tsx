@@ -46,7 +46,7 @@ export const ConversationInfoController: React.FC = () => {
           </ApiPreloadLink>
         ))}
       <div className="flex flex-col items-center justify-center">
-        <Button color="minimal">Add people</Button>
+        {/* <Button color="minimal">Add people</Button> */}
         <Button
           color="destructive"
           disabled={leaveLoading}
