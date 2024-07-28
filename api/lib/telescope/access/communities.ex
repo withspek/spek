@@ -1,4 +1,6 @@
 defmodule Telescope.Access.Communities do
+  @fetch_limit 21
+
   import Ecto.Query
 
   alias Telescope.Repo
@@ -31,22 +33,26 @@ defmodule Telescope.Access.Communities do
     Repo.all(query)
   end
 
-  def get_top_threads_with_message_counts do
-    from(t in Thread)
-    |> join(:left, [t], m in Message, on: m.threadId == t.id)
-    |> join(:inner, [t], c in Community, on: c.id == t.communityId)
-    |> group_by([t, _m, c], [t.id, c.id])
-    |> select([t, _m, c], %Thread.Preview{
-      id: t.id,
-      name: t.name,
-      community: c,
-      peoplePreviewList: t.peoplePreviewList
-    })
-    |> select_merge([t, m], %{
-      message_count: count(m.id)
-    })
-    |> order_by([_t, m], desc: count(m.id))
-    |> Repo.all()
+  def get_top_threads_with_message_counts(offset \\ 20) do
+    threads =
+      from(t in Thread, offset: ^offset, limit: ^@fetch_limit)
+      |> join(:left, [t], m in Message, on: m.threadId == t.id)
+      |> join(:inner, [t], c in Community, on: c.id == t.communityId)
+      |> group_by([t, _m, c], [t.id, c.id])
+      |> select([t, _m, c], %Thread.Preview{
+        id: t.id,
+        name: t.name,
+        community: c,
+        peoplePreviewList: t.peoplePreviewList
+      })
+      |> select_merge([t, m], %{
+        message_count: count(m.id)
+      })
+      |> order_by([_t, m], desc: count(m.id))
+      |> Repo.all()
+
+    {Enum.slice(threads, 0, -1 + @fetch_limit),
+     if(length(threads) == @fetch_limit, do: -1 + offset + @fetch_limit, else: nil)}
   end
 
   def get_community_by_id(id, user_id) do

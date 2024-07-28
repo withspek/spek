@@ -39,8 +39,10 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/api/v1/threads/all/${channelId}`, "GET"),
     getThread: (threadId: string): Promise<Thread> =>
       connection.send(`/api/v1/threads/${threadId}`, "GET"),
-    getTopActiveThreads: (): Promise<TopThread[]> =>
-      connection.send(`/api/v1/threads`, "GET"),
+    getTopActiveThreads: (
+      cursor: number
+    ): Promise<{ threads: TopThread[]; nextCursor: number | null }> =>
+      connection.send(`/api/v1/threads?cursor=${cursor}`, "GET"),
     getThreadMessages: (
       threadId: string,
       cursor: number = 0

@@ -12,10 +12,12 @@ defmodule Breeze.Routes.V1.Threads do
   plug(:dispatch)
 
   get "/" do
-    threads = Communities.get_top_threads_with_message_counts()
+    %Plug.Conn{params: %{"cursor" => cursor}} = conn
+
+    {threads, nextCursor} = Communities.get_top_threads_with_message_counts(cursor)
 
     conn
-    |> send_resp(200, Jason.encode!(threads))
+    |> send_resp(200, Jason.encode!(%{threads: threads, nextCursor: nextCursor}))
   end
 
   get "/:id" do
