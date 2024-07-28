@@ -27,7 +27,7 @@ const Message: React.FC<{ message: ThreadMessage }> = ({ message }) => {
   );
 
   return (
-    <div className={`flex flex-1 items-center px-3 rounded-md py-4 gap-3`}>
+    <div className={`flex w-full items-center px-3 rounded-md py-4 gap-3`}>
       <ApiPreloadLink route="profile" data={{ id: message.user.id }}>
         <Avatar
           imageSrc={message.user.avatarUrl}
@@ -108,7 +108,7 @@ export const MessagesList: React.FC<MessagesListProps> = ({ threadId }) => {
   }, []);
 
   return (
-    <div className="flex flex-1 gap-4 w-full overflow-y-auto">
+    <div className="flex flex-1 gap-4 w-full justify-end overflow-y-auto">
       <div className="flex flex-col-reverse gap-1 overflow-y-auto scrollbar-thin scrollbar-thumb-primary-700 w-full overflow-x-hidden">
         {cursors.map((c, i) => (
           <Page
