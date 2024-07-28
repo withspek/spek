@@ -1,9 +1,9 @@
 import { format } from "date-fns";
 import React, { useEffect, useMemo, useState } from "react";
 import { UserAvatar } from "@spek/ui";
-import { LodgeMessage, User } from "@spek/client";
+import { LodgeMessage } from "@spek/client";
+import { useInView } from "react-intersection-observer";
 
-import { useConn } from "@/hooks/useConn";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 
 interface MessagesListProps {
@@ -13,7 +13,6 @@ interface MessagesListProps {
 interface PageProps {
   lodgeId: string;
   cursor: number;
-  user: User;
   onLoadMore: (cursor: number) => void;
   isLastPage: boolean;
   isOnlyPage: boolean;
@@ -55,7 +54,6 @@ const Page: React.FC<PageProps> = ({
   cursor,
   isLastPage,
   isOnlyPage,
-  user,
   onLoadMore,
 }) => {
   const { data, isLoading } = useTypeSafeQuery(
@@ -99,29 +97,29 @@ const Page: React.FC<PageProps> = ({
 };
 
 export const MessagesList: React.FC<MessagesListProps> = ({ lodgeId }) => {
-  const { user } = useConn();
   const [cursors, setCursors] = useState<number[]>([0]);
-  const ref = React.useRef<HTMLDivElement>(null);
+  const { ref, inView } = useInView({ threshold: 0 });
 
   useEffect(() => {
-    ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (!inView) {
+      window.scroll({ behavior: "smooth", top: 0 });
+    }
   }, []);
 
   return (
-    <div className="flex flex-col flex-1 justify-end overflow-y-scroll">
-      <div className="flex flex-col-reverse gap-1">
+    <div className="flex flex-col flex-1 justify-end overflow-y-auto">
+      <div className="flex flex-col-reverse gap-1 overflow-y-auto scrollbar-thin scrollbar-thumb-primary-700 w-full overflow-x-hidden">
         {cursors.map((c, i) => (
           <Page
             key={c}
             cursor={c}
-            user={user}
             lodgeId={lodgeId}
             onLoadMore={(nc) => setCursors([...cursors, nc])}
             isLastPage={i === cursors.length - 1}
             isOnlyPage={cursors.length === 1}
           />
         ))}
-        <div ref={ref} className="scroll-mb-0" />
+        <div ref={ref} />
       </div>
     </div>
   );

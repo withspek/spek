@@ -11,7 +11,7 @@ export const ConversationPageController: React.FC = () => {
   const { conversation } = useContext(ConversationContext);
 
   return (
-    <div className="flex flex-col gap-3 h-full">
+    <div className="flex flex-col gap-3 h-screen">
       <Header
         recipients={conversation?.recipients}
         conversationId={conversation?.id}

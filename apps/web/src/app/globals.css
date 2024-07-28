@@ -69,13 +69,13 @@ body,
   display: flex;
 }
 
-/* html {
+html {
   position: fixed;
-} */
+}
 
-/* #__app {
+#__app {
   overflow-y: auto;
-} */
+}
 
 /* for firefox */
 * {

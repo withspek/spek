@@ -31,7 +31,7 @@ export const ThreadCard: React.FC<ThreadCardProps> = ({
       onClick={onClick}
     >
       <div className="flex gap-2">
-        <p className="uppercase">{conversation.communityName}</p>
+        <p className="uppercase text-sm">{conversation.communityName}</p>
       </div>
       <p className="text-primary-400">{conversation.name}</p>
       <div className="flex justify-between items-center py-3">
