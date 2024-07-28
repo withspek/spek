@@ -5,7 +5,6 @@ import { defaultQueryFn } from "@/utils/defaultQueryFn";
 import { ThreadPageController } from "./controller";
 import { MainLayout } from "@spek/ui";
 import { LeftPanel } from "@/components/Panels";
-import { FloatingThreadInfo } from "./FloatingThreadInfo";
 import { WaitForWsAndAuth } from "@/components/auth/WaitForWsAndAuth";
 
 type Props = {
@@ -27,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ThreadPage({ params }: Props) {
   return (
     <WaitForWsAndAuth>
-      <MainLayout leftPanel={<LeftPanel />} rightPanel={<FloatingThreadInfo />}>
+      <MainLayout leftPanel={<LeftPanel />}>
         <ThreadPageController threadId={params.id} />
       </MainLayout>
     </WaitForWsAndAuth>

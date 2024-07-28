@@ -9,12 +9,12 @@ import { useRouter } from "next/navigation";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { MessageInput } from "@/components/thread/MessageInput";
 import { MessagesList } from "@/components/thread/MessagesList";
-import { PlusIcon } from "@/icons";
 // import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 import { useConn } from "@/hooks/useConn";
 // import { useTypeSafeUpdateQuery } from "@/hooks/useTypeSafeUpdateQuery";
 // import { copyTextToClipboard } from "@/utils/copyToClipboard";
 import { CenterLoader } from "@/components/CenterLoader";
+import { Icon } from "@spek/ui";
 
 interface ThreadPageControllerProps {
   threadId: string;
@@ -48,15 +48,17 @@ export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
 
   return (
     <div className="flex flex-col gap-3 h-full">
-      <div className={`z-20 sticky top-0 py-3 bg-primary-950`}>
-        <div className="flex justify-between items-center">
-          <div className="cursor-pointer" onClick={() => router.back()}>
-            <PlusIcon className="rotate-45" width={28} height={28} />
+      <div className={`z-20 sticky top-0 bg-primary-950`}>
+        <div className="flex flex-col py-2  gap-2 rounded-b-md">
+          <div className="inline-flex gap-4">
+            <Icon
+              name="arrow-left"
+              className="cursor-pointer"
+              onClick={() => router.back()}
+            />
+            <p className="text-xl capitalize">{data?.name}</p>
           </div>
-        </div>
-        <div className="flex flex-col py-2 rounded-b-md">
-          <p className="text-2xl capitalize">{data?.name}</p>
-          <p className="text-alabaster-200">
+          <p className="text-primary-300">
             {format(dt, "MMM dd, yyyy - hh:MM a")}
           </p>
         </div>
