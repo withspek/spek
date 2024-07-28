@@ -1,7 +1,7 @@
 import { Avatar } from "@spek/ui";
 import { format } from "date-fns";
 import { useInView } from "react-intersection-observer";
-import { Message as ThreadMessage, User } from "@spek/client";
+import { Message as ThreadMessage } from "@spek/client";
 import React, { useEffect, useMemo, useState } from "react";
 
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
@@ -9,7 +9,6 @@ import { ApiPreloadLink } from "../ApiPreloadLink";
 
 interface MessagesListProps {
   threadId: string;
-  currentUser: User;
 }
 
 interface PageProps {
