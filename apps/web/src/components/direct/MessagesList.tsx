@@ -34,7 +34,6 @@ const Message: React.FC<{ message: LodgeMessage }> = ({ message }) => {
         }}
         size={"md"}
         alt={message.user.displayName}
-        online={message.user.online}
       />
       <div className="flex flex-col gap-1">
         <p className="font-bold text-sm">
