@@ -3,6 +3,7 @@ import { format } from "date-fns";
 import { useInView } from "react-intersection-observer";
 import { Message as ThreadMessage } from "@spek/client";
 import React, { useEffect, useMemo, useState } from "react";
+import Markdor from "@withspek/markdor";
 
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { ApiPreloadLink } from "../ApiPreloadLink";
@@ -41,7 +42,7 @@ const Message: React.FC<{ message: ThreadMessage }> = ({ message }) => {
             {format(dt, "MMM dd HH:mm")}
           </span>
         </p>
-        <p>{message.text}</p>
+        {Markdor.markdownToReact(message.text)}
       </div>
     </div>
   );

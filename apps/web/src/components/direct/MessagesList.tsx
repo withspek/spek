@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import React, { useEffect, useMemo, useState } from "react";
+import Markdor from "@withspek/markdor";
 import { UserAvatar } from "@spek/ui";
 import { LodgeMessage } from "@spek/client";
 import { useInView } from "react-intersection-observer";
@@ -25,7 +26,7 @@ const Message: React.FC<{ message: LodgeMessage }> = ({ message }) => {
   );
 
   return (
-    <div className={`flex flex-1 items-center px-3 rounded-md py-4 gap-3`}>
+    <div className={`flex flex-1 items-start px-3 rounded-md py-4 gap-3`}>
       <UserAvatar
         user={{
           avatarUrl: message.user.avatarUrl,
@@ -42,7 +43,7 @@ const Message: React.FC<{ message: LodgeMessage }> = ({ message }) => {
             {format(dt, "MMM dd HH:mm")}
           </span>
         </p>
-        <p>{message.text}</p>
+        {Markdor.markdownToReact(message.text)}
       </div>
     </div>
   );
