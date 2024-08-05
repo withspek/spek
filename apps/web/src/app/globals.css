@@ -148,3 +148,7 @@ html {
     text-wrap: balance;
   }
 }
+
+.paragraph > a {
+  text-decoration: underline !important;
+}

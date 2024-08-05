@@ -25,7 +25,7 @@ export const Providers: React.FC<Props> = ({ children }) => {
             <TooltipProvider>
               {children}
               <ConfirmModal />
-              <Toaster id={"toaster"} />
+              <Toaster />
             </TooltipProvider>
           </MainWsHandlerProvider>
         </DataFetchingContextProvider>

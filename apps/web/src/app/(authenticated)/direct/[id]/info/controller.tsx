@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React, { useContext } from "react";
-import { Button, Icon, toast, UserAvatar } from "@spek/ui";
+import { Button, Icon, showToast, UserAvatar } from "@spek/ui";
 
 import { ConversationContext } from "@/contexts/ConversationContext";
 import { useConn } from "@/hooks/useConn";
@@ -59,7 +59,7 @@ export const ConversationInfoController: React.FC = () => {
                 if (resp.success) {
                   router.push("/direct");
                 } else {
-                  toast("Something went wrong");
+                  showToast("Something went wrong", "error");
                 }
               }
             );

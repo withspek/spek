@@ -11,5 +11,10 @@
   "license": "ISC",
   "dependencies": {
     "tailwindcss": "^3.4.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.13",
+    "@types/node": "^22.1.0",
+    "tailwindcss-radix": "^3.0.3"
   }
 }

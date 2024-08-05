@@ -66,6 +66,7 @@ const config: Config = {
       },
       red: colors.red,
       green: colors.green,
+      orange: colors.orange,
     },
     extend: {
       spacing: {
@@ -74,8 +75,22 @@ const config: Config = {
         xl: "75rem",
       },
     },
+    keyframes: {
+      "fade-in-up": {
+        from: { opacity: "0", transform: "translateY(10px)" },
+        to: { opacity: "1", transform: "none" },
+      },
+      spinning: {
+        "100%": { transform: "rotate(360deg)" },
+      },
+    },
+    animation: {
+      "fade-in-up":
+        "fade-in-up 600ms var(--animation-delay, 0ms) cubic-bezier(.21,1.02,.73,1) forwards",
+      "fade-in-bottom": "fade-in-bottom cubic-bezier(.21,1.02,.73,1) forwards",
+    },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography"), require("tailwindcss-radix")],
 };
 
 export default config;

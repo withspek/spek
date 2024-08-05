@@ -1,7 +1,7 @@
 import Prism from "prismjs";
 import "prismjs/components/prism-markdown";
 import React, { useCallback, useMemo, useState } from "react";
-import { toast } from "@spek/ui";
+import { showToast } from "@spek/ui";
 import { classNames } from "@spek/lib";
 import { Editable, Slate, withReact } from "slate-react";
 import { createEditor, Transforms, Editor, Text } from "slate";
@@ -76,7 +76,7 @@ export const MessageInput: React.FC<InputProps> = ({ lodgeId }) => {
     const text = serialize(value);
 
     if (Date.now() - lastMessageTimestamp <= 2000) {
-      toast("Wait 2 seconds before sending another message");
+      showToast("Wait 2 seconds before sending another message", "error");
       return;
     }
 
