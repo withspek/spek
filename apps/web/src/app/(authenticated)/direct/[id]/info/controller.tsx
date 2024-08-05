@@ -1,20 +1,31 @@
 "use client";
 import { useRouter } from "next/navigation";
-import React, { useContext } from "react";
-import { Button, Icon, showToast, UserAvatar } from "@spek/ui";
+import React, { useContext, useState } from "react";
+import {
+  Button,
+  ConfirmationDialogContent,
+  Dialog,
+  Icon,
+  showToast,
+  UserAvatar,
+} from "@spek/ui";
 
 import { ConversationContext } from "@/contexts/ConversationContext";
 import { useConn } from "@/hooks/useConn";
 import { ApiPreloadLink } from "@/components/ApiPreloadLink";
 import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
-import { confirmModal } from "@/components/ConfirmModal";
 
 export const ConversationInfoController: React.FC = () => {
   const router = useRouter();
   const { conversation } = useContext(ConversationContext);
+  const [showConfirm, setShowConfirm] = useState(false);
   const { user } = useConn();
   const { mutateAsync: leaveLodge, isLoading: leaveLoading } =
     useTypeSafeMutation("leaveLodge");
+
+  const handleShowConfirm = () => {
+    setShowConfirm(!showConfirm);
+  };
 
   return (
     <div className="flex flex-col mt-3 gap-4">
@@ -50,24 +61,26 @@ export const ConversationInfoController: React.FC = () => {
         <Button
           color="destructive"
           disabled={leaveLoading}
-          onClick={() => {
-            confirmModal(
-              "This conversation will be deleted from your inbox. Other people in the conversation will still be able to see it.",
-              async () => {
-                const resp = await leaveLodge([conversation?.id!, user.id]);
-
-                if (resp.success) {
-                  router.push("/direct");
-                } else {
-                  showToast("Something went wrong", "error");
-                }
-              }
-            );
-          }}
+          onClick={handleShowConfirm}
         >
           Leave conversation
         </Button>
       </div>
+      <Dialog open={showConfirm} onOpenChange={handleShowConfirm}>
+        <ConfirmationDialogContent
+          variety="danger"
+          title="Delete conversation"
+          isPending={leaveLoading}
+          confirmBtnText="Delete conversation"
+          onConfirm={async () => {
+            await leaveLodge([conversation?.id!, user.id]);
+            router.push("/direct");
+            showToast("Conversation deleted successfully", "success");
+          }}
+        >
+          Are you sure you want to delete this conversation
+        </ConfirmationDialogContent>
+      </Dialog>
     </div>
   );
 };

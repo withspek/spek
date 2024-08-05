@@ -43,7 +43,7 @@ export const ConfirmationContent = (
 
   return (
     <>
-      <div className="flex">
+      <div className="flex items-start gap-4">
         {variety && (
           <div className="mt-0.5 ltr:mr-3">
             {variety === "danger" && (
@@ -64,7 +64,7 @@ export const ConfirmationContent = (
           </div>
         )}
         <div>
-          <DialogPrimitive.Title className="text-primary-200 mt-2 text-xl">
+          <DialogPrimitive.Title className="text-primary-200 text-xl">
             {title}
           </DialogPrimitive.Title>
           <DialogPrimitive.Description className="text-primary-300 text-sm">
@@ -72,12 +72,12 @@ export const ConfirmationContent = (
           </DialogPrimitive.Description>
         </div>
       </div>
-      <div>
+      <div className="my-5 flex flex-row-reverse gap-x-2 sm:my-8">
         {confirmBtn ? (
           confirmBtn
         ) : (
           <DialogClose
-            color="primary"
+            color={variety === "danger" ? "destructive" : "primary"}
             loading={isPending}
             onClick={(e) => onConfirm && onConfirm(e)}
           >
