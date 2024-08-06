@@ -1,12 +1,8 @@
-:80 { 
+16.171.14.61.nip.io { 
     # Reverse proxy for API service
     reverse_proxy api:4001
 }
 
-:443 {
-    # Reverse proxy for API service
-    reverse_proxy api:4001
-}
 
 16.171.14.61:80 {
     # redirect to https
