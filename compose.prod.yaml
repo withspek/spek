@@ -3,7 +3,7 @@ version: "3.8"
 services:
   caddy:
     networks:
-      - spek-net
+      - speknet
     image: caddy:latest
     ports:
       - "80:80"
@@ -14,7 +14,7 @@ services:
       - caddy_config:/config
   api:
     networks:
-      - spek-net
+      - speknet
     image: irere/spek:latest
     env_file:
       - spek.env
@@ -25,7 +25,7 @@ services:
       - pg.env
   rabbitmq:
     networks:
-      - spek-net
+      - speknet
     env_file:
       - rabbit.env
 
@@ -33,4 +33,4 @@ volumes:
   caddy_data:
   caddy_config:
 networks:
-  - spek-net
+  speknet:
