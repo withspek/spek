@@ -1,5 +1,4 @@
-16.171.14.61 { 
-    tls self_signed
+:80 { 
     # Reverse proxy for API service
     reverse_proxy {
        to api:4001
