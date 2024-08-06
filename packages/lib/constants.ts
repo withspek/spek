@@ -5,6 +5,4 @@ export const WEBAPP_URL = PROD
   ? "https://spek-alpha.netlify.app"
   : "http://localhost:3000";
 
-export const API_URL = PROD
-  ? "https://spek-latest.onrender.com"
-  : "http://localhost:4001";
+export const API_URL = PROD ? "16.171.14.61.nip.io" : "http://localhost:4001";
