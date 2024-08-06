@@ -1,0 +1,40 @@
+{
+  "name": "Spek",
+  "dockerComposeFile": "compose.yml",
+  "remoteUser": "spek",
+  "containerUser": "spek",
+  "service": "workspace",
+  "workspaceFolder": "/workspace",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "jakebecker.elixir-ls",
+        "bradlc.vscode-tailwindcss",
+        "YoavBls.pretty-ts-errors",
+        "eamodio.gitlens",
+        "dsznajder.es7-react-js-snippets"
+      ],
+      "settings": {
+        "telemetry.enableTelemetry": false,
+        "redhat.telemetry.enabled": false,
+        "vulnCost.sendStatistics": false,
+        "editor.renderWhitespace": "all",
+        "editor.renderControlCharacters": true,
+        "editor.formatOnSave": true,
+        "files.insertFinalNewline": true
+      }
+    }
+  },
+  "forwardPorts": [
+    80,
+    3000, // nextjs
+    4001, // elixir api
+    8080,
+    5432, // postgres
+    5672, // rabbitmq
+    15672 // rabbit.mq management interface
+  ],
+  "postCreateCommand": ["bash", ".devcontainer/scripts/environment.sh"]
+}
