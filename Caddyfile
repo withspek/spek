@@ -1,4 +1,4 @@
-$DOMAIN { 
+ec2-16-171-14-61.eu-north-1.compute.amazonaws.com { 
     # Reverse proxy for API service
     reverse_proxy api:4001
 }
