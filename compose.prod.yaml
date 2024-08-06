@@ -20,7 +20,7 @@ services:
       - spek.env
   postgres:
     networks:
-      - spek-net
+      - speknet
     env_file:
       - pg.env
   rabbitmq:
