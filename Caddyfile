@@ -1,4 +1,4 @@
-16.171.14.61 { 
+ec2-16-171-14-61.eu-north-1.compute.amazonaws.com { 
     # Reverse proxy for API service
     reverse_proxy {
        to api:4001
