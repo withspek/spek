@@ -1,6 +1,14 @@
 :80 { 
     # Reverse proxy for API service
-    reverse_proxy {
-       to api:4001
-    } 
+    reverse_proxy api:4001
+}
+
+:443 {
+    # Reverse proxy for API service
+    reverse_proxy api:4001
+}
+
+16.171.14.61:80 {
+    # redirect to https
+    redir https://ec2-16-171-14-61.eu-north-1.compute.amazonaws.com{uri}
 }
