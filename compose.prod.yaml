@@ -2,6 +2,8 @@ version: "3.8"
 
 services:
   caddy:
+    networks:
+      - spek-net
     image: caddy:latest
     ports:
       - "80:80"
@@ -11,16 +13,24 @@ services:
       - caddy_data:/data
       - caddy_config:/config
   api:
+    networks:
+      - spek-net
     image: irere/spek:latest
     env_file:
       - spek.env
   postgres:
+    networks:
+      - spek-net
     env_file:
       - pg.env
   rabbitmq:
+    networks:
+      - spek-net
     env_file:
       - rabbit.env
 
 volumes:
   caddy_data:
   caddy_config:
+networks:
+  - spek-net

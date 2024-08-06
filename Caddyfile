@@ -1,4 +1,6 @@
 16.171.14.61 { 
     # Reverse proxy for API service
-    reverse_proxy api:4001 
+    reverse_proxy {
+       to api:4001
+    } 
 }
