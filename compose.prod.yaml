@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  caddy:
+    image: caddy:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+  api:
+    image: irere/spek:latest
+    env_file:
+      - spek.env
+  postgres:
+    env_file:
+      - pg.env
+  rabbitmq:
+    env_file:
+      - rabbit.env
+
+volumes:
+  caddy_data:
+  caddy_config:

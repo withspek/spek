@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  # backend
+  api:
+    build: ./api
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres/postgres
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - GITHUB_CLIENT_ID=5d5xxxxxxab70
+      - GITHUB_CLIENT_SECRET=48xxxxxxxxxxxxd1cd5
+      - GILAB_APP_ID=5d5xxxxxxab70
+      - GITLAB_APP_SECRET=48xxxxxxxxxxxxd1cd5
+      - ACCESS_TOKEN_SECRET=8f51exxxxxx7211dd
+      - REFRESH_TOKEN_SECRET=dbb85xxxxxx9ebde
+      - WEB_URL=http://localhost:3000
+      - API_URL=http://localhost:4001
+      - PORT=4001
+    ports:
+      - 4001:4001
+  postgres:
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRE_DB=postgres
+  rabbitmq:
+    environment:
+      RABBITMQ_ERLANG_COOKIE: erlang_dev_only_cookie
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest

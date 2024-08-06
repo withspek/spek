@@ -1,0 +1,4 @@
+$DOMAIN { 
+    # Reverse proxy for API service
+    reverse_proxy api:4001
+}
