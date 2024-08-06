@@ -2,13 +2,15 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
+import { User } from "@spek/client";
+import { Avatar, Icon, Tooltip } from "@spek/ui";
 
 import { useConn } from "@/hooks/useConn";
-import { HomeIcon, InboxIcon, PlusIcon, SearchIcon } from "@/icons";
 import { Modal } from "@/ui/modal";
-import { Avatar, Tooltip } from "@spek/ui";
 import { SearchBar } from "./SearchBar";
+import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 
 export const LeftPanel: React.FC = () => {
   const { user } = useConn();
@@ -35,13 +37,17 @@ export const LeftPanel: React.FC = () => {
           className={`${pathname == "/home" ? "text-accent" : ""}`}
           href={"/home"}
         >
-          <Tooltip content="Home" placement="right">
-            <HomeIcon />
+          <Tooltip content="Feed" placement="right">
+            <Icon name="rss" />
           </Tooltip>
         </Link>
 
         <Tooltip content={"Search"} placement="right">
-          <SearchIcon onClick={() => setOpen(!open)} />
+          <Icon name="search" onClick={() => setOpen(!open)} />
+        </Tooltip>
+
+        <Tooltip content={"Discover"} placement="right">
+          <Icon name="compass" onClick={() => setOpen(!open)} />
         </Tooltip>
 
         <Link
@@ -49,7 +55,7 @@ export const LeftPanel: React.FC = () => {
           href={"/direct"}
         >
           <Tooltip content={"Inbox"} placement="right">
-            <InboxIcon />
+            <Icon name="inbox" />
           </Tooltip>
         </Link>
 
@@ -58,9 +64,10 @@ export const LeftPanel: React.FC = () => {
           href={"/new/community"}
         >
           <Tooltip content={"New"} placement="right">
-            <PlusIcon />
+            <Icon name="plus" />
           </Tooltip>
         </Link>
+        {user ? <UserCommunitiesList user={user} /> : null}
       </div>
       <div className="flex flex-col mb-4">
         {user ? (
@@ -84,10 +91,30 @@ export const LeftPanel: React.FC = () => {
   );
 };
 
-export const TopPanel: React.FC = () => {
+const UserCommunitiesList: React.FC<{ user: User }> = () => {
+  const { data, isLoading } = useTypeSafeQuery(["getUserCommunities", 0], {}, [
+    0,
+  ]);
+
+  if (isLoading) {
+    return null;
+  }
+
   return (
-    <div>
-      <p>hello world</p>
+    <div className="flex items-end flex-col w-full">
+      {data?.communities?.map((c) => (
+        <Tooltip content={c.name} key={c.id} placement="right">
+          <Link href={`/c/${c.slug}`}>
+            <Image
+              alt={c.name}
+              src={`https://avatar.vercel.sh/${c.slug}?text=${c.name}&size=36`}
+              className="h-9 w-9 rounded-lg"
+              width={40}
+              height={40}
+            />
+          </Link>
+        </Tooltip>
+      ))}
     </div>
   );
 };

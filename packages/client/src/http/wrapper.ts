@@ -59,6 +59,10 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/misc/search?query=${query}`, "GET"),
     getUserLodges: (): Promise<Lodge[]> =>
       connection.send(`/api/v1/users/@me/lodges`, "GET"),
+    getUserCommunities: (
+      cursor: number
+    ): Promise<{ communities: Community[]; nextCursor: number }> =>
+      connection.send(`/api/v1/users/@me/communities?cursor=${cursor}`, "GET"),
     getLodgeMembers: (lodgeId: string): Promise<Lodge[]> =>
       connection.send(`/api/v1/lodges/${lodgeId}/members`, "GET"),
     joinLodgeAndGetInfo: (lodgeId: string): Promise<Lodge> =>

@@ -33,6 +33,21 @@ defmodule Telescope.Access.Communities do
     Repo.all(query)
   end
 
+  def get_user_joined_communities(offset \\ 20, user_id) do
+    communities =
+      from(c in Community,
+        offset: ^offset,
+        limit: ^@fetch_limit,
+        join: cm in CommunityMember,
+        on: cm.communityId == c.id and cm.userId == ^user_id,
+        order_by: c.memberCount
+      )
+      |> Repo.all([])
+
+    {Enum.slice(communities, 0, -1 + @fetch_limit),
+     if(length(communities) == @fetch_limit, do: -1 + offset + @fetch_limit, else: nil)}
+  end
+
   def get_top_threads_with_message_counts(offset \\ 20) do
     threads =
       from(t in Thread, offset: ^offset, limit: ^@fetch_limit)

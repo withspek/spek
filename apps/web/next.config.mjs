@@ -18,6 +18,9 @@ const nextConfig = {
         hostname: "picsum.photos",
         port: "",
       },
+      {
+        hostname: "avatar.vercel.sh",
+      },
     ],
   },
 };

@@ -6,12 +6,13 @@ defmodule Telescope.Schemas.User do
   defmodule Preview do
     use Ecto.Schema
 
-    @derive {Jason.Encoder, only: ~w(id displayName bio avatarUrl)a}
+    @derive {Jason.Encoder, only: ~w(id displayName username bio avatarUrl)a}
     @primary_key false
     embedded_schema do
       field(:id, :binary_id)
 
       field(:displayName, :string)
+      field(:username, :string)
       field(:bio, :string)
       field(:avatarUrl, :string)
     end

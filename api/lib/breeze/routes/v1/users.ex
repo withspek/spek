@@ -1,6 +1,7 @@
 defmodule Breeze.Routes.V1.Users do
   use Plug.Router
 
+  alias Telescope.Communities
   alias Telescope.Users
   alias Telescope.Lodges
   alias Pulse.UserSession
@@ -101,6 +102,23 @@ defmodule Breeze.Routes.V1.Users do
 
       conn
       |> send_resp(200, Jason.encode!(lodges))
+    else
+      conn
+      |> send_resp(401, Jason.encode!(%{error: "UNAUTHORIZED"}))
+    end
+  end
+
+  get "/@me/communities" do
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    if has_user_id do
+      user_id = conn.assigns.user_id
+      cursor = String.to_integer(conn.params["cursor"])
+
+      {communities, nextCursor} = Communities.get_user_joined_communities(cursor, user_id)
+
+      conn
+      |> send_resp(200, Jason.encode!(%{communities: communities, nextCursor: nextCursor}))
     else
       conn
       |> send_resp(401, Jason.encode!(%{error: "UNAUTHORIZED"}))

@@ -8,7 +8,7 @@ defmodule Telescope.Communities do
   defdelegate get_community_permissions(communityId, userId), to: Telescope.Access.Communities
   defdelegate search_name(start_of_name), to: Telescope.Access.Communities
   defdelegate get_top_threads_with_message_counts(offset), to: Telescope.Access.Communities
-
+  defdelegate get_user_joined_communities(offset, user_id), to: Telescope.Access.Communities
   defdelegate is_member?(communityId, userId), to: Telescope.Access.Communities
   defdelegate get_community_id_by_thread_id(thread_id), to: Telescope.Access.Communities
   defdelegate all_threads_ids(), to: Telescope.Access.Communities
