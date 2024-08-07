@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
-
+import { API_URL } from "@spek/lib/constants";
 import { http } from "@spek/client";
-import { apiUrl } from "@/utils/constants";
+
 import { useTokenStore } from "@/stores/useTokenStore";
 
 type V = http.raw.Connection | null;
@@ -45,7 +45,7 @@ export const DataFetchingContextProvider: React.FC<
 
       http.raw
         .connect(tokens.accessToken, tokens.refreshToken, {
-          url: apiUrl,
+          url: API_URL,
         })
         .then((x) => {
           setConn(x);

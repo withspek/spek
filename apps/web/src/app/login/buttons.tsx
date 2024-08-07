@@ -1,10 +1,12 @@
 "use client";
 
-import { useTokenStore } from "@/stores/useTokenStore";
-import { Button, Icon } from "@spek/ui";
-import { apiUrl, loginNextPathKey, prod } from "@/utils/constants";
-import { useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback } from "react";
+import { API_URL } from "@spek/lib/constants";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Button, Icon } from "@spek/ui";
+
+import { useTokenStore } from "@/stores/useTokenStore";
+import { loginNextPathKey, prod } from "@/utils/constants";
 
 interface LoginButtonProps {
   children: [React.ReactNode, React.ReactNode];
@@ -48,11 +50,11 @@ export const Buttons: React.FC = () => {
 
   return (
     <>
-      <LoginButton oauthUrl={`${apiUrl}/auth/github`}>
+      <LoginButton oauthUrl={`${API_URL}/auth/github`}>
         <Icon name="github" width={16} height={16} />
         Continue with Github
       </LoginButton>
-      <LoginButton oauthUrl={`${apiUrl}/auth/gitlab`}>
+      <LoginButton oauthUrl={`${API_URL}/auth/gitlab`}>
         <Icon name="gitlab" width={16} height={16} />
         Continue with Gitlab
       </LoginButton>
@@ -62,7 +64,7 @@ export const Buttons: React.FC = () => {
           onClick={async () => {
             const username = prompt("username");
             const resp = await fetch(
-              `${apiUrl}/dev/test-info?username=${username}`
+              `${API_URL}/dev/test-info?username=${username}`
             );
 
             const d = await resp.json();

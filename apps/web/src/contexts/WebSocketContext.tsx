@@ -1,9 +1,9 @@
 import { useRouter } from "next/navigation";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { User, websocket } from "@spek/client";
+import { API_URL } from "@spek/lib/constants";
 
 import { useTokenStore } from "@/stores/useTokenStore";
-import { apiUrl } from "@/utils/constants";
-import { User, websocket } from "@spek/client";
 
 interface WebSocketProviderProps {
   children: React.ReactNode;
@@ -35,7 +35,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
       isConnecting.current = true;
       websocket
         .connect("", "", {
-          url: apiUrl.replace("http", "ws") + "/ws",
+          url: API_URL.replace("http", "ws") + "/ws",
           getAuthOptions: () => {
             const { accessToken, refreshToken } = useTokenStore.getState();
 

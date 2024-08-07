@@ -1,10 +1,11 @@
+import { API_URL } from "@spek/lib/constants";
+
 import { useTokenStore } from "@/stores/useTokenStore";
-import { apiUrl } from "./constants";
 
 export const defaultQueryFn = async ({ queryKey }: { queryKey: string }) => {
   const { accessToken, refreshToken } = useTokenStore.getState();
 
-  const resp = await fetch(`${apiUrl}/${queryKey}`, {
+  const resp = await fetch(`${API_URL}/${queryKey}`, {
     headers: {
       "X-Access-Token": accessToken,
       "X-Refresh-Token": refreshToken,
