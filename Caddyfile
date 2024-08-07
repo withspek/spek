@@ -1,10 +1,10 @@
-16.171.14.61.nip.io { 
+{$DOMAIN} { 
     # Reverse proxy for API service
     reverse_proxy api:4001
 }
 
 
-16.171.14.61:80 {
+{$DOMAIN}:80 {
     # redirect to https
-    redir https://ec2-16-171-14-61.eu-north-1.compute.amazonaws.com{uri}
+    redir {$DOMAIN}{uri}
 }
