@@ -1,0 +1,29 @@
+{
+  "name": "horizon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch": "tsc -w",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "cross-env DEBUG=horizon:* tsx src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "amqplib": "^0.10.4",
+    "cross-env": "^7.0.3",
+    "debug": "^4.3.6",
+    "dotenv": "^16.4.5",
+    "mediasoup": "^3.14.9"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.10.5",
+    "@types/debug": "^4.1.12",
+    "nodemon": "^3.1.0",
+    "tsx": "^4.17.0",
+    "typescript": "^5.5.4"
+  }
+}

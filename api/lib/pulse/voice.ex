@@ -23,7 +23,7 @@ defmodule Pulse.Voice do
 
   defp via(voice_id), do: {:via, Registry, {Pulse.VoiceRegistry, voice_id}}
 
-  @send_queue "vapor_queue"
+  @send_queue "horizon_queue"
   @receive_exchange "spek_exchange"
   @receive_queue "spek_queue"
 
