@@ -1,7 +1,8 @@
 defmodule Telescope.Schemas.User do
   use Ecto.Schema
-
   import Ecto.Changeset
+
+  alias Telescope.Schemas.Conf
 
   defmodule Preview do
     use Ecto.Schema
@@ -18,8 +19,10 @@ defmodule Telescope.Schemas.User do
     end
   end
 
-  @derive {Jason.Encoder, only: ~w(id username displayName bio bannerUrl avatarUrl
-             email githubUrl online lastOnline contributions inserted_at updated_at gitlabUrl)a}
+  @derive {Jason.Encoder,
+           only:
+             ~w(id username displayName bio bannerUrl avatarUrl
+             email githubUrl online lastOnline contributions inserted_at updated_at gitlabUrl conf_permissions current_conf_id current_conf)a}
 
   @primary_key {:id, :binary_id, []}
   schema "users" do
@@ -38,6 +41,9 @@ defmodule Telescope.Schemas.User do
     field(:staff, :boolean)
     field(:online, :boolean, default: false)
     field(:lastOnline, :utc_datetime_usec)
+    field(:conf_permissions, :map, virtual: true)
+
+    belongs_to(:current_conf, Conf, foreign_key: :current_conf_id, type: :binary_id)
 
     timestamps(type: :utc_datetime_usec)
   end
