@@ -11,6 +11,8 @@ defmodule Spek do
       Pulse.Supervisors.UserSession,
       Pulse.Supervisors.ThreadSession,
       Pulse.Supervisors.LodgeSession,
+      Pulse.Supervisors.OnliceVoice,
+      Pulse.Supervisors.Voice,
       {Telescope.Repo, []},
       Pulse.Telemetry,
       Plug.Cowboy.child_spec(
@@ -32,6 +34,7 @@ defmodule Spek do
       {:ok, pid} ->
         start_lodges()
         start_threads()
+        start_rabbits()
         {:ok, pid}
 
       error ->
@@ -59,5 +62,20 @@ defmodule Spek do
     Enum.each(Telescope.Communities.all_threads_ids(), fn id ->
       Pulse.ThreadSession.start_supervised(thread_id: id)
     end)
+  end
+
+  defp start_rabbits() do
+    n = Application.get_env(:spek, :num_voice_servers, 1) - 1
+
+    IO.puts("about to start_rabbits")
+
+    0..n
+    |> Enum.map(&Spek.Utils.VoiceServerUtils.idx_to_str_id/1)
+    |> Enum.each(fn id ->
+      Pulse.Voice.start_supervised(id)
+      Pulse.OnlineVoice.start_supervised(id)
+    end)
+
+    IO.puts("finished rabbits")
   end
 end

@@ -39,6 +39,7 @@ config :spek, Breeze.OAuth.Github,
       """)
 
 config :spek,
+  num_voice_servers: 1,
   web_url: "http://localhost:3000",
   api_url: "http://localhost:4001",
   env: :dev,

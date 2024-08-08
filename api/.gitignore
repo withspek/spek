@@ -11,6 +11,7 @@
 spek.env
 .env
 env.txt
+/log/
 
 # Where third-party dependencies like ExDoc output generated docs.
 /doc/

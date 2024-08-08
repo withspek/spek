@@ -58,6 +58,12 @@ if config_env() == :prod do
         """)
 
   config :spek,
+    num_voice_servers: 1,
+    rabbit_url:
+      System.get_env("RABBITMQ_URL") ||
+        raise("""
+        environment variable RABBITMQ_URL is missing.
+        """),
     web_url: System.get_env("WEB_URL") || "https://spek.app",
     api_url: System.get_env("API_URL") || "https://api.spek.app",
     access_token_secret:
