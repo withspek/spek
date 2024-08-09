@@ -19,11 +19,6 @@ defmodule Telescope.Schemas.User do
     end
   end
 
-  @derive {Jason.Encoder,
-           only:
-             ~w(id username displayName bio bannerUrl avatarUrl
-             email githubUrl online lastOnline contributions inserted_at updated_at gitlabUrl conf_permissions current_conf_id current_conf)a}
-
   @primary_key {:id, :binary_id, []}
   schema "users" do
     field(:username, :string)
@@ -64,5 +59,25 @@ defmodule Telescope.Schemas.User do
     |> validate_length(:displayName, min: 2, max: 50)
     |> validate_format(:username, ~r/^[\w\.]{4,15}$/)
     |> unique_constraint(:username)
+  end
+
+  defimpl Jason.Encoder do
+    @fields ~w(
+      id username displayName bio bannerUrl avatarUrl
+      email githubUrl online lastOnline contributions
+      inserted_at updated_at gitlabUrl conf_permissions
+      current_conf_id current_conf
+    )a
+
+    defp transform_current_conf(fields = %{current_conf: %Ecto.Association.NotLoaded{}}) do
+      Map.delete(fields, :current_conf)
+    end
+
+    def encode(user, opts) do
+      user
+      |> Map.take(@fields)
+      |> transform_current_conf()
+      |> Jason.Encoder.encode(opts)
+    end
   end
 end
