@@ -12,4 +12,6 @@ defmodule Telescope.Users do
   defdelegate get_by_user_id(user_id), to: Telescope.Access.Users
   defdelegate get_users, to: Telescope.Access.Users
   defdelegate get_by_username(username), to: Telescope.Access.Users
+  defdelegate get_by_id_with_conf_permissions(user_id), to: Telescope.Access.Users
+  defdelegate get_current_conf(user_id), to: Telescope.Access.Users
 end

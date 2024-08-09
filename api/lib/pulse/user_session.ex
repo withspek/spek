@@ -5,7 +5,10 @@ defmodule Pulse.UserSession do
     defstruct user_id: nil,
               pid: nil,
               username: nil,
-              avatar_url: nil
+              avatar_url: nil,
+              current_conf_id: nil,
+              muted: false,
+              deafened: false
   end
 
   #################################################################################
@@ -98,6 +101,32 @@ defmodule Pulse.UserSession do
     {:reply, :ok, %{state | pid: pid}}
   end
 
+  def set_mute(user_id, value) when is_boolean(value), do: cast(user_id, {:set_mute, value})
+
+  defp set_mute_impl(value, state = %{current_conf_id: current_conf_id}) do
+    if current_conf_id do
+      Pulse.ConfSession.mute(current_conf_id, state.user_id, value)
+    end
+
+    {:noreply, %{state | muted: value}}
+  end
+
+  defp set_deafen_impl(value, state = %{current_conf_id: current_conf_id}) do
+    if current_conf_id do
+      Pulse.ConfSession.deafen(current_conf_id, state.user_id, value)
+    end
+
+    {:noreply, %{state | deafened: value}}
+  end
+
+  def set_current_conf_id(user_id, current_conf_id) do
+    set_state(user_id, %{current_conf_id: current_conf_id})
+  end
+
+  def get_current_conf_id(user_id) do
+    get(user_id, :current_conf_id)
+  end
+
   ##############################################################################
   ## MESSAGING API.
 
@@ -113,10 +142,11 @@ defmodule Pulse.UserSession do
   ## ROUTER
 
   def handle_cast({:set, key, value}, state), do: set_impl(key, value, state)
-
+  def handle_cast({:set_mute, value}, state), do: set_mute_impl(value, state)
   def handle_cast({:send_ws, platform, msg}, state), do: send_ws_impl(platform, msg, state)
   def handle_cast({:new_tokens, tokens}, state), do: new_tokens_impl(tokens, state)
   def handle_cast({:set_state, info}, state), do: set_state_impl(info, state)
+  def handle_cast({:set_deafen, value}, state), do: set_deafen_impl(value, state)
 
   def handle_call({:get, key}, reply, state), do: get_impl(key, reply, state)
   def handle_call({:set_active_ws, pid}, reply, state), do: set_active_ws(pid, reply, state)

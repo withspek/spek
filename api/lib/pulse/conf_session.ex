@@ -83,15 +83,338 @@ defmodule Pulse.ConfSession do
     {:noreply, state}
   end
 
+  def redeem_invite(conf_id, user_id), do: call(conf_id, {:redeem_invite, user_id})
+
+  defp redeem_invite_impl(user_id, _reply, state) do
+    reply = if Map.has_key?(state.inviteMap, user_id), do: :ok, else: :error
+
+    {:reply, reply, %{state | inviteMap: Map.delete(state.inviteMap, user_id)}}
+  end
+
+  def speaking_change(conf_id, user_id, value) do
+    cast(conf_id, {:speaking_change, user_id, value})
+  end
+
+  defp speaking_change_impl(user_id, value, state) when is_boolean(value) do
+    muteMap = if value, do: Map.delete(state.mute_map, user_id), else: state.mute_map
+    deafMap = if value, do: Map.delete(state.deaf_map, user_id), else: state.deaf_map
+
+    newActiveSpeakerMap =
+      if value,
+        do: Map.put(state.active_speaker_map, user_id, true),
+        else: Map.delete(state.active_speaker_map, user_id)
+
+    ws_fan(state.users, %{
+      op: "active_speaker_change",
+      confId: state.conf_id,
+      muteMap: muteMap,
+      deafMap: deafMap
+    })
+
+    {:noreply, %State{state | active_speaker_map: newActiveSpeakerMap}}
+  end
+
+  def set_conf_creator_id(conf_id, id) do
+    cast(conf_id, {:set_conf_creator_id, id})
+  end
+
+  defp set_conf_creator_id_impl(id, %State{} = state) do
+    {:noreply, %{state | conf_creator_id: id}}
+  end
+
+  def set_auto_speaker(conf_id, value) when is_boolean(value) do
+    cast(conf_id, {:set_auto_speaker, value})
+  end
+
+  defp set_auto_speaker_impl(value, state) do
+    {:noreply, %{state | auto_speaker: value}}
+  end
+
+  def create_invite(conf_id, user_id, user_info) do
+    cast(conf_id, {:create_invite, user_id, user_info})
+  end
+
+  defp create_invite_impl(user_id, user_info, state) do
+    Pulse.UserSession.send_ws(user_id, nil, %{
+      op: "invitation_to_conf",
+      d: Map.merge(%{confId: state.conf_id}, user_info)
+    })
+  end
+
+  def remove_speaker(conf_id, user_id), do: cast(conf_id, {:remove_speaker, user_id})
+
+  defp remove_speaker_impl(user_id, state) do
+    new_mute_map = Map.delete(state.mute_map, user_id)
+    new_deaf_map = Map.delete(state.deaf_map, user_id)
+
+    Pulse.Voice.send(state.voice_server_id, %{
+      op: "remove_speaker",
+      d: %{confId: state.conf_id, peerId: user_id},
+      uid: user_id
+    })
+
+    ws_fan(state.users, %{
+      op: "speaker_removed",
+      d: %{
+        userId: user_id,
+        confId: state.conf_id,
+        muteMap: new_mute_map,
+        deafMap: new_deaf_map,
+        raiseHandMap: %{}
+      }
+    })
+
+    {:noreply, %State{state | mute_map: new_mute_map, deaf_map: new_deaf_map}}
+  end
+
+  def add_speaker(conf_id, user_id, muted?, deafened?)
+      when is_boolean(muted?) and is_boolean(deafened?) do
+    cast(conf_id, {:add_speaker, user_id, muted?, deafened?})
+  end
+
+  def add_speaker_impl(user_id, muted?, deafened?, state) do
+    new_mute_map =
+      if muted?,
+        do: Map.put(state.mute_map, user_id, true),
+        else: Map.delete(state.deaf_map, user_id)
+
+    new_deaf_map =
+      if deafened?,
+        do: Map.put(state.deaf_map, user_id, true),
+        else: Map.delete(state.deaf_map, user_id)
+
+    Pulse.Voice.send(state.voice_server_id, %{
+      op: "add-speaker",
+      d: %{confId: state.conf_id, peerId: user_id},
+      uid: user_id
+    })
+
+    ws_fan(state.users, %{
+      op: "speaker_added",
+      d: %{
+        userId: user_id,
+        confId: state.conf_id,
+        muteMap: new_mute_map,
+        deafMap: new_deaf_map
+      }
+    })
+
+    {:noreply, %State{state | mute_map: new_mute_map, deaf_map: new_deaf_map}}
+  end
+
+  def join_conf(conf_id, user_id, mute, deaf, opts \\ []) do
+    cast(conf_id, {:join_conf, user_id, mute, deaf, opts})
+  end
+
+  defp join_conf_impl(user_id, mute, deaf, opts, state) do
+    muteMap =
+      case mute do
+        nil -> state.mute_map
+        true -> Map.put(state.mute_map, user_id, true)
+        false -> Map.delete(state.mute_map, user_id)
+      end
+
+    deafMap =
+      case deaf do
+        nil -> state.deaf_map
+        true -> Map.put(state.deaf_map, user_id, true)
+        false -> Map.delete(state.deaf_map, user_id)
+      end
+
+    unless opts[:no_fan] do
+      ws_fan(state.users, %{
+        op: "new_user_join_conf",
+        d: %{
+          user: Telescope.Users.get_by_id_with_conf_permissions(user_id),
+          muteMap: muteMap,
+          deafMap: deafMap,
+          confId: state.conf_id
+        }
+      })
+    end
+
+    {:noreply,
+     %{
+       state
+       | users: [
+           # maybe use a set
+           user_id
+           | Enum.filter(state.users, fn uid -> uid != user_id end)
+         ],
+         muteMap: muteMap,
+         deafMap: deafMap
+     }}
+  end
+
+  def mute(conf_id, user_id, value), do: cast(conf_id, {:mute, user_id, value})
+
+  defp mute_impl(user_id, value, state) do
+    changed = value != Map.has_key?(state.mute_map, user_id)
+
+    if changed do
+      ws_fan(Enum.filter(state.users, &(&1 != user_id)), %{
+        op: "mute_changed",
+        d: %{userId: user_id, value: value, confId: state.conf_id}
+      })
+    end
+
+    {:noreply,
+     %{
+       state
+       | muteMap:
+           if(not value,
+             do: Map.delete(state.mute_map, user_id),
+             else: Map.put(state.mute_map, user_id, true)
+           ),
+         activeSpeakerMap:
+           if(value,
+             do: Map.delete(state.active_speaker_map, user_id),
+             else: state.active_speaker_map
+           ),
+         deafMap:
+           if(value,
+             do: Map.delete(state.deaf_map, user_id),
+             else: state.deaf_map
+           )
+     }}
+  end
+
+  def deafen(conf_id, user_id, value), do: cast(conf_id, {:deafen, user_id, value})
+
+  defp deafen_impl(user_id, value, state) do
+    changed = value != Map.has_key?(state.deaf_map, user_id)
+
+    if changed do
+      ws_fan(Enum.filter(state.users, &(&1 != user_id)), %{
+        op: "deafen_changed",
+        d: %{userId: user_id, value: value, confId: state.conf_id}
+      })
+    end
+
+    {:noreply,
+     %{
+       state
+       | deafMap:
+           if(not value,
+             do: Map.delete(state.deaf_map, user_id),
+             else: Map.put(state.deaf_map, user_id, true)
+           ),
+         activeSpeakerMap:
+           if(value,
+             do: Map.delete(state.active_speaker_map, user_id),
+             else: state.active_speaker_map
+           ),
+         muteMap:
+           if(value,
+             do: Map.delete(state.mute_map, user_id),
+             else: state.mute_map
+           )
+     }}
+  end
+
+  def destroy(conf_id, user_id), do: cast(conf_id, {:destroy, user_id})
+
+  defp destroy_impl(user_id, state) do
+    users = Enum.filter(state.users, fn uid -> uid != user_id end)
+
+    ws_fan(users, %{
+      op: "conf_destroyed",
+      d: %{confId: state.conf_id}
+    })
+
+    {:stop, :normal, state}
+  end
+
+  def leave_conf(conf_id, user_id), do: cast(conf_id, {:leave_conf, user_id})
+
+  defp leave_conf_impl(user_id, state) do
+    users = Enum.reject(state.users, &(&1 == user_id))
+
+    Pulse.Voice.send(state.voice_server_id, %{
+      op: "close-peer",
+      uid: user_id,
+      d: %{peerId: user_id, confId: state.conf_id}
+    })
+
+    ws_fan(users, %{
+      op: "user_left_conf",
+      d: %{userId: user_id, confId: state.conf_id}
+    })
+
+    new_state = %{
+      state
+      | users: users,
+        mute_map: Map.delete(state.mute_map, user_id),
+        deaf_map: Map.delete(state.deaf_map, user_id)
+    }
+
+    # terminate conf if it's empty
+    case new_state.users do
+      [] ->
+        {:stop, :normal, new_state}
+
+      _ ->
+        {:noreply, new_state}
+    end
+  end
+
   ## ROUTER
 
   def handle_call({:get, key}, reply, state), do: get_impl(key, reply, state)
 
   def handle_call(:get_maps, reply, state), do: get_maps_impl(reply, state)
 
+  def handle_call({:redeem_invite, user_id}, reply, state) do
+    redeem_invite_impl(user_id, reply, state)
+  end
+
   def handle_cast({:set, key, value}, state), do: set_impl(key, value, state)
 
   def handle_cast({:broadcast_ws, msg}, state) do
     broadcast_ws_impl(msg, state)
+  end
+
+  def handle_cast({:speaking_change, user_id, value}, state) do
+    speaking_change_impl(user_id, value, state)
+  end
+
+  def handle_cast({:set_conf_creator_id, id}, state) do
+    set_conf_creator_id_impl(id, state)
+  end
+
+  def handle_cast({:set_auto_speaker, value}, state) do
+    set_auto_speaker_impl(value, state)
+  end
+
+  def handle_cast({:create_invite, user_id, user_info}, state) do
+    create_invite_impl(user_id, user_info, state)
+  end
+
+  def handle_cast({:remove_speaker, user_id}, state) do
+    remove_speaker_impl(user_id, state)
+  end
+
+  def handle_cast({:add_speaker, user_id, muted?, deafened?}, state) do
+    add_speaker_impl(user_id, muted?, deafened?, state)
+  end
+
+  def handle_cast({:join_conf, user_id, mute, deaf, opts}, state) do
+    join_conf_impl(user_id, mute, deaf, opts, state)
+  end
+
+  def handle_cast({:mute, user_id, value}, state) do
+    mute_impl(user_id, value, state)
+  end
+
+  def handle_cast({:deafen, user_id, value}, state) do
+    deafen_impl(user_id, value, state)
+  end
+
+  def handle_cast({:destroy, user_id}, state) do
+    destroy_impl(user_id, state)
+  end
+
+  def handle_cast({:leave_conf, user_id}, state) do
+    leave_conf_impl(user_id, state)
   end
 end
