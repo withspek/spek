@@ -101,7 +101,7 @@ const UserCommunitiesList: React.FC<{ user: User }> = () => {
   }
 
   return (
-    <div className="flex items-end flex-col w-full">
+    <div className="flex items-end  gap-3 flex-col w-full">
       {data?.communities?.map((c) => (
         <Tooltip content={c.name} key={c.id} placement="right">
           <Link href={`/c/${c.slug}`}>
