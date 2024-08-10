@@ -74,20 +74,21 @@ const config: Config = {
         lg: "64.0625rem",
         xl: "75rem",
       },
-    },
-    keyframes: {
-      "fade-in-up": {
-        from: { opacity: "0", transform: "translateY(10px)" },
-        to: { opacity: "1", transform: "none" },
+      keyframes: {
+        "fade-in-up": {
+          from: { opacity: "0", transform: "translateY(10px)" },
+          to: { opacity: "1", transform: "none" },
+        },
+        spinning: {
+          "100%": { transform: "rotate(360deg)" },
+        },
       },
-      spinning: {
-        "100%": { transform: "rotate(360deg)" },
+      animation: {
+        "fade-in-up":
+          "fade-in-up 600ms var(--animation-delay, 0ms) cubic-bezier(.21,1.02,.73,1) forwards",
+        "fade-in-bottom":
+          "fade-in-bottom cubic-bezier(.21,1.02,.73,1) forwards",
       },
-    },
-    animation: {
-      "fade-in-up":
-        "fade-in-up 600ms var(--animation-delay, 0ms) cubic-bezier(.21,1.02,.73,1) forwards",
-      "fade-in-bottom": "fade-in-bottom cubic-bezier(.21,1.02,.73,1) forwards",
     },
   },
   plugins: [require("@tailwindcss/typography"), require("tailwindcss-radix")],
