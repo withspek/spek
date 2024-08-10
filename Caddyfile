@@ -1,11 +1,5 @@
 {$DOMAIN} { 
     # Reverse proxy for API service
-    reverse_proxy api:4001
-}
-
-
-{$DOMAIN}:8080 { 
-    # Reverse proxy for Adminer database service
     reverse_proxy adminer:8080
 }
 
