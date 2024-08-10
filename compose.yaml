@@ -36,6 +36,15 @@ services:
       - postgres-data:/var/lib/postgresql/data
     ports:
       - 5432:5432
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    labels:
+      spek.description: "Adminer Database"
+    depends_on:
+      - postgres
 
 volumes:
   postgres-data:

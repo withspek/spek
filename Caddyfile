@@ -4,6 +4,11 @@
 }
 
 
+{$DOMAIN}:8080 { 
+    # Reverse proxy for Adminer database service
+    reverse_proxy adminer:8080
+}
+
 {$DOMAIN}:80 {
     # redirect to https
     redir {$DOMAIN}{uri}
