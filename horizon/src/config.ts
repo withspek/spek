@@ -5,11 +5,6 @@ import {
 } from "mediasoup/node/lib/types";
 
 export const config = {
-  // http server ip, port, and peer timeout constant
-  httpIp: "0.0.0.0",
-  httpPort: 3000,
-  httpPeerStale: 360000,
-
   mediasoup: {
     worker: {
       logLevel: "debug",

@@ -5,9 +5,9 @@ import { Providers } from "./providers";
 import { ProgressBar } from "@/components/ProgressBar";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://spek.vercel.app"),
-  title: { default: "Spek - Powerful commmunities", template: "%s ║ Spek" },
-  description: "Simple public communities",
+  metadataBase: new URL("https://withspek.netlify.app"),
+  title: { default: "Spek - Powerful commmunities", template: "%s / Spek" },
+  description: "Real-time developer communities open to the public internet.",
 };
 
 export default function RootLayout({
