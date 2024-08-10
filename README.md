@@ -1,17 +1,17 @@
-<a href="https://dogehouse.tv"><p align="center">
-<img height=100 src="https://raw.githubusercontent.com/irere123/spek/master/.assets/logo.svg"/>
+<a href="https://withspek.netlify.app"><p align="center">
+<img height=100 src="https://raw.githubusercontent.com/withspek/spek/staging/.assets/logo.svg"/>
 
 </p></a>
 <p align="center">
-  <strong>Real-time simple public communities</strong>
+  <strong>Real-time developer communities open to the public internet.</strong>
 </p>
 
 <h3 align="center">
-  <a href="https://github.com/irere123/spek/blob/master/CONTRIBUTING.md">Contribute</a>
+  <a href="https://github.com/withspek/spek/blob/stating/CONTRIBUTING.md">Contribute</a>
   <span> · </span>
-  <a href="https://spek.vercel.app/c/spek">Community</a>
+  <a href="https://withspek.netlify.app/c/spek">Community</a>
   <span> · </span>
-  <a href="https://github.com/irere123/spek">Documentation</a>
+  <a href="https://github.com/withspek/spek/README.md">Documentation</a>
 </h3>
 
 ---
@@ -24,7 +24,7 @@ I’ve been in large communities on platforms like Discord and Slack for years, 
 - You want to talk about this one topic somebody mentioned five hours ago but the message is now 15 pages up and nobody knows what you’re talking about anymore. Don’t even get me started on topics from days or even, gasp, weeks ago!
 - This is amplified by the fact that searching and linking to old messages is often a pain. Many times valuable and interesting conversations are lost forever, or the knowledge is trapped in the tool itself, never to be discovered from the outside.
 
-Based on my own experience, and all those groups I have approached, we approached the problem hands-on and built [Spek](https://spek.vercel.app) diffently, tailor made for the purpose:
+Based on my own experience, and all those groups I have approached the problem hands-on and built [Spek](https://withspek.netlify.app) diffently, tailor made for the purpose:
 
 - All conversations in communities which are public are search engine indexable which makes it so all the valuable information is not lost behind the walls of the platform but accessible to the whole internet to use.
 
@@ -38,28 +38,28 @@ Based on my own experience, and all those groups I have approached, we approache
 
 ## Structure
 
-| Codebase                  |     Description     |
-| :------------------------ | :-----------------: |
-| [api](api)                |     Elixir API      |
-| [web](apps/web)           |  Next.js frontend   |
-| [blog](apps/blog)         |    Astro.js blog    |
-| [client](packages/client) | Internal API Client |
+| Codebase                  |        Description         |
+| :------------------------ | :------------------------: |
+| [api](api)                |         Elixir API         |
+| [web](apps/web)           |      Next.js frontend      |
+| [horizon](horizon)        | Mediasoup Voice SFU Server |
+| [client](packages/client) |    Internal API Client     |
 
 ## Branches
 
-- dev -> pr this branch for everything
-- master -> don't touch, this is what's running in prod
+- prod -> 🌐 solid foundation on AWS of spek.
+- staging -> 🦺 make pull requests on this branch.
 
 ## Contributions
 
 Spek is open to contributions, but I recommend creating an issue or replying in a comment to let me know what you are working on first that way we don't overwrite each other.
 
-Please read [CONTRIBUTING.md](https://github.com/irere123/spek/blob/master/CONTRIBUTING.md) for details on this project.
+Please read [CONTRIBUTING.md](https://github.com/withspek/spek/blob/staging/CONTRIBUTING.md) for details on this project.
 
 ## Code of Conduct
 
-Please read [CODE_OF_CONDUCT.md](https://github.com/irere123/spek/blob/master/CODE_OF_CONDUCT.md) for details on our code of conduct.
+Please read [CODE_OF_CONDUCT.md](https://github.com/withspek/spek/blob/staging/CODE_OF_CONDUCT.md) for details on our code of conduct.
 
 ## How to run locally
 
-Check <a href="https://github.com/irere123/spek/blob/master/CONTRIBUTING.md#quickstart-local-frontend-development">here</a> on how to run locally</a>
+Check <a href="https://github.com/withspek/spek/blob/staging/CONTRIBUTING.md#quickstart-local-frontend-development">here</a> on how to run locally</a>
