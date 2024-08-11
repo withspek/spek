@@ -18,14 +18,14 @@ export async function GET(req: NextRequest) {
           gap: 30,
           padding: 16,
           justifyContent: "center",
-          backgroundColor: "var(--color-primary-900)",
+          backgroundColor: "#09090b",
         }}
       >
         <img
           src={creatorAvatar!}
           alt={threadTitle!}
-          width={40}
-          height={40}
+          width={96}
+          height={96}
           style={{ borderRadius: "100%" }}
         />
         <div
@@ -33,10 +33,10 @@ export async function GET(req: NextRequest) {
             marginLeft: 190,
             marginRight: 190,
             display: "flex",
-            fontSize: 52,
+            fontSize: 120,
             letterSpacing: "-0.05em",
             fontStyle: "normal",
-            color: "var(--color-primary-200)",
+            color: "#e4e4e7",
             lineHeight: "120px",
             whiteSpace: "pre-wrap",
           }}
