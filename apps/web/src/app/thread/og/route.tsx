@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
           alt={threadTitle!}
           width={96}
           height={96}
-          style={{ borderRadius: "100%" }}
+          style={{ borderRadius: "100%", marginLeft: 190, marginRight: 190 }}
         />
         <div
           style={{
