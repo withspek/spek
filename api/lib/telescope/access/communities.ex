@@ -117,11 +117,10 @@ defmodule Telescope.Access.Communities do
         on: u.id == c.userId,
         select: %User.Preview{
           avatarUrl: u.avatarUrl,
-          online: u.online,
           displayName: u.displayName,
+          username: u.username,
           id: u.id,
-          bio: u.bio,
-          lastOnline: u.lastOnline
+          bio: u.bio
         },
         where: c.communityId == ^communityId
       )
