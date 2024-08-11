@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Overview } from "@/components/communitySettings/Overview";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 import { Header } from "@/components/communitySettings/Header";
+import { CenterLoader } from "@/components/CenterLoader";
 
 interface PageControllerProps {
   slug: string;
@@ -17,7 +18,7 @@ export const PageController: React.FC<PageControllerProps> = ({ slug }) => {
   ]);
 
   if (isLoading || !data) {
-    return <div>loading...</div>;
+    return <CenterLoader />;
   }
 
   if (!data.community.isAdmin) {
@@ -26,7 +27,7 @@ export const PageController: React.FC<PageControllerProps> = ({ slug }) => {
 
   return (
     <div>
-      <Header heading="Overview" />
+      <Header heading="Overview" communitySlug={data.community.slug} />
       <Overview
         channels={data.channels}
         community={data.community}

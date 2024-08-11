@@ -8,7 +8,7 @@ import { Button } from "@/ui/button";
 import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 
 interface CreateChannelModalProps {
-  communityId: string;
+  communityId: string | undefined;
   open: boolean;
   onRequestClose: () => void;
 }
@@ -36,14 +36,16 @@ export const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
         <Formik<InitialFormValues>
           initialValues={{ description: "", name: "" }}
           onSubmit={async (values, { setFieldError }) => {
-            const resp = await mutateAsync([
-              { communityId: communityId, ...values },
-            ]);
+            if (communityId) {
+              const resp = await mutateAsync([
+                { communityId: communityId, ...values },
+              ]);
 
-            if (!resp.error) {
-              push(`/c/${resp.channel.community.slug}/${resp.channel.id}`);
-            } else {
-              setFieldError("name", resp.error);
+              if (!resp.error) {
+                push(`/c/${resp.channel.community.slug}/${resp.channel.id}`);
+              } else {
+                setFieldError("name", resp.error);
+              }
             }
           }}
         >

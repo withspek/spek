@@ -38,12 +38,6 @@ export const CommunitySettingsLayout: React.FC<
             >
               <li>Channels</li>
             </Link>
-            <Link
-              className={`${pathname == `/c/${communitySlug}/settings/members` ? "px-3 py-1 bg-primary-800 rounded-md" : ""}`}
-              href={`/c/${communitySlug}/settings/members`}
-            >
-              <li>Members</li>
-            </Link>
           </ul>
         </div>
       </div>
