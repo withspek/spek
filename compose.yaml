@@ -1,5 +1,3 @@
-version: "3.8"
-
 # On local the containers will be built locally and tagged, able to be published.
 # On prod the compose file will pull from the docker registry
 services:
