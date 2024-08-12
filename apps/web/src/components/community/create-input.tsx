@@ -31,7 +31,7 @@ export const CreateInput: React.FC<CreateInputProps> = ({
       }}
     >
       {({ handleChange, handleSubmit, values }) => (
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} className="flex-1">
           <Input
             placeholder="Start a new conversation"
             name="name"

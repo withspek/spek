@@ -19,12 +19,9 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
     useTypeSafeMutation("leaveCommunity");
   const updateQuery = useTypeSafeUpdateQuery();
 
-  const isTeamMember =
-    community.isAdmin || community.isMember || community.isMod;
-
   return (
     <>
-      {isTeamMember ? (
+      {community.isMember ? (
         <>
           {!community.isAdmin && (
             <Button
