@@ -88,14 +88,16 @@ defmodule Breeze.SocketHandler do
     {:reply, construct_socket_msg(state.encoding, state.compression, "pong"), state}
   end
 
-  def websocket_handle({:text, json}, state) do
-    with {:ok, json} <- Poison.decode(json) do
-      case json["op"] do
+  def websocket_handle({:text, json_command}, state) do
+    with {:ok, message_map} <- Jason.decode(json_command),
+         # temporary trap mediasoup direct commands
+         %{"op" => <<not_at>> <> _} when not_at != ?@ <- message_map do
+      case message_map["op"] do
         "auth" ->
           %{
             "accessToken" => accessToken,
             "refreshToken" => refreshToken
-          } = json["d"]
+          } = message_map["d"]
 
           case Spek.Utils.TokenUtils.tokens_to_user_id(accessToken, refreshToken) do
             {nil, nil} ->
@@ -148,7 +150,7 @@ defmodule Breeze.SocketHandler do
         _ ->
           if not is_nil(state.user_id) do
             try do
-              case json do
+              case message_map do
                 %{"op" => _op, "d" => _d, "fetchId" => fetch_id} ->
                   {:reply,
                    prepare_socket_msg(
@@ -160,8 +162,8 @@ defmodule Breeze.SocketHandler do
                      state
                    ), state}
 
-                %{"op" => _op, "d" => _d} ->
-                  {:ok, state}
+                %{"op" => op, "d" => d} ->
+                  handler(op, d, state)
               end
             rescue
               e ->
@@ -170,7 +172,7 @@ defmodule Breeze.SocketHandler do
                 IO.inspect(e)
                 Logger.error(err_msg)
                 Logger.error(Exception.format_stacktrace())
-                op = Map.get(json, "op", "")
+                op = Map.get(message_map, "op", "")
                 IO.puts("error for op: " <> op)
 
                 {:reply,
@@ -184,7 +186,7 @@ defmodule Breeze.SocketHandler do
                 IO.puts(err_msg)
                 Logger.error(Exception.format_stacktrace())
 
-                op = Map.get(json, "op", "")
+                op = Map.get(message_map, "op", "")
                 IO.puts("error for op: " <> op)
 
                 {:reply,
@@ -197,6 +199,56 @@ defmodule Breeze.SocketHandler do
             {:reply, {:close, 4004, "not_authenticated"}, state}
           end
       end
+    end
+  end
+
+  def handler("audio_autoplay_error", _data, state) do
+    Pulse.UserSession.send_ws(
+      state.user_id,
+      nil,
+      %{
+        op: "error",
+        d: "browser can't autoplay audio the first time, go press play audio in your browser"
+      }
+    )
+
+    {:ok, state}
+  end
+
+  def handler(op, data, state) do
+    with {:ok, conf_id} <- Telescope.Users.tuple_get_current_conf_id(state.user_id) do
+      voice_server_id = Pulse.ConfSession.get(conf_id, :voice_server_id)
+
+      d =
+        if String.first(op) == "@" do
+          Map.merge(data, %{
+            peerId: state.user_id,
+            confId: conf_id
+          })
+        else
+          data
+        end
+
+      Pulse.Voice.send(voice_server_id, %{
+        op: op,
+        d: d,
+        uid: state.user_id
+      })
+
+      {:ok, state}
+    else
+      x ->
+        IO.puts("you should never see this general rabbbitmq handler in socker_handler")
+        IO.inspect(x)
+
+        {:reply,
+         prepare_socket_msg(
+           %{
+             op: "error",
+             d: "you should never see this, if you do, try refreshing"
+           },
+           state
+         ), state}
     end
   end
 
