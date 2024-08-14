@@ -10,6 +10,11 @@ import { SettingsIcon } from "@/icons";
 import { useRouter } from "next/navigation";
 import { ChannelsList } from "@/components/community/ChannelsList";
 import { CenterLoader } from "@/components/CenterLoader";
+import { useState } from "react";
+import { Button } from "@spek/ui";
+import { CreateRoomModal } from "@/components/room/CreateRoomModal";
+import { CreateInput } from "@/components/community/create-input";
+import { RoomsFeed } from "@/components/community/rooms-feed";
 
 interface Props {
   slug: string;
@@ -18,9 +23,14 @@ interface Props {
 export const CommunityPageController: React.FC<Props> = ({ slug }: Props) => {
   const router = useRouter();
   const { user } = useConn();
+  const [createRoomModal, setCreateRoomModal] = useState(false);
   const { data, isLoading } = useTypeSafeQuery(["getCommunity", slug], {}, [
     slug,
   ]);
+
+  const handleCreateRoomModal = () => {
+    setCreateRoomModal(!createRoomModal);
+  };
 
   if (isLoading || !data) {
     return <CenterLoader />;
@@ -48,22 +58,40 @@ export const CommunityPageController: React.FC<Props> = ({ slug }: Props) => {
       </div>
       <div>
         <Tabs>
-          <TabsTitles titles={["Threads", "Members", "Channels"]} />
+          <TabsTitles titles={["Threads", "Rooms", "Channels", "Members"]} />
           <TabsContents
             items={[
               {
                 content: (
-                  <ThreadsFeed
-                    communityId={data?.community.id!}
-                    isAdmin={data.community.isAdmin}
-                    isMember={data.community.isMember}
-                    currentUser={user}
-                    channel={channel}
-                  />
+                  <div className="flex flex-col gap-4 mt-2">
+                    {user && data.community.isMember ? (
+                      <div className="flex gap-3">
+                        <CreateInput
+                          channelId={channel?.id!}
+                          communityId={data.community.id}
+                        />
+                      </div>
+                    ) : null}
+                    <ThreadsFeed channelId={channel?.id!} />
+                  </div>
                 ),
               },
               {
-                content: <MembersList communityId={data?.community.id!} />,
+                content: (
+                  <>
+                    <Button type="button" onClick={handleCreateRoomModal}>
+                      New room
+                    </Button>
+                    <RoomsFeed communityId={data.community.id} />
+                    {createRoomModal && (
+                      <CreateRoomModal
+                        onOpenChange={handleCreateRoomModal}
+                        open={createRoomModal}
+                        communityId={data.community.id}
+                      />
+                    )}
+                  </>
+                ),
               },
               {
                 content: (
@@ -73,6 +101,9 @@ export const CommunityPageController: React.FC<Props> = ({ slug }: Props) => {
                     community={data.community}
                   />
                 ),
+              },
+              {
+                content: <MembersList communityId={data?.community.id!} />,
               },
             ]}
           />

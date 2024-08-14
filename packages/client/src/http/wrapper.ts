@@ -10,9 +10,10 @@ import {
   Thread,
   TopThread,
   User,
+  Conf,
 } from "../entities";
 import { Connection } from "./raw";
-import { GetTopCommunitiesResponse } from "./responses";
+import { CreateConfRespone, GetTopCommunitiesResponse } from "./responses";
 
 export const wrap = (connection: Connection) => ({
   query: {
@@ -79,6 +80,15 @@ export const wrap = (connection: Connection) => ({
         `/api/v1/lodges/${lodgeId}/messages?cursor=${cursor}`,
         "GET"
       ),
+
+    getTopPublicConfs: (
+      communityId: string,
+      cursor: number = 0
+    ): Promise<{
+      confs: Conf[];
+      nextCursor: number | null;
+    }> =>
+      connection.send(`/api/v1/confs/${communityId}?cursor=${cursor}`, "GET"),
   },
   mutation: {
     updateProfile: (data: {
@@ -185,5 +195,12 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/api/v1/lodges/${lodgeId}/leave`, "POST", {
         userId,
       }),
+
+    createConf: (data: {
+      name: string;
+      description: string;
+      communityId: string;
+    }): Promise<CreateConfRespone> =>
+      connection.send(`/api/v1/confs/create`, "POST", { ...data }),
   },
 });

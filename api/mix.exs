@@ -42,6 +42,7 @@ defmodule Spek.MixProject do
       {:prometheus_ex, "~> 3.0"},
       {:prometheus_plugs, "~> 1.1.1"},
       {:finch, "~> 0.18"},
+      {:logger_backends, "~> 1.0"},
       # style ENFORCEMENT
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       # test helpers

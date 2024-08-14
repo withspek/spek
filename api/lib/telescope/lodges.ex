@@ -1,6 +1,6 @@
 defmodule Telescope.Lodges do
   @moduledoc """
-  Empty context module for Rooms
+  Empty context module for Lodges
   """
 
   # ACCESS functions

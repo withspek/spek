@@ -88,7 +88,7 @@ defmodule Pulse.ConfSession do
   defp redeem_invite_impl(user_id, _reply, state) do
     reply = if Map.has_key?(state.inviteMap, user_id), do: :ok, else: :error
 
-    {:reply, reply, %{state | inviteMap: Map.delete(state.inviteMap, user_id)}}
+    {:reply, reply, %{state | invite_map: Map.delete(state.inviteMap, user_id)}}
   end
 
   def speaking_change(conf_id, user_id, value) do
@@ -241,8 +241,8 @@ defmodule Pulse.ConfSession do
            user_id
            | Enum.filter(state.users, fn uid -> uid != user_id end)
          ],
-         muteMap: muteMap,
-         deafMap: deafMap
+         mute_map: muteMap,
+         deaf_map: deafMap
      }}
   end
 
@@ -261,17 +261,17 @@ defmodule Pulse.ConfSession do
     {:noreply,
      %{
        state
-       | muteMap:
+       | mute_map:
            if(not value,
              do: Map.delete(state.mute_map, user_id),
              else: Map.put(state.mute_map, user_id, true)
            ),
-         activeSpeakerMap:
+         active_speaker_map:
            if(value,
              do: Map.delete(state.active_speaker_map, user_id),
              else: state.active_speaker_map
            ),
-         deafMap:
+         deaf_map:
            if(value,
              do: Map.delete(state.deaf_map, user_id),
              else: state.deaf_map
@@ -294,17 +294,17 @@ defmodule Pulse.ConfSession do
     {:noreply,
      %{
        state
-       | deafMap:
+       | deaf_map:
            if(not value,
              do: Map.delete(state.deaf_map, user_id),
              else: Map.put(state.deaf_map, user_id, true)
            ),
-         activeSpeakerMap:
+         active_speaker_map:
            if(value,
              do: Map.delete(state.active_speaker_map, user_id),
              else: state.active_speaker_map
            ),
-         muteMap:
+         mute_map:
            if(value,
              do: Map.delete(state.mute_map, user_id),
              else: state.mute_map

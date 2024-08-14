@@ -11,6 +11,7 @@ defmodule Spek do
       Pulse.Supervisors.UserSession,
       Pulse.Supervisors.ThreadSession,
       Pulse.Supervisors.LodgeSession,
+      Pulse.Supervisors.ConfSession,
       Pulse.Supervisors.OnliceVoice,
       Pulse.Supervisors.Voice,
       {Telescope.Repo, []},

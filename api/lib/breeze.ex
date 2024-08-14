@@ -32,6 +32,7 @@ defmodule Breeze do
   forward("/api/v1/threads", to: Routes.V1.Threads)
   forward("/api/v1/admins", to: Routes.V1.Metrics)
   forward("/api/v1/lodges", to: Routes.V1.Lodges)
+  forward("/api/v1/confs", to: Routes.V1.Confs)
 
   forward("/misc", to: Routes.Misc)
 

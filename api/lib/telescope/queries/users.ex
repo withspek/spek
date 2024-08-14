@@ -59,4 +59,12 @@ defmodule Telescope.Queries.Users do
   def filter_by_gitlab_ids(query, gitlab_ids) do
     where(query, [u], u.gitlabId in ^gitlab_ids)
   end
+
+  def update_set_current_conf_nil(query) do
+    update(query,
+      set: [
+        current_conf_id: nil
+      ]
+    )
+  end
 end

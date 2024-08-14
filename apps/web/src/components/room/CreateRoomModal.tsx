@@ -1,16 +1,22 @@
-import { InputField } from "@/ui/form-field";
 import {
   Button,
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
+  showToast,
 } from "@spek/ui";
-import { Form, Formik } from "formik";
+import { Formik } from "formik";
+import { useRouter } from "next/navigation";
+import * as Yup from "yup";
+
+import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
+import { InputField } from "@/ui/form-field";
 
 interface CreateRoomModalProps {
   open: boolean;
   onOpenChange: () => void;
+  communityId: string;
 }
 
 interface InitialFormValues {
@@ -18,10 +24,23 @@ interface InitialFormValues {
   description: string;
 }
 
+const createSchema = Yup.object({
+  name: Yup.string().required("Required"),
+  description: Yup.string().required("Required"),
+});
+
 export const CreateRoomModal: React.FC<CreateRoomModalProps> = ({
   open,
   onOpenChange,
+  communityId,
 }) => {
+  const { push } = useRouter();
+  const { mutateAsync, isLoading } = useTypeSafeMutation("createConf", {
+    onSuccess: () => {
+      showToast("Room created successfuly", "success");
+    },
+  });
+
   return (
     <Dialog onOpenChange={onOpenChange} open={open}>
       <DialogContent>
@@ -31,12 +50,20 @@ export const CreateRoomModal: React.FC<CreateRoomModalProps> = ({
         />
         <Formik<InitialFormValues>
           initialValues={{ description: "", name: "" }}
-          onSubmit={(values) => {
-            console.log(values);
+          validationSchema={createSchema}
+          onSubmit={async (values) => {
+            const resp = await mutateAsync([{ ...values, communityId }]);
+
+            if (resp.error) {
+              showToast(resp.error, "error");
+            } else {
+              push(`/conf/${resp.conf?.id}`);
+              onOpenChange();
+            }
           }}
         >
           {({ values, handleSubmit, handleChange }) => (
-            <Form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <>
               <InputField
                 value={values.name}
                 onChange={handleChange}
@@ -53,15 +80,21 @@ export const CreateRoomModal: React.FC<CreateRoomModalProps> = ({
                 name="description"
                 label="Description"
               />
-            </Form>
+              <DialogFooter>
+                <Button color="minimal" onClick={onOpenChange}>
+                  Cancel
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => handleSubmit()}
+                  loading={isLoading}
+                >
+                  Create
+                </Button>
+              </DialogFooter>
+            </>
           )}
         </Formik>
-        <DialogFooter>
-          <Button color="minimal" onClick={onOpenChange}>
-            Cancel
-          </Button>
-          <Button>Create</Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

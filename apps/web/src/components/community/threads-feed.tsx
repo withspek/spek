@@ -1,67 +1,37 @@
+import Link from "next/link";
 import { format } from "date-fns";
 
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
-import { Channel, User } from "@spek/client";
-import { CreateInput } from "./create-input";
 import { AvatarGroup } from "@/ui/avatar-group";
-import { useRouter } from "next/navigation";
 import { useTypeSafePrefetch } from "@/hooks/useTypeSafePrefetch";
 import { CenterLoader } from "../CenterLoader";
-import { Button } from "@spek/ui";
-import { useState } from "react";
-import { CreateRoomModal } from "../room/CreateRoomModal";
 
 interface ThreadsFeedProps {
-  communityId: string;
-  isMember: boolean;
-  isAdmin: boolean;
-  currentUser: User;
-  channel: Channel | undefined;
+  channelId: string;
 }
 
-export const ThreadsFeed: React.FC<ThreadsFeedProps> = ({
-  communityId,
-  isMember,
-  channel,
-  currentUser,
-}) => {
-  const router = useRouter();
-  const [createRoomModal, setCreateRoomModal] = useState(false);
+export const ThreadsFeed: React.FC<ThreadsFeedProps> = ({ channelId }) => {
   const { data, isLoading } = useTypeSafeQuery(
-    ["getChannelThreads", channel?.id!],
+    ["getChannelThreads", channelId],
     { refetchOnMount: false },
-    [channel?.id!]
+    [channelId]
   );
   const prefetch = useTypeSafePrefetch();
-
-  const handleCreateRoomModal = () => {
-    setCreateRoomModal(!createRoomModal);
-  };
 
   if (isLoading) {
     return <CenterLoader />;
   }
 
   return (
-    <div className="flex flex-col gap-4 mt-2">
-      {currentUser && isMember ? (
-        // TODO: Lift this component up in the tree
-        <div className="flex gap-3">
-          <CreateInput channelId={channel?.id!} communityId={communityId} />
-          <Button type="button" onClick={handleCreateRoomModal}>
-            New room
-          </Button>
-        </div>
-      ) : null}
+    <>
       {data?.map((thread) => {
         const avatarSrc = thread.peoplePreviewList.map((p) => p.avatarUrl);
         return (
-          <div
-            className="cursor-pointer"
+          <Link
+            href={`/thread/${thread.id}`}
             key={thread.id}
             onClick={() => {
               prefetch(["joinThreadAndGetInfo", thread.id], [thread.id]);
-              router.push(`/thread/${thread.id}`);
             }}
           >
             <div className="px-3 py-5 rounded-lg">
@@ -73,15 +43,9 @@ export const ThreadsFeed: React.FC<ThreadsFeedProps> = ({
                 {format(thread.inserted_at, "MMMM d, hh:mm a")}
               </p>
             </div>
-          </div>
+          </Link>
         );
       })}
-      {createRoomModal && (
-        <CreateRoomModal
-          onOpenChange={handleCreateRoomModal}
-          open={createRoomModal}
-        />
-      )}
-    </div>
+    </>
   );
 };

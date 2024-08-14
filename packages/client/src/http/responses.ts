@@ -1,4 +1,4 @@
-import { Channel, Community } from "../entities";
+import { Channel, Community, Conf } from "../entities";
 
 export interface CreateCommunitiesResponse {
   channels: Channel;
@@ -7,4 +7,9 @@ export interface CreateCommunitiesResponse {
 
 export interface GetTopCommunitiesResponse {
   communities: Community[];
+}
+
+export interface CreateConfRespone {
+  conf?: Conf;
+  error?: string;
 }

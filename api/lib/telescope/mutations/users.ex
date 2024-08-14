@@ -4,6 +4,7 @@ defmodule Telescope.Mutations.Users do
   alias Telescope.Repo
   alias Telescope.Schemas.User
   alias Telescope.Queries.Users, as: Query
+  alias Telescope.ConfPermissions
 
   def update_profile(user_id, data) do
     user_id
@@ -105,5 +106,47 @@ defmodule Telescope.Mutations.Users do
          returning: true
        )}
     end
+  end
+
+  def set_current_conf(user_id, conf_id, opts \\ []) do
+    conf_permissions =
+      case opts[:can_speak] do
+        true ->
+          case ConfPermissions.set_speaker(user_id, conf_id, true, true) do
+            {:ok, x} -> x
+            _ -> nil
+          end
+
+        _ ->
+          ConfPermissions.get_conf_perms(user_id, conf_id)
+      end
+
+    Pulse.UserSession.set_current_conf_id(user_id, conf_id)
+
+    q =
+      from(u in User,
+        where: u.id == ^user_id,
+        update: [
+          set: [
+            current_conf_id: ^conf_id
+          ]
+        ]
+      )
+
+    q = if opts[:returning], do: select(q, [u], u), else: q
+
+    case Repo.update_all(q, []) do
+      {_, [user]} -> %{user | conf_permissions: conf_permissions}
+      _ -> nil
+    end
+  end
+
+  def set_user_left_current_conf(user_id) do
+    Pulse.UserSession.set_current_conf_id(user_id, nil)
+
+    Query.start()
+    |> Query.filter_by_id(user_id)
+    |> Query.update_set_current_conf_nil()
+    |> Repo.update_all([])
   end
 end

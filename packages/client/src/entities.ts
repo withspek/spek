@@ -121,3 +121,13 @@ export type Lodge = {
   inserted_at?: string;
   updated_at?: string;
 };
+
+export type Conf = {
+  id: string;
+  name: string;
+  description: string;
+  num_people_inside: number;
+  people_preview_list: UserPreview[];
+  is_private: boolean;
+  inserted_at: string;
+};
