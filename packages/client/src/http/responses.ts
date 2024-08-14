@@ -1,4 +1,4 @@
-import { Channel, Community, Conf } from "../entities";
+import { Channel, Community, Conf, User } from "../entities";
 
 export interface CreateCommunitiesResponse {
   channels: Channel;
@@ -9,7 +9,19 @@ export interface GetTopCommunitiesResponse {
   communities: Community[];
 }
 
-export interface CreateConfRespone {
-  conf?: Conf;
-  error?: string;
-}
+export type CreateConfRespone =
+  | {
+      conf: Conf;
+    }
+  | { error: string };
+
+export type JoinConfAndGetInfoResponse =
+  | {
+      conf: Conf;
+      users: User[];
+      autoSpeaker: boolean;
+      activeSpeakerMap: string[];
+      deafMap: string[];
+      muteMap: string;
+    }
+  | { error: string };

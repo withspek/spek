@@ -60,7 +60,7 @@ defmodule Telescope.Access.Users do
            where: u.current_conf_id == ^current_conf_id,
            left_join: cp in Telescope.Schemas.ConfPermission,
            on: cp.user_id == u.id and cp.conf_id == u.current_conf_id,
-           select: %{u | confPermissions: cp}
+           select: %{u | conf_permissions: cp}
          )
          |> Repo.all()}
 

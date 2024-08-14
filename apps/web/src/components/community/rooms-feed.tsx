@@ -3,6 +3,8 @@ import React from "react";
 import { CenterLoader } from "../CenterLoader";
 import Link from "next/link";
 import { UserAvatarGroup } from "@spek/ui";
+import { useTypeSafePrefetch } from "@/hooks/useTypeSafePrefetch";
+import { useCurrentConfIdStore } from "@/stores/useCurentConfIdStore";
 
 interface Props {
   communityId: string;
@@ -14,6 +16,8 @@ export const RoomsFeed: React.FC<Props> = ({ communityId }) => {
     {},
     [communityId, 0]
   );
+  const { currentConfId } = useCurrentConfIdStore();
+  const prefetch = useTypeSafePrefetch();
 
   if (isLoading) {
     return <CenterLoader />;
@@ -27,6 +31,11 @@ export const RoomsFeed: React.FC<Props> = ({ communityId }) => {
             <Link
               key={room.id}
               href={`/conf/${room.id}`}
+              onClick={() => {
+                if (currentConfId !== room.id) {
+                  prefetch(["joinConfAndGetInfo", room.id], [room.id]);
+                }
+              }}
               className="space-y-2 bg-primary-900 px-4 py-2 rounded-md"
             >
               <div className="flex justify-between items-center">

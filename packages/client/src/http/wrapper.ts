@@ -13,7 +13,11 @@ import {
   Conf,
 } from "../entities";
 import { Connection } from "./raw";
-import { CreateConfRespone, GetTopCommunitiesResponse } from "./responses";
+import {
+  CreateConfRespone,
+  GetTopCommunitiesResponse,
+  JoinConfAndGetInfoResponse,
+} from "./responses";
 
 export const wrap = (connection: Connection) => ({
   query: {
@@ -89,6 +93,8 @@ export const wrap = (connection: Connection) => ({
       nextCursor: number | null;
     }> =>
       connection.send(`/api/v1/confs/${communityId}?cursor=${cursor}`, "GET"),
+    joinConfAndGetInfo: (confId: string): Promise<JoinConfAndGetInfoResponse> =>
+      connection.send(`/api/v1/confs/${confId}/join_and_get_info`, "POST"),
   },
   mutation: {
     updateProfile: (data: {

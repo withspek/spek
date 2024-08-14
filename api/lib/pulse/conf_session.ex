@@ -10,7 +10,7 @@ defmodule Pulse.ConfSession do
               deaf_map: %{},
               invite_map: %{},
               active_speaker_map: %{},
-              auto_speak: false
+              auto_speaker: false
   end
 
   # REGISTRY AND SUPERVISION BOILERPLATE
@@ -35,7 +35,7 @@ defmodule Pulse.ConfSession do
   def child_spec(init), do: %{super(init) | id: Keyword.get(init, :conf_id)}
 
   def count, do: Registry.count(Pulse.ConfSessionRegistry)
-  def looup(conf_id), do: Registry.lookup(Pulse.ConfSessionRegistry, conf_id)
+  def lookup(conf_id), do: Registry.lookup(Pulse.ConfSessionRegistry, conf_id)
 
   ## INITIALIZATION BOILERPLATE
 
@@ -67,7 +67,8 @@ defmodule Pulse.ConfSession do
   def get_maps(conf_id), do: call(conf_id, :get_maps)
 
   defp get_maps_impl(_reply, state) do
-    {:reply, {state.muteMap, state.deafMap, state.auto_speaker, state.activeSpeakerMap}, state}
+    {:reply, {state.mute_map, state.deaf_map, state.auto_speaker, state.active_speaker_map},
+     state}
   end
 
   def set(conf_id, key, value), do: cast(conf_id, {:set, key, value})

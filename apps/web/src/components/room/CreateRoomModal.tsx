@@ -12,6 +12,8 @@ import * as Yup from "yup";
 
 import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 import { InputField } from "@/ui/form-field";
+import { useTypeSafePrefetch } from "@/hooks/useTypeSafePrefetch";
+import { useCurrentConfIdStore } from "@/stores/useCurentConfIdStore";
 
 interface CreateRoomModalProps {
   open: boolean;
@@ -35,11 +37,8 @@ export const CreateRoomModal: React.FC<CreateRoomModalProps> = ({
   communityId,
 }) => {
   const { push } = useRouter();
-  const { mutateAsync, isLoading } = useTypeSafeMutation("createConf", {
-    onSuccess: () => {
-      showToast("Room created successfuly", "success");
-    },
-  });
+  const prefetch = useTypeSafePrefetch();
+  const { mutateAsync, isLoading } = useTypeSafeMutation("createConf");
 
   return (
     <Dialog onOpenChange={onOpenChange} open={open}>
@@ -54,12 +53,17 @@ export const CreateRoomModal: React.FC<CreateRoomModalProps> = ({
           onSubmit={async (values) => {
             const resp = await mutateAsync([{ ...values, communityId }]);
 
-            if (resp.error) {
+            if (typeof resp === "object" && "error" in resp) {
               showToast(resp.error, "error");
-            } else {
+            } else if (resp.conf) {
+              const { conf } = resp;
+
+              prefetch(["joinConfAndGetInfo", conf.id], [conf.id]);
+              useCurrentConfIdStore.getState().setCurrentConfId(conf.id);
               push(`/conf/${resp.conf?.id}`);
-              onOpenChange();
             }
+
+            onOpenChange();
           }}
         >
           {({ values, handleSubmit, handleChange }) => (
