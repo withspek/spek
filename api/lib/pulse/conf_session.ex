@@ -61,7 +61,7 @@ defmodule Pulse.ConfSession do
   def get(conf_id, key), do: call(conf_id, {:get, key})
 
   def get_impl(key, _reply, state) do
-    {:reply, Map.get(state, key, state)}
+    {:reply, Map.get(state, key), state}
   end
 
   def get_maps(conf_id), do: call(conf_id, :get_maps)
@@ -107,9 +107,12 @@ defmodule Pulse.ConfSession do
 
     ws_fan(state.users, %{
       op: "active_speaker_change",
-      confId: state.conf_id,
-      muteMap: muteMap,
-      deafMap: deafMap
+      d: %{
+        confId: state.conf_id,
+        activeSpeakerMap: newActiveSpeakerMap,
+        muteMap: muteMap,
+        deafMap: deafMap
+      }
     })
 
     {:noreply, %State{state | active_speaker_map: newActiveSpeakerMap}}

@@ -1,5 +1,7 @@
+export type UUID = string;
+
 export interface User {
-  id: string;
+  id: UUID;
   username: string;
   displayName: string;
   bio: string;
@@ -10,13 +12,14 @@ export interface User {
   online: boolean;
   lastOnline: string;
   gitlabUrl: string;
-
+  current_conf: CurrentConf | null;
+  current_conf_id: UUID | null;
   inserted_at: string;
   updated_at: string;
 }
 
 export type UserPreview = {
-  id: string;
+  id: UUID;
   displayName: string;
   username: string;
   avatarUrl: string;
@@ -24,7 +27,7 @@ export type UserPreview = {
 };
 
 export interface Community {
-  id: string;
+  id: UUID;
   name: string;
   slug: string;
   description: string;
@@ -35,7 +38,7 @@ export interface Community {
 }
 
 export interface Channel {
-  id: string;
+  id: UUID;
   name: string;
   slug: string;
   description: string;
@@ -59,7 +62,7 @@ export type CommunityPermissions = {
 export type CommunityWithPermissions = Community & CommunityPermissions;
 
 export type Thread = {
-  id: string;
+  id: UUID;
   name: string;
   creator: User;
   communityId: string;
@@ -70,7 +73,7 @@ export type Thread = {
 };
 
 export type TopThread = {
-  id: string;
+  id: UUID;
   name: string;
   message_count: number;
   peoplePreviewList: UserPreview[];
@@ -78,7 +81,7 @@ export type TopThread = {
 };
 
 export type Message = {
-  id: string;
+  id: UUID;
   text: string;
   user: User;
   threadId: string;
@@ -87,14 +90,14 @@ export type Message = {
 };
 
 export type UserDm = {
-  id: string;
+  id: UUID;
   peoplePreviewList: UserPreview[];
   inserted_at: string;
   updated_at: string;
 };
 
 export type LodgeMessage = {
-  id: string;
+  id: UUID;
   text: string;
   user: User;
   lodge_id: string;
@@ -110,7 +113,7 @@ export type SearchReponse = {
 };
 
 export type Lodge = {
-  id: string;
+  id: UUID;
   type: number;
   message_count: number;
   member_count: number;
@@ -123,11 +126,32 @@ export type Lodge = {
 };
 
 export type Conf = {
-  id: string;
+  id: UUID;
   name: string;
   description: string;
+  creator_id: string;
   num_people_inside: number;
   people_preview_list: UserPreview[];
   is_private: boolean;
   inserted_at: string;
+};
+
+export type BooleanMap = Record<UUID, boolean>;
+
+export type ConfPermissions = {
+  asked_to_speak: boolean;
+  is_speaker: boolean;
+  is_mod: boolean;
+};
+
+export type ConfUser = User & {
+  conf_permissions?: ConfPermissions | null;
+};
+
+export type CurrentConf = Conf & {
+  users: ConfUser[];
+  muteMap: BooleanMap;
+  deafMap: BooleanMap;
+  activeSpeakerMap: BooleanMap;
+  autoSpeaker: boolean;
 };

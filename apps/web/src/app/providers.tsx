@@ -9,6 +9,7 @@ import { DataFetchingContextProvider } from "@/contexts/DataFetchingContext";
 import { queryClient } from "@/utils/queryClient";
 import { WebSocketProvider } from "@/contexts/WebSocketContext";
 import { MainWsHandlerProvider } from "@/hooks/useMainWsHandler";
+import { WebRTC } from "@/webrtc/WebRTC";
 
 interface Props {
   children?: React.ReactNode;
@@ -26,6 +27,7 @@ export const Providers: React.FC<Props> = ({ children }) => {
               {children}
               <ConfirmModal />
               <Toaster />
+              <WebRTC />
             </TooltipProvider>
           </MainWsHandlerProvider>
         </DataFetchingContextProvider>

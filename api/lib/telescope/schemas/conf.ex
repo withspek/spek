@@ -39,7 +39,8 @@ defmodule Telescope.Schemas.Conf do
       :community_id,
       :is_private,
       :voice_server_id,
-      :description
+      :description,
+      :num_people_inside
     ])
     |> validate_required(:name, min: 2, max: 60)
     |> validate_length(:description, max: 500)

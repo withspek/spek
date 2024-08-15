@@ -2,6 +2,7 @@ import { WebSocketContext } from "@/contexts/WebSocketContext";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 import { useTypeSafeUpdateQuery } from "./useTypeSafeUpdateQuery";
+import { showToast } from "@spek/ui";
 
 export const useMainWsHandler = () => {
   const { push } = useRouter();
@@ -14,6 +15,9 @@ export const useMainWsHandler = () => {
     }
 
     const unsubs = [
+      conn.addListener<any>("error", (message) => {
+        showToast(message, "error");
+      }),
       conn.addListener<any>("profile_update", ({ user }) => {
         updateQuery(["getUserProfile", user.id], () => ({
           user: {
@@ -49,6 +53,52 @@ export const useMainWsHandler = () => {
           nextCursor: x.nextCursor,
         }));
       }),
+
+      conn.addListener<any>(
+        "new_user_join_conf",
+        ({ user, muteMap, confId }) => {
+          updateQuery(["joinConfAndGetInfo", confId], (data) =>
+            !data || "error" in data
+              ? data
+              : {
+                  ...data,
+                  muteMap,
+                  conf: {
+                    ...data.conf,
+                    peoplePreviewList:
+                      data.conf.people_preview_list.length < 10
+                        ? [
+                            ...data.conf.people_preview_list,
+                            {
+                              id: user.id,
+                              displayName: user.displayName,
+                              avatarUrl: user.avatarUrl,
+                              username: user.username,
+                              bio: user.bio,
+                            },
+                          ]
+                        : data.conf.people_preview_list,
+                    numPeopleInside: data.conf.num_people_inside + 1,
+                  },
+                  users: [...data.users.filter((x) => x.id !== user.id), user],
+                }
+          );
+        }
+      ),
+
+      conn.addListener<any>(
+        "active_speaker_change",
+        ({ confId, activeSpeakerMap }) => {
+          updateQuery(["joinConfAndGetInfo", confId], (data) =>
+            !data || "error" in data
+              ? data
+              : {
+                  ...data,
+                  activeSpeakerMap,
+                }
+          );
+        }
+      ),
     ];
 
     return () => {

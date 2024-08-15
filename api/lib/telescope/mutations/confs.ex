@@ -84,6 +84,7 @@ defmodule Telescope.Mutations.Confs do
             username: user.username,
             bio: user.bio
           }
+          | conf.people_preview_list
         ]
         |> Enum.slice(0, 8)
 

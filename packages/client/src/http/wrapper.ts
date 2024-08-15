@@ -14,7 +14,7 @@ import {
 } from "../entities";
 import { Connection } from "./raw";
 import {
-  CreateConfRespone,
+  CreateConfResponse,
   GetTopCommunitiesResponse,
   JoinConfAndGetInfoResponse,
 } from "./responses";
@@ -206,7 +206,7 @@ export const wrap = (connection: Connection) => ({
       name: string;
       description: string;
       communityId: string;
-    }): Promise<CreateConfRespone> =>
+    }): Promise<CreateConfResponse> =>
       connection.send(`/api/v1/confs/create`, "POST", { ...data }),
   },
 });

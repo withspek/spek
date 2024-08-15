@@ -31,7 +31,7 @@ defmodule Pulse.OnlineVoice do
 
   def init(voice_id) do
     {:ok, conn} =
-      Connection.open(Application.get_env(:spek, :rabbit_url, "amqp://quest:quest@localhost"))
+      Connection.open(Application.get_env(:spek, :rabbit_url, "amqp://guest:guest@localhost"))
 
     {:ok, chan} = Channel.open(conn)
     setup_queue(voice_id, chan)
@@ -65,8 +65,7 @@ defmodule Pulse.OnlineVoice do
       ) do
     case Jason.decode!(payload) do
       %{"op" => "online"} ->
-        # hello
-        :ok
+        Pulse.UserSession.force_reconnects(state.id)
 
       _ ->
         :ok

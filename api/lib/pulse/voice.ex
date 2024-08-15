@@ -29,7 +29,7 @@ defmodule Pulse.Voice do
 
   def init(voice_id) do
     {:ok, conn} =
-      Connection.open(Application.get_env(:spek, :rabbit_url, "amqp://quest:quest@localhost"))
+      Connection.open(Application.get_env(:spek, :rabbit_url, "amqp://guest:guest@localhost"))
 
     {:ok, chan} = Channel.open(conn)
     setup_queue(voice_id, chan)

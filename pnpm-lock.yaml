@@ -56,6 +56,12 @@ importers:
       fs:
         specifier: 0.0.1-security
         version: 0.0.1-security
+      hark:
+        specifier: ^1.2.3
+        version: 1.2.3
+      mediasoup-client:
+        specifier: ^3.7.16
+        version: 3.7.16
       next:
         specifier: 14.2.3
         version: 14.2.3(@babel/core@7.24.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -92,6 +98,12 @@ importers:
       slate-react:
         specifier: ^0.107.1
         version: 0.107.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(slate@0.103.0)
+      uuid:
+        specifier: ^10.0.0
+        version: 10.0.0
+      wakelock-lazy-polyfill:
+        specifier: ^1.0.0
+        version: 1.0.0
       yup:
         specifier: ^1.4.0
         version: 1.4.0
@@ -123,6 +135,9 @@ importers:
       '@storybook/test':
         specifier: ^8.0.8
         version: 8.0.8
+      '@types/hark':
+        specifier: ^1.2.5
+        version: 1.2.5
       '@types/node':
         specifier: ^20
         version: 20.11.24
@@ -2392,11 +2407,17 @@ packages:
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
 
+  '@types/events@3.0.3':
+    resolution: {integrity: sha512-trOc4AAUThEz9hapPtSd7wf5tiQKvTtu5b371UxXdTuqzIh0ArcRspRP0i0Viu+LXstIQ1z96t1nsPxT9ol01g==}
+
   '@types/express-serve-static-core@4.19.0':
     resolution: {integrity: sha512-bGyep3JqPCRry1wq+O5n7oiBgGWmeIJXPjXXCo8EK0u8duZGSYar7cGqd3ML2JUsLGeB7fmc06KYo9fLGWqPvQ==}
 
   '@types/express@4.17.21':
     resolution: {integrity: sha512-ejlPM315qwLpaQlQDTjPdsUFSc6ZsP4AN6AlWnogPjQ7CVi7PYF3YVz+CY3jE2pwYf7E/7HlDAN0rV2GxTG0HQ==}
+
+  '@types/hark@1.2.5':
+    resolution: {integrity: sha512-PyVF1PIrbKHeC1+6W/HZoMT40DLoQ0d1FAxuv7Vcg+XBfmpio8qr+y29chxYutJpra/K2MWXiXm/lScEv2E9pg==}
 
   '@types/hast@3.0.4':
     resolution: {integrity: sha512-WPs+bbQw5aCj+x6laNGWLH3wviHtoCv/P3+otBhbOhJgG8qtpdAMlTCxLtsTWA7LH1Oh/bFCHsBn0TPS5m30EQ==}
@@ -2859,6 +2880,10 @@ packages:
   available-typed-arrays@1.0.7:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
+
+  awaitqueue@3.0.2:
+    resolution: {integrity: sha512-AVAtRwmf0DNSesMdyanFKKejTrOnjdKtz5LIDQFu2OTUgXvB/CRTYMrkPAF/2GCF9XBtYVxSwxDORlD41S+RyQ==}
+    engines: {node: '>=16'}
 
   axe-core@4.7.0:
     resolution: {integrity: sha512-M0JtH+hlOL5pLQwHOLNYZaXuhqmvS8oExsqB1SBYgA4Dk7u/xx+YdGHXaK5pyUfed5mYXdlYiphWq3G8cRi5JQ==}
@@ -3817,6 +3842,10 @@ packages:
     resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
     engines: {node: '>=6'}
 
+  event-target-shim@6.0.2:
+    resolution: {integrity: sha512-8q3LsZjRezbFZ2PN+uP+Q7pnHUMmAOziU2vA2OwoFaKIXxlxl38IylhSSgUorWu/rf4er67w0ikBqjBFk/pomA==}
+    engines: {node: '>=10.13.0'}
+
   events@3.3.0:
     resolution: {integrity: sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==}
     engines: {node: '>=0.8.x'}
@@ -3842,6 +3871,9 @@ packages:
   express@4.19.2:
     resolution: {integrity: sha512-5T6nhjsT+EOMzuck8JjBHARTHfMht0POzlA60WV2pMD3gyXw2LZnZ+ueGdNxG+0calOJcWKbpFcuzLZ91YWq9Q==}
     engines: {node: '>= 0.10.0'}
+
+  fake-mediastreamtrack@1.2.0:
+    resolution: {integrity: sha512-AxHtlEmka1sqNoe3Ej1H1hJc9gjjO/6vCbCPm4D4QeEXvzhjYumA+iZ7wOi2WrmkAhGElHhBgWoNgJhFccectA==}
 
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
@@ -4149,6 +4181,9 @@ packages:
     resolution: {integrity: sha512-vafaFqs8MZkRrSX7sFVUdo3ap/eNiLnb4IakshzvP56X5Nr1iGKAIqdX6tMlm6HcNRIkr6AxO5jFEoJzzpT8aQ==}
     engines: {node: '>=0.4.7'}
     hasBin: true
+
+  hark@1.2.3:
+    resolution: {integrity: sha512-u68vz9SCa38ESiFJSDjqK8XbXqWzyot7Cj6Y2b6jk2NJ+II3MY2dIrLMg/kjtIAun4Y1DHF/20hfx4rq1G5GMg==}
 
   has-bigints@1.0.2:
     resolution: {integrity: sha512-tSvCKtBr9lkF0Ex0aQiP9N+OpV4zi2r/Nee5VkRDbaqv35RLYMzbwQfFSZZH0kR+Rd6302UJZ2p/bJCEoR3VoQ==}
@@ -4786,6 +4821,10 @@ packages:
   media-typer@0.3.0:
     resolution: {integrity: sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==}
     engines: {node: '>= 0.6'}
+
+  mediasoup-client@3.7.16:
+    resolution: {integrity: sha512-2em0km8GkPqSwdkGOnUAEu+CH07a7W7qEOwsZUTweEs08+b75DFlBLuR3hAHSNwv8oSURgQ6S/2XnGshAqP3+A==}
+    engines: {node: '>=18'}
 
   mediasoup@3.14.9:
     resolution: {integrity: sha512-Uiz6xWrhwBWjMeC6eSOgrjGOYXnz7Pe6PzLLGlBthVX+F2vQSBsFSzJJ7nG9Bc42i3DNxpFtAkEtid0Rn7CE0A==}
@@ -5866,6 +5905,10 @@ packages:
   scroll-into-view-if-needed@3.1.0:
     resolution: {integrity: sha512-49oNpRjWRvnU8NyGVmUaYG4jtTkNonFZI86MmGRDqBphEK2EXT9gdEUoQPZhuBM8yWHxCWbobltqYO5M4XrUvQ==}
 
+  sdp-transform@2.14.2:
+    resolution: {integrity: sha512-icY6jVao7MfKCieyo1AyxFYm1baiM+fA00qW/KrNNVlkxHAd34riEKuEkUe4bBb3gJwLJZM+xT60Yj1QL8rHiA==}
+    hasBin: true
+
   semver@5.7.2:
     resolution: {integrity: sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==}
     hasBin: true
@@ -6481,6 +6524,9 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
+  ua-parser-js@1.0.38:
+    resolution: {integrity: sha512-Aq5ppTOfvrCMgAPneW1HfWj66Xi7XL+/mIy996R1/CLS/rcyJQm6QZdsKrUeivDFQ+Oc9Wyuwor8Ze8peEoUoQ==}
+
   ufo@1.5.3:
     resolution: {integrity: sha512-Y7HYmWaFwPUmkoQCUIAYpKqkOf+SbVj/2fJJZ4RJMCfZp0rTGwRbzQD+HghfnhKOjL9E01okqz+ncJskGYfBNw==}
 
@@ -6602,6 +6648,10 @@ packages:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
 
+  uuid@10.0.0:
+    resolution: {integrity: sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ==}
+    hasBin: true
+
   uuid@9.0.1:
     resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
     hasBin: true
@@ -6618,6 +6668,9 @@ packages:
 
   vm-browserify@1.1.2:
     resolution: {integrity: sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==}
+
+  wakelock-lazy-polyfill@1.0.0:
+    resolution: {integrity: sha512-kII7fueqh0DGuRQ9+7XUFx0e8oS6FyVsCU5a/o9wCTcmwF2itotmZItr+zt3DZt3/hAYaeE/ixSu5raiYGvyRg==}
 
   warning@4.0.3:
     resolution: {integrity: sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==}
@@ -6700,6 +6753,9 @@ packages:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
     engines: {node: '>= 8'}
     hasBin: true
+
+  wildemitter@1.2.1:
+    resolution: {integrity: sha512-UMmSUoIQSir+XbBpTxOTS53uJ8s/lVhADCkEbhfRjUGFDPme/XGOb0sBWLx5sTz7Wx/2+TlAw1eK9O5lw5PiEw==}
 
   wordwrap@1.0.0:
     resolution: {integrity: sha512-gvVzJFlPycKc5dZN4yPkP8w7Dc37BtP1yczEneOb4uq34pXZcvrtRTmWV8W+Ume+XCxKgbjM+nevkyFPMybd4Q==}
@@ -6895,7 +6951,7 @@ snapshots:
       '@babel/core': 7.24.4
       '@babel/helper-compilation-targets': 7.23.6
       '@babel/helper-plugin-utils': 7.24.0
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@9.4.0)
       lodash.debounce: 4.0.8
       resolve: 1.22.8
     transitivePeerDependencies:
@@ -7638,7 +7694,7 @@ snapshots:
       '@babel/helper-split-export-declaration': 7.22.6
       '@babel/parser': 7.24.4
       '@babel/types': 7.24.0
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@9.4.0)
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -7821,7 +7877,7 @@ snapshots:
   '@eslint/eslintrc@2.1.4':
     dependencies:
       ajv: 6.12.6
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@9.4.0)
       espree: 9.6.1
       globals: 13.24.0
       ignore: 5.3.1
@@ -7864,7 +7920,7 @@ snapshots:
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
       '@humanwhocodes/object-schema': 2.0.2
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@9.4.0)
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -9009,7 +9065,7 @@ snapshots:
 
   '@storybook/react-docgen-typescript-plugin@1.0.6--canary.9.0c3f3b7.0(typescript@5.3.3)(webpack@5.91.0(esbuild@0.19.12))':
     dependencies:
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@9.4.0)
       endent: 2.1.0
       find-cache-dir: 3.3.2
       flat-cache: 3.2.0
@@ -9407,6 +9463,8 @@ snapshots:
 
   '@types/estree@1.0.5': {}
 
+  '@types/events@3.0.3': {}
+
   '@types/express-serve-static-core@4.19.0':
     dependencies:
       '@types/node': 22.1.0
@@ -9420,6 +9478,8 @@ snapshots:
       '@types/express-serve-static-core': 4.19.0
       '@types/qs': 6.9.15
       '@types/serve-static': 1.15.7
+
+  '@types/hark@1.2.5': {}
 
   '@types/hast@3.0.4':
     dependencies:
@@ -9521,7 +9581,7 @@ snapshots:
       '@typescript-eslint/types': 7.2.0
       '@typescript-eslint/typescript-estree': 7.2.0(typescript@5.3.3)
       '@typescript-eslint/visitor-keys': 7.2.0
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@9.4.0)
       eslint: 8.57.0
     optionalDependencies:
       typescript: 5.3.3
@@ -9546,7 +9606,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 5.62.0
       '@typescript-eslint/visitor-keys': 5.62.0
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@9.4.0)
       globby: 11.1.0
       is-glob: 4.0.3
       semver: 7.6.0
@@ -9560,7 +9620,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 7.2.0
       '@typescript-eslint/visitor-keys': 7.2.0
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@9.4.0)
       globby: 11.1.0
       is-glob: 4.0.3
       minimatch: 9.0.3
@@ -9965,6 +10025,12 @@ snapshots:
   available-typed-arrays@1.0.7:
     dependencies:
       possible-typed-array-names: 1.0.0
+
+  awaitqueue@3.0.2(supports-color@9.4.0):
+    dependencies:
+      debug: 4.3.6(supports-color@9.4.0)
+    transitivePeerDependencies:
+      - supports-color
 
   axe-core@4.7.0: {}
 
@@ -10648,7 +10714,7 @@ snapshots:
   detect-port@1.5.1:
     dependencies:
       address: 1.2.2
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@9.4.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -10908,7 +10974,7 @@ snapshots:
 
   esbuild-register@3.5.0(esbuild@0.19.12):
     dependencies:
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@9.4.0)
       esbuild: 0.19.12
     transitivePeerDependencies:
       - supports-color
@@ -11010,7 +11076,7 @@ snapshots:
 
   eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.3.3))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0):
     dependencies:
-      debug: 4.3.5(supports-color@5.5.0)
+      debug: 4.3.6(supports-color@9.4.0)
       enhanced-resolve: 5.17.0
       eslint: 8.57.0
       eslint-module-utils: 2.8.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.3.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@7.2.0(eslint@8.57.0)(typescript@5.3.3))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
@@ -11205,6 +11271,8 @@ snapshots:
 
   event-target-shim@5.0.1: {}
 
+  event-target-shim@6.0.2: {}
+
   events@3.3.0: {}
 
   evp_bytestokey@1.0.3:
@@ -11275,6 +11343,11 @@ snapshots:
       vary: 1.1.2
     transitivePeerDependencies:
       - supports-color
+
+  fake-mediastreamtrack@1.2.0:
+    dependencies:
+      event-target-shim: 6.0.2
+      uuid: 9.0.1
 
   fast-deep-equal@3.1.3: {}
 
@@ -11633,6 +11706,10 @@ snapshots:
       wordwrap: 1.0.0
     optionalDependencies:
       uglify-js: 3.17.4
+
+  hark@1.2.3:
+    dependencies:
+      wildemitter: 1.2.1
 
   has-bigints@1.0.2: {}
 
@@ -12226,6 +12303,20 @@ snapshots:
       safe-buffer: 5.2.1
 
   media-typer@0.3.0: {}
+
+  mediasoup-client@3.7.16:
+    dependencies:
+      '@types/debug': 4.1.12
+      '@types/npm-events-package': '@types/events@3.0.3'
+      awaitqueue: 3.0.2(supports-color@9.4.0)
+      debug: 4.3.6(supports-color@9.4.0)
+      fake-mediastreamtrack: 1.2.0
+      h264-profile-level-id: 2.0.0(supports-color@9.4.0)
+      npm-events-package: events@3.3.0
+      queue-microtask: 1.2.3
+      sdp-transform: 2.14.2
+      supports-color: 9.4.0
+      ua-parser-js: 1.0.38
 
   mediasoup@3.14.9:
     dependencies:
@@ -13404,6 +13495,8 @@ snapshots:
     dependencies:
       compute-scroll-into-view: 3.1.0
 
+  sdp-transform@2.14.2: {}
+
   semver@5.7.2: {}
 
   semver@6.3.1: {}
@@ -14136,6 +14229,8 @@ snapshots:
 
   typescript@5.5.4: {}
 
+  ua-parser-js@1.0.38: {}
+
   ufo@1.5.3: {}
 
   uglify-js@3.17.4:
@@ -14255,6 +14350,8 @@ snapshots:
 
   utils-merge@1.0.1: {}
 
+  uuid@10.0.0: {}
+
   uuid@9.0.1: {}
 
   v8-compile-cache-lib@3.0.1: {}
@@ -14267,6 +14364,8 @@ snapshots:
   vary@1.1.2: {}
 
   vm-browserify@1.1.2: {}
+
+  wakelock-lazy-polyfill@1.0.0: {}
 
   warning@4.0.3:
     dependencies:
@@ -14401,6 +14500,8 @@ snapshots:
   which@2.0.2:
     dependencies:
       isexe: 2.0.0
+
+  wildemitter@1.2.1: {}
 
   wordwrap@1.0.0: {}
 

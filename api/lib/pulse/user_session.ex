@@ -127,11 +127,39 @@ defmodule Pulse.UserSession do
     get(user_id, :current_conf_id)
   end
 
+  @all [{{:_, :"$1", :_}, [], [:"$1"]}]
+  def force_reconnects(rabbit_id) do
+    Pulse.UserSessionRegistry
+    |> Registry.select(@all)
+    |> Enum.each(&reconnect(&1, rabbit_id))
+  end
+
+  def reconnect(user_pid, rabbit_id), do: GenServer.cast(user_pid, {:reconnect, rabbit_id})
+
+  defp reconnect_impl(voice_server_id, state) do
+    if state.pid || state.current_conf_id do
+      case Pulse.ConfSession.get(state.current_conf_id, :voice_server_id) do
+        ^voice_server_id ->
+          conf = Telescope.Confs.get_conf_by_id(state.current_conf_id)
+          Spek.Conf.join_voice_conf(state.user_id, conf)
+
+        _ ->
+          :ignore
+      end
+    end
+
+    {:noreply, state}
+  end
+
   ##############################################################################
   ## MESSAGING API.
 
   defp handle_disconnect(pid, state = %{pid: pid}) do
     Telescope.Users.set_offline(state.user_id)
+
+    if state.current_conf_id do
+      Spek.Conf.leave_conf(state.user_id, state.current_conf_id)
+    end
 
     {:stop, :normal, state}
   end
@@ -147,6 +175,9 @@ defmodule Pulse.UserSession do
   def handle_cast({:new_tokens, tokens}, state), do: new_tokens_impl(tokens, state)
   def handle_cast({:set_state, info}, state), do: set_state_impl(info, state)
   def handle_cast({:set_deafen, value}, state), do: set_deafen_impl(value, state)
+
+  def handle_cast({:reconnect, voice_server_id}, state),
+    do: reconnect_impl(voice_server_id, state)
 
   def handle_call({:get, key}, reply, state), do: get_impl(key, reply, state)
   def handle_call({:set_active_ws, pid}, reply, state), do: set_active_ws(pid, reply, state)

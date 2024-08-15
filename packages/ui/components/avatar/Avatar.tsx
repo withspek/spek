@@ -21,6 +21,7 @@ export type AvatarProps = {
   accepted?: boolean;
   asChild?: boolean; // Added to ignore the outer span on the fallback component - messes up styling
   indicator?: React.ReactNode;
+  activeSpeaker?: boolean;
   "data-testid"?: string;
 };
 
@@ -49,6 +50,7 @@ export function Avatar(props: AvatarProps) {
     href,
     indicator,
     shape = "rounded",
+    activeSpeaker = false,
   } = props;
   const rootClass = classNames(
     "aspect-square rounded-full",
@@ -62,7 +64,8 @@ export function Avatar(props: AvatarProps) {
         indicator ? "overflow-visible" : "overflow-hidden",
         props.className,
         sizesPropsBySize[size],
-        shapePropsStyle[shape]
+        shapePropsStyle[shape],
+        activeSpeaker ? "border-2 border-accent rounded-full" : ""
       )}
     >
       <>

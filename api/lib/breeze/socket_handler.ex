@@ -2,7 +2,9 @@ defmodule Breeze.SocketHandler do
   require Logger
 
   alias Pulse.UserSession
+  alias Pulse.ConfSession
   alias Telescope.Users
+  alias Telescope.Confs
 
   defstruct awaiting_init: true,
             user_id: nil,
@@ -89,14 +91,15 @@ defmodule Breeze.SocketHandler do
   end
 
   def websocket_handle({:text, json_command}, state) do
-    with {:ok, message_map} <- Jason.decode(json_command),
-         # temporary trap mediasoup direct commands
-         %{"op" => <<not_at>> <> _} when not_at != ?@ <- message_map do
+    with {:ok, message_map} <- Jason.decode(json_command) do
       case message_map["op"] do
         "auth" ->
           %{
             "accessToken" => accessToken,
-            "refreshToken" => refreshToken
+            "refreshToken" => refreshToken,
+            "reconnectToVoice" => reconnectToVoice,
+            "muted" => muted,
+            "deafened" => deafened
           } = message_map["d"]
 
           case Spek.Utils.TokenUtils.tokens_to_user_id(accessToken, refreshToken) do
@@ -133,10 +136,41 @@ defmodule Breeze.SocketHandler do
                   UserSession.new_tokens(user.id, tokens)
                 end
 
+                confIdFromFrontend = Map.get(message_map["d"], "currentConfId", nil)
+
+                current_conf =
+                  cond do
+                    not is_nil(user.current_conf_id) ->
+                      # @todo this should probably go inside conf business logic
+                      conf = Confs.get_conf_by_id(user.current_conf_id)
+
+                      ConfSession.start_supervised(
+                        conf_id: user.current_conf_id,
+                        voice_server_id: conf.voice_server_id
+                      )
+
+                      ConfSession.join_conf(conf.id, user.id, muted, deafened)
+
+                      if reconnectToVoice == true do
+                        Spek.Conf.join_voice_conf(user.id, conf)
+                      end
+
+                      conf
+
+                    not is_nil(confIdFromFrontend) ->
+                      case Spek.Conf.join_conf(user.id, confIdFromFrontend) do
+                        %{conf: conf} -> conf
+                        _ -> nil
+                      end
+
+                    true ->
+                      nil
+                  end
+
                 {:reply,
                  construct_socket_msg(state.encoding, state.compression, %{
                    op: "auth-good",
-                   d: %{user: user}
+                   d: %{user: user, currentConf: current_conf}
                  }), %{state | user_id: user_id, awaiting_init: false}}
               else
                 {:reply,
@@ -202,15 +236,10 @@ defmodule Breeze.SocketHandler do
     end
   end
 
-  def handler("audio_autoplay_error", _data, state) do
-    Pulse.UserSession.send_ws(
-      state.user_id,
-      nil,
-      %{
-        op: "error",
-        d: "browser can't autoplay audio the first time, go press play audio in your browser"
-      }
-    )
+  def handler("speaking_change", %{"value" => value}, state) do
+    if current_conf_id = Telescope.Users.get_current_conf_id(state.user_id) do
+      Pulse.ConfSession.speaking_change(current_conf_id, state.user_id, value)
+    end
 
     {:ok, state}
   end

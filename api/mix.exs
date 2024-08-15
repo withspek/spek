@@ -30,7 +30,7 @@ defmodule Spek.MixProject do
 
   defp deps do
     [
-      {:amqp, "~> 1.0"},
+      {:amqp, "~> 3.3"},
       {:plug_cowboy, "~> 2.7"},
       {:joken, "~> 2.5"},
       {:jason, "~> 1.4"},

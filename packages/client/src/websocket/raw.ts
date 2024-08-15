@@ -1,7 +1,7 @@
 import WebSocket from "isomorphic-ws";
 import ReconnectingWebSocket from "reconnecting-websocket";
 
-import { User } from "../entities";
+import { User, UUID } from "../entities";
 
 const heartbeatInterval = 8000;
 const apiUrl = "wss://api.spek.app/ws";
@@ -9,6 +9,7 @@ const connectionTimeout = 15000;
 
 export type Token = string;
 export type Opcode = string;
+export type FetchId = UUID;
 
 export type ListenerHandler<Data = unknown> = (
   data: Data,
@@ -26,6 +27,7 @@ export type WSConnection = {
     opcode: Opcode,
     handler: ListenerHandler<Data>
   ) => void;
+  send: <Data = unknown>(opcode: Opcode, data: Data, fetchId?: FetchId) => void;
   addListener: <Data = unknown>(
     opcode: Opcode,
     handler: ListenerHandler<Data>
@@ -48,7 +50,7 @@ export const connect = (
     url: string;
     getAuthOptions?: () => Partial<{
       reconnectToVoice: boolean;
-      currentRoomId: string | null;
+      currentConfId: string | null;
       muted: boolean;
       token: Token;
       refreshToken: Token;
@@ -103,6 +105,7 @@ export const connect = (
         const connection: WSConnection = {
           close: () => socket.close(),
           user: message.d.user,
+          send: apiSend,
           once: (opcode, handler) => {
             const listener = { opcode, handler } as Listener<unknown>;
 
