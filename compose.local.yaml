@@ -2,6 +2,11 @@ services:
   # voice server
   horizon:
     build: ./horizon
+    restart: unless-stopped
+    labels:
+      spek.description: "Voice Server Service"
+    depends_on:
+      - api
     environment:
       - WEBRTC_LISTEN_IP=127.0.0.1
       - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
