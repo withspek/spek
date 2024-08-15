@@ -6,5 +6,5 @@ export const WEBAPP_URL = PROD
   : "http://localhost:3000";
 
 export const API_URL = PROD
-  ? "https://16.171.14.61.nip.io"
+  ? "https://13.61.10.16.nip.io"
   : "http://localhost:4001";
