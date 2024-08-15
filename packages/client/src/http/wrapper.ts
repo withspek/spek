@@ -202,6 +202,8 @@ export const wrap = (connection: Connection) => ({
         userId,
       }),
 
+    leaveConf: (confId: string): Promise<any> =>
+      connection.send(`/api/v1/confs/${confId}/leave`, "POST"),
     createConf: (data: {
       name: string;
       description: string;

@@ -244,6 +244,16 @@ defmodule Breeze.SocketHandler do
     {:ok, state}
   end
 
+  def handler("mute", %{"value" => value}, state) do
+    Pulse.UserSession.set_mute(state.user_id, value)
+    {:ok, state}
+  end
+
+  def handler("deafen", %{"value" => value}, state) do
+    Pulse.UserSession.set_deafen(state.user_id, value)
+    {:ok, state}
+  end
+
   def handler(op, data, state) do
     with {:ok, conf_id} <- Telescope.Users.tuple_get_current_conf_id(state.user_id) do
       voice_server_id = Pulse.ConfSession.get(conf_id, :voice_server_id)

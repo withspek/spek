@@ -111,6 +111,8 @@ defmodule Pulse.UserSession do
     {:noreply, %{state | muted: value}}
   end
 
+  def set_deafen(user_id, value) when is_boolean(value), do: cast(user_id, {:set_deafen, value})
+
   defp set_deafen_impl(value, state = %{current_conf_id: current_conf_id}) do
     if current_conf_id do
       Pulse.ConfSession.deafen(current_conf_id, state.user_id, value)

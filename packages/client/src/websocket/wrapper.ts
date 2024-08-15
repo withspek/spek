@@ -7,5 +7,7 @@ export const wrap = (connection: WSConnection) => ({
   mutation: {
     speakingChange: (value: boolean) =>
       connection.send("speaking_change", { value }),
+    setMute: (value: boolean) => connection.send("mute", { value }),
+    setDeafen: (value: boolean) => connection.send("deafen", { value }),
   },
 });

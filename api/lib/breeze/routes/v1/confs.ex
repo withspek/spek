@@ -87,9 +87,9 @@ defmodule Breeze.Routes.V1.Confs do
     %Plug.Conn{params: %{"id" => conf_id}} = conn
     user_id = conn.assigns.user_id
 
-    resp = Spek.Conf.leave_conf(user_id, conf_id)
+    {:ok, conf_id} = Spek.Conf.leave_conf(user_id, conf_id)
 
     conn
-    |> send_resp(200, Jason.encode!(resp))
+    |> send_resp(200, Jason.encode!(conf_id))
   end
 end
