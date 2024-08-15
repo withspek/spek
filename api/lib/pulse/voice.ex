@@ -28,19 +28,28 @@ defmodule Pulse.Voice do
   @receive_queue "spek_queue"
 
   def init(voice_id) do
-    {:ok, conn} =
-      Connection.open(Application.get_env(:spek, :rabbit_url, "amqp://guest:guest@localhost"))
+    rabbitmq_connect(voice_id)
+  end
 
-    {:ok, chan} = Channel.open(conn)
-    setup_queue(voice_id, chan)
+  defp rabbitmq_connect(voice_id) do
+    case Connection.open(Application.get_env(:spek, :rabbit_url, "amqp://guest:guest@localhost")) do
+      {:ok, conn} ->
+        {:ok, chan} = Channel.open(conn)
+        setup_queue(voice_id, chan)
 
-    :ok = Basic.qos(chan, prefetch_count: 1)
-    queue_to_consume = @receive_queue <> voice_id
-    IO.puts("queue_to_consume: " <> queue_to_consume)
-    # Register the GenServer process as a consumer
-    {:ok, _consumer_tag} = Basic.consume(chan, queue_to_consume, nil, no_ack: true)
+        :ok = Basic.qos(chan, prefetch_count: 1)
+        queue_to_consume = @receive_queue <> voice_id
+        IO.puts("queue_to_consume: " <> queue_to_consume)
+        # Register the GenServer process as a consumer
+        {:ok, _consumer_tag} = Basic.consume(chan, queue_to_consume, nil, no_ack: true)
 
-    {:ok, %State{chan: chan, id: voice_id}}
+        {:ok, %State{chan: chan, id: voice_id}}
+
+      {:error, _} ->
+        # Reconnection loop
+        :timer.sleep(10000)
+        rabbitmq_connect(voice_id)
+    end
   end
 
   def send(id, msg) do
