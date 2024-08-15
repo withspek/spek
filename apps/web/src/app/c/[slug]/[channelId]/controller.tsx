@@ -2,7 +2,6 @@
 
 import { CenterLoader } from "@/components/CenterLoader";
 import { ThreadsFeed } from "@/components/community/threads-feed";
-import { useConn } from "@/hooks/useConn";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
 
 interface ChannelPageControllerProps {
@@ -13,7 +12,6 @@ interface ChannelPageControllerProps {
 export const ChannelPageController: React.FC<ChannelPageControllerProps> = ({
   channelId,
 }) => {
-  const { user } = useConn();
   const { data, isLoading } = useTypeSafeQuery(
     ["getChannel", channelId],
     {
@@ -37,13 +35,7 @@ export const ChannelPageController: React.FC<ChannelPageControllerProps> = ({
         </p>
       </div>
       <div>
-        <ThreadsFeed
-          channel={data.channel}
-          communityId={data.channel.community.id}
-          currentUser={user}
-          isAdmin={data.channel.isAdmin}
-          isMember={data.channel.isMember}
-        />
+        <ThreadsFeed channelId={channelId} />
       </div>
     </div>
   );
