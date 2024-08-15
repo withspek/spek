@@ -24,7 +24,12 @@ services:
     depends_on:
       - postgres
       - rabbitmq
-
+  horizon:
+    restart: unless-stopped
+    labels:
+      spek.description: "Voice Server Service"
+    depends_on:
+      - api
   postgres:
     image: postgres:13-alpine
     restart: unless-stopped
