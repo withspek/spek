@@ -13,6 +13,7 @@ defmodule Telescope.Mutations.Confs do
     |> Repo.insert(returning: true)
   end
 
+  @spec create(:invalid | %{optional(:__struct__) => none, optional(atom | binary) => any}) :: any
   def create(data) do
     user = Telescope.Users.get_by_user_id(data.creator_id)
 
@@ -40,6 +41,9 @@ defmodule Telescope.Mutations.Confs do
     case res do
       {:ok, conf} ->
         Users.set_current_conf(user.id, conf.id)
+
+      _ ->
+        nil
     end
 
     res

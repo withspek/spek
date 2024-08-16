@@ -54,6 +54,7 @@ defmodule Spek.Conf do
       {:error, "conf not found"}
   end
 
+  @spec make_speaker(any(), any()) :: none() | no_return()
   def make_speaker(user_id, user_id_to_make_speaker) do
     with {status, conf} when status in [:creator, :mod] <- Confs.get_conf_status(user_id),
          true <- ConfPermissions.asked_to_speak?(user_id_to_make_speaker, conf.id) do
@@ -79,6 +80,17 @@ defmodule Spek.Conf do
     })
   end
 
+  @spec create_conf(
+          String.t(),
+          String.t(),
+          String.t(),
+          boolean() | nil
+        ) ::
+          {:error, any()}
+          | {:ok,
+             %{
+               conf: atom() | %{:id => any(), :voice_server_id => any(), optional(any()) => any()}
+             }}
   def create_conf(
         user_id,
         conf_name,

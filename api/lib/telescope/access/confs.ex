@@ -10,29 +10,6 @@ defmodule Telescope.Access.Confs do
   alias Telescope.Schemas.ConfPermission
   alias Telescope.ConfPermissions
 
-  def get_conf_status(user_id) do
-    conf = Users.get_current_conf(user_id)
-
-    cond do
-      is_nil(conf) ->
-        {nil, nil}
-
-      conf.creator_id == user_id ->
-        {:creator, conf}
-
-      true ->
-        status =
-          case ConfPermissions.get_conf_perms(user_id, conf.id) do
-            %{is_mod: true} -> :mod
-            %{is_speaker: true} -> :speaker
-            %{asked_to_speak: true} -> :asked_to_speak
-            _ -> :listener
-          end
-
-        {status, conf}
-    end
-  end
-
   def all_confs() do
     Repo.all(Conf)
   end
@@ -127,5 +104,27 @@ defmodule Telescope.Access.Confs do
       ]
     )
     |> Repo.one()
+  end
+
+  @spec get_conf_status(any()) :: none() | no_return()
+  def get_conf_status(user_id) do
+    case Users.get_current_conf(user_id) do
+      nil ->
+        {nil, nil}
+
+      %{} = conf when conf.creator_id == user_id ->
+        {:creator, conf}
+
+      %{} = conf ->
+        status =
+          case ConfPermissions.get_conf_perms(user_id, conf.id) do
+            %{is_mod: true} -> :mod
+            %{is_speaker: true} -> :speaker
+            %{asked_to_speak: true} -> :asked_to_speak
+            _ -> :listener
+          end
+
+        {status, conf}
+    end
   end
 end

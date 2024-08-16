@@ -8,7 +8,7 @@ export const useMuteStore = create(
       muted: false,
     },
     (set) => ({
-      // use this directly if you what you are doing
+      // use this directly if you know what you are doing
       // otherwise use useSetMute hook
       setInternalMute: (muted: boolean) => {
         if (muted) {
