@@ -77,7 +77,7 @@ export const AudioRender: React.FC = () => {
                   setAudioRef(k, a);
                   audioRefs.current.push([k, a]);
                   a.srcObject = new MediaStream([consumer.track]);
-                  //   prevent modal from showing up more than once in a single render cycle
+                  // prevent modal from showing up more than once in a single render cycle
                   const notAllowedErrorContent =
                     notAllowedErrorCountRef.current;
                   a.play().catch((err) => {

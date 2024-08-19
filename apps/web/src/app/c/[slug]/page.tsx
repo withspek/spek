@@ -1,10 +1,12 @@
+import { MainLayout } from "@spek/ui";
+import { Metadata, ResolvingMetadata } from "next";
+
 import { baseUrl } from "@/utils/constants";
 import { defaultQueryFn } from "@/utils/defaultQueryFn";
-import { Metadata, ResolvingMetadata } from "next";
 import { CommunityPageController } from "./controller";
-import { MainLayout } from "@spek/ui";
 import { LeftPanel } from "@/components/Panels";
 import { WaitForWsAndAuth } from "@/components/auth/WaitForWsAndAuth";
+import { RightBlock } from "@/components/RightBlock";
 
 type Props = {
   params: { slug: string };
@@ -47,7 +49,7 @@ export async function generateMetadata(
 export default async function CommunityPage({ params }: Props) {
   return (
     <WaitForWsAndAuth>
-      <MainLayout leftPanel={<LeftPanel />}>
+      <MainLayout leftPanel={<LeftPanel />} rightPanel={<RightBlock />}>
         <CommunityPageController slug={params.slug} />
       </MainLayout>
     </WaitForWsAndAuth>

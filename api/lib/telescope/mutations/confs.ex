@@ -77,7 +77,7 @@ defmodule Telescope.Mutations.Confs do
 
     if(
       length(conf.people_preview_list) < 8 or
-        not is_nil(Enum.find(conf.people_preview_list, &(&1.id === user_id)))
+        is_nil(Enum.find(conf.people_preview_list, &(&1.id === user_id)))
     ) do
       list =
         [
