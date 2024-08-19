@@ -118,4 +118,8 @@ defmodule Telescope.Mutations.Channels do
     |> Repo.insert!(returning: true)
     |> Repo.preload(:creator)
   end
+
+  def delete_thread_by_id(thread_id) do
+    %Thread{id: thread_id} |> Repo.delete()
+  end
 end

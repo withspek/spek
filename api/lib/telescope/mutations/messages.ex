@@ -11,4 +11,8 @@ defmodule Telescope.Mutations.Messages do
     |> Repo.insert!(returning: true)
     |> Repo.preload(:user)
   end
+
+  def delete_thread_message_by_id(message_id) do
+    %Message{id: message_id} |> Repo.delete()
+  end
 end

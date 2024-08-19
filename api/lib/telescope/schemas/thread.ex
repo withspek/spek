@@ -42,4 +42,10 @@ defmodule Telescope.Schemas.Thread do
     |> cast_embed(:peoplePreviewList)
     |> validate_required([:channelId, :creatorId, :name, :peoplePreviewList])
   end
+
+  def edit_changeset(thread, params \\ %{}) do
+    thread
+    |> cast(params, [:name])
+    |> validate_required([:name])
+  end
 end

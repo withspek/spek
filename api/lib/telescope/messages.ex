@@ -4,4 +4,5 @@ defmodule Telescope.Messages do
 
   # MUTATIONS
   defdelegate create_thread_message(data), to: Telescope.Mutations.Messages
+  defdelegate delete_thread_message_by_id(message_id), to: Telescope.Mutations.Messages
 end

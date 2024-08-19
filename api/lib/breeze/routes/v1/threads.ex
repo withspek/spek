@@ -211,4 +211,21 @@ defmodule Breeze.Routes.V1.Threads do
       |> send_resp(401, Jason.encode!(%{error: "UNAUTHORIZED"}))
     end
   end
+
+  delete "/delete-message" do
+    %Plug.Conn{params: %{"messageId" => message_id}} = conn
+
+    resp =
+      case Messages.delete_thread_message_by_id(message_id) do
+        {:ok, _} ->
+          %{success: true}
+
+        {:error, changeset_error} ->
+          error = Spek.Utils.Errors.changeset_to_first_err_message(changeset_error)
+          %{error: error, success: true}
+      end
+
+    conn
+    |> send_resp(200, Jason.encode!(resp))
+  end
 end

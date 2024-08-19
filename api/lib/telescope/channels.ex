@@ -10,6 +10,7 @@ defmodule Telescope.Channels do
 
   # MUTATIONS
   defdelegate create_thread(data), to: Telescope.Mutations.Channels
+  defdelegate delete_thread_by_id(thread_id), to: Telescope.Mutations.Channels
   defdelegate delete_channel(channel_id, user_id), to: Telescope.Mutations.Channels
   defdelegate create_channel(data, user_id), to: Telescope.Mutations.Channels
   defdelegate join_channel(channel_id, user_id), to: Telescope.Mutations.Channels
