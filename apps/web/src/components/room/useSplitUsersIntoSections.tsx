@@ -1,8 +1,12 @@
 import { useConn } from "@/hooks/useConn";
+import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 import { useDeafStore } from "@/stores/useDeafStore";
 import { useMuteStore } from "@/stores/useMuteStore";
 import { Conf, ConfUser } from "@spek/client";
 import { Icon, UserAvatar } from "@spek/ui";
+import { confirmModal } from "../ConfirmModal";
+import { useContext } from "react";
+import { UserPreviewContext } from "@/contexts/UserPreviewContext";
 
 interface Props {
   conf: Conf;
@@ -22,6 +26,8 @@ export const useSplitUsersIntoSections = ({
   const conn = useConn();
   const { muted } = useMuteStore();
   const { deafened } = useDeafStore();
+  const { mutateAsync: askToSpeak } = useTypeSafeMutation("askToSpeak");
+  const { setData } = useContext(UserPreviewContext);
   const speakers: React.ReactNode[] = [];
   const askingToSpeak: React.ReactNode[] = [];
   const listeners: React.ReactNode[] = [];
@@ -44,7 +50,13 @@ export const useSplitUsersIntoSections = ({
     const isDeafened = conn.user.id === u.id ? deafened : deafMap[u.id];
 
     arr.push(
-      <div key={u.id} className="flex flex-col items-center">
+      <div
+        key={u.id}
+        className="flex flex-col items-center"
+        onClick={() => {
+          setData({ userId: u.id });
+        }}
+      >
         <UserAvatar
           activeSpeaker={
             canSpeak && !isMuted && !isDeafened && u.id in activeSpeakerMap
@@ -59,7 +71,14 @@ export const useSplitUsersIntoSections = ({
 
   if (canIAskToSpeak) {
     speakers.push(
-      <div className="flex justify-center items-center h-10 w-10 rounded-md cursor-pointer bg-primary-900">
+      <div
+        className="flex justify-center items-center h-10 w-10 rounded-md cursor-pointer bg-primary-900"
+        onClick={async () => {
+          confirmModal("Would you like to ask to speak?", async () => {
+            await askToSpeak([]);
+          });
+        }}
+      >
         <Icon name="megaphone" />
       </div>
     );

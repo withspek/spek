@@ -12,7 +12,6 @@ defmodule Telescope.Confs do
   defdelegate get_a_user_for_conf(conf_id), to: Telescope.Access.Confs
   defdelegate owner?(conf_id, user_id), to: Telescope.Access.Confs
   defdelegate search_name(start_of_name), to: Telescope.Access.Confs
-  @spec get_conf_status(any()) :: none() | no_return()
   defdelegate get_conf_status(user_id), to: Telescope.Access.Confs
 
   # MUTATIONS functions

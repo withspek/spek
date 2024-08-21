@@ -210,5 +210,11 @@ export const wrap = (connection: Connection) => ({
       communityId: string;
     }): Promise<CreateConfResponse> =>
       connection.send(`/api/v1/confs/create`, "POST", { ...data }),
+    askToSpeak: (): Promise<any> =>
+      connection.send(`/api/v1/confs/ask-to-speak`, "POST"),
+    addSpeaker: (userId: string): Promise<any> =>
+      connection.send(`/api/v1/confs/add-speaker`, "POST", { userId }),
+    setListener: (userId: string): Promise<any> =>
+      connection.send(`/api/v1/confs/set-listener`, "POST", { userId }),
   },
 });

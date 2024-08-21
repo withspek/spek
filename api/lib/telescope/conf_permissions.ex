@@ -51,7 +51,10 @@ defmodule Telescope.ConfPermissions do
   end
 
   def get_conf_perms(user_id, conf_id) do
-    from(cp in ConfPermission, where: cp.user_id == ^user_id and cp.conf_id == ^conf_id, limit: 1)
+    from(cp in ConfPermission,
+      where: cp.user_id == ^user_id and cp.conf_id == ^conf_id,
+      limit: 1
+    )
     |> Repo.one()
   end
 
@@ -61,7 +64,7 @@ defmodule Telescope.ConfPermissions do
 
   def set_speaker(user_id, conf_id, speaker?, returning \\ false) do
     upsert(
-      %{conf_id: conf_id, userId: user_id, is_speaker: speaker?},
+      %{conf_id: conf_id, user_id: user_id, is_speaker: speaker?},
       [is_speaker: speaker?],
       returning
     )

@@ -11,55 +11,123 @@ defmodule Spek.Conf do
     end
   end
 
-  defp internal_set_listener(user_id_to_make_listener, conf_id) do
-    ConfPermissions.make_listener(user_id_to_make_listener, conf_id)
-    ConfSession.remove_speaker(conf_id, user_id_to_make_listener)
+  ####################################################################
+  ## ROLE
+
+  @doc """
+  sets the role of the user in the conf that they're in. Authorization
+  to do so is pulled from the options `:by` keyword.
+
+  """
+  def set_role(user_id, role, opts) do
+    conf_id = Users.get_current_conf_id(user_id)
+
+    case role do
+      _ when is_nil(conf_id) ->
+        :noop
+
+      :listener ->
+        set_listener(conf_id, user_id, opts[:by])
+
+      :speaker ->
+        set_speaker(conf_id, user_id, opts[:by])
+
+      :hand_raised ->
+        set_raised_hand(conf_id, user_id, opts[:by])
+    end
   end
 
-  def set_listener(user_id, user_id_to_set_listener) do
-    if user_id == user_id_to_set_listener do
-      internal_set_listener(
-        user_id_to_set_listener,
-        Users.get_current_conf_id(user_id_to_set_listener)
-      )
-    else
-      {status, conf} = Confs.get_conf_status(user_id_to_set_listener)
+  ####################################################################
+  ## listener
 
-      is_creator = user_id_to_set_listener == not is_nil(conf)
+  # you are always allowed to set yourself as listener
+  defp set_listener(conf_id, user_id, user_id) do
+    internal_set_listener(user_id, conf_id)
+  end
 
-      if not is_creator and (status == :creator or status == :mod) do
-        internal_set_listener(
-          user_id_to_set_listener,
-          Users.get_current_conf_id(user_id_to_set_listener)
-        )
+  defp set_listener(conf_id, user_id, setter_id) do
+    # TODO: refactor this to be simpler.  The list of
+    # creators and mods should be in the preloads of the conf.
+    with {auth, _} <- Confs.get_conf_status(setter_id),
+         {role, _} <- Confs.get_conf_status(user_id) do
+      if auth == :creator or (auth == :mod and role not in [:creator, :mod]) do
+        internal_set_listener(user_id, conf_id)
       end
     end
   end
 
-  def internal_set_speaker(user_id_to_make_speaker, conf_id, true) do
-    case ConfPermissions.set_speaker(user_id_to_make_speaker, conf_id, true) do
+  defp internal_set_listener(user_id, conf_id) do
+    ConfPermissions.make_listener(user_id, conf_id)
+    Pulse.ConfSession.remove_speaker(conf_id, user_id)
+  end
+
+  ####################################################################
+  ## speaker
+
+  defp set_speaker(nil, _, _), do: :noop
+
+  defp set_speaker(conf_id, user_id, setter_id) do
+    if not ConfPermissions.asked_to_speak?(user_id, conf_id) do
+      :noop
+    else
+      case Confs.get_conf_status(setter_id) do
+        {_, nil} ->
+          :noop
+
+        {:mod, _} ->
+          internal_set_speaker(user_id, conf_id)
+
+        {:creator, _} ->
+          internal_set_speaker(user_id, conf_id)
+
+        {_, _} ->
+          :noop
+      end
+    end
+  end
+
+  # only you can raise your own hand
+  defp set_raised_hand(conf_id, user_id, setter_id) do
+    if user_id == setter_id do
+      if Pulse.ConfSession.get(conf_id, :auto_speaker) do
+        internal_set_speaker(user_id, conf_id)
+      else
+        case ConfPermissions.ask_to_speak(user_id, conf_id) do
+          {:ok, %{is_speaker: true}} ->
+            internal_set_speaker(user_id, conf_id)
+
+          _ ->
+            Pulse.ConfSession.broadcast_ws(
+              conf_id,
+              %{
+                op: "hand_raised",
+                d: %{userId: user_id, confId: conf_id}
+              }
+            )
+        end
+      end
+    end
+  end
+
+  @spec internal_set_speaker(any, any) :: nil | :ok | {:err, {:error, :not_found}}
+  defp internal_set_speaker(user_id, conf_id) do
+    case ConfPermissions.set_speaker(user_id, conf_id, true) do
       {:ok, _} ->
-        ConfSession.add_speaker(
+        # kind of horrible to have to make a double genserver call
+        # here, we'll have to think about how this works (who owns muting)
+        Pulse.ConfSession.add_speaker(
           conf_id,
-          user_id_to_make_speaker,
-          Pulse.UserSession.get(user_id_to_make_speaker, :muted),
-          Pulse.UserSession.get(user_id_to_make_speaker, :deafened)
+          user_id,
+          Pulse.UserSession.get(user_id, :muted),
+          Pulse.UserSession.get(user_id, :deafened)
         )
 
-      error ->
-        {:err, error}
+      err ->
+        {:err, err}
     end
   catch
     _, _ ->
       {:error, "conf not found"}
-  end
-
-  @spec make_speaker(any(), any()) :: none() | no_return()
-  def make_speaker(user_id, user_id_to_make_speaker) do
-    with {status, conf} when status in [:creator, :mod] <- Confs.get_conf_status(user_id),
-         true <- ConfPermissions.asked_to_speak?(user_id_to_make_speaker, conf.id) do
-      internal_set_speaker(user_id_to_make_speaker, conf.id, true)
-    end
   end
 
   def join_voice_conf(user_id, conf, speaker? \\ nil) do
@@ -216,5 +284,16 @@ defmodule Spek.Conf do
     end
   catch
     _, _ -> {:error, "that conf does not exist"}
+  end
+
+  def change_mod(user_id, user_id_to_change, value) do
+    if conf = Confs.get_conf_by_creator_id(user_id) do
+      ConfPermissions.set_is_mod(user_id_to_change, conf.id, value)
+
+      Pulse.ConfSession.broadcast_ws(conf.id, %{
+        op: "mod_changed",
+        d: %{confId: conf.id, userId: user_id_to_change}
+      })
+    end
   end
 end

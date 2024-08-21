@@ -3,10 +3,13 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 import { useTypeSafeUpdateQuery } from "./useTypeSafeUpdateQuery";
 import { showToast } from "@spek/ui";
+import { useSetMute } from "./useSetMute";
+import { mergeConfPermissions } from "@/webrtc/utils/mergeConfPermission";
 
 export const useMainWsHandler = () => {
   const { push } = useRouter();
   const { conn } = useContext(WebSocketContext);
+  const setMute = useSetMute();
   const updateQuery = useTypeSafeUpdateQuery();
 
   useEffect(() => {
@@ -99,6 +102,101 @@ export const useMainWsHandler = () => {
           );
         }
       ),
+
+      conn.addListener<any>("speaker_added", ({ userId, confId, muteMap }) => {
+        // Mute user upon added as speaker
+        if (conn.user.id == userId) {
+          setMute(true);
+        }
+
+        updateQuery(["joinConfAndGetInfo", confId], (data) =>
+          !data || "error" in data
+            ? data
+            : {
+                ...data,
+                muteMap,
+                users: data.users.map((u) =>
+                  u.id === userId
+                    ? {
+                        ...u,
+                        conf_permissions: mergeConfPermissions(
+                          u.conf_permissions,
+                          { is_speaker: true }
+                        ),
+                      }
+                    : u
+                ),
+              }
+        );
+      }),
+
+      conn.addListener<any>(
+        "speaker_removed",
+        ({ userId, confId, muteMap }) => {
+          updateQuery(["joinConfAndGetInfo", confId], (data) =>
+            !data || "error" in data
+              ? data
+              : {
+                  ...data,
+                  muteMap,
+                  users: data.users.map((u) =>
+                    u.id === userId
+                      ? {
+                          ...u,
+                          conf_permissions: mergeConfPermissions(
+                            u.conf_permissions,
+                            { is_speaker: false, asked_to_speak: false }
+                          ),
+                        }
+                      : u
+                  ),
+                }
+          );
+        }
+      ),
+
+      conn.addListener<any>("hand_raised", ({ userId, confId }) => {
+        updateQuery(["joinConfAndGetInfo", confId], (data) =>
+          !data || "error" in data
+            ? data
+            : {
+                ...data,
+                users: data.users.map((u) =>
+                  u.id === userId
+                    ? {
+                        ...u,
+                        conf_permissions: mergeConfPermissions(
+                          u.conf_permissions,
+                          { asked_to_speak: true }
+                        ),
+                      }
+                    : u
+                ),
+              }
+        );
+      }),
+
+      conn.addListener<any>("mute_changed", ({ userId, value, confId }) => {
+        updateQuery(["joinConfAndGetInfo", confId], (data) => {
+          if (data && "error" in data) {
+            return data;
+          }
+
+          let muteMap = data.muteMap;
+
+          if (value) {
+            muteMap = { ...data.muteMap, [userId]: true };
+          } else {
+            const { [userId]: _, ...newMuteMap } = data.muteMap;
+            muteMap = newMuteMap;
+          }
+
+          return {
+            ...data,
+            muteMap,
+          };
+        });
+      }),
     ];
 
     return () => {

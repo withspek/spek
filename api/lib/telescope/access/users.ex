@@ -90,7 +90,7 @@ defmodule Telescope.Access.Users do
   end
 
   def get_current_conf(user_id) do
-    conf_id = get_current_conf(user_id)
+    conf_id = get_current_conf_id(user_id)
 
     case conf_id do
       nil -> nil

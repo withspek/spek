@@ -21,7 +21,7 @@ defmodule Telescope.Schemas.ConfPermission do
 
   def insert_changeset(confPerm, attrs) do
     confPerm
-    |> cast(attrs, [:user_id, :conf_id, :is_spek, :is_mod, :asked_to_speak])
+    |> cast(attrs, [:user_id, :conf_id, :is_speaker, :is_mod, :asked_to_speak])
     |> validate_required([:user_id, :conf_id])
   end
 end

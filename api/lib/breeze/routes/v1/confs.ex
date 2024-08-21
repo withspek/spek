@@ -92,4 +92,45 @@ defmodule Breeze.Routes.V1.Confs do
     conn
     |> send_resp(200, Jason.encode!(conf_id))
   end
+
+  post "/add-speaker" do
+    %Plug.Conn{params: %{"userId" => user_id_to_make_speaker}} = conn
+
+    user_id = conn.assigns.user_id
+
+    Spek.Conf.set_role(user_id_to_make_speaker, :speaker, by: user_id)
+
+    conn
+    |> send_resp(200, Jason.encode!(%{success: true}))
+  end
+
+  post "/ask-to-speak" do
+    user_id = conn.assigns.user_id
+
+    Spek.Conf.set_role(user_id, :hand_raised, by: user_id)
+
+    conn
+    |> send_resp(200, Jason.encode!(%{success: true}))
+  end
+
+  post "/set-listener" do
+    %Plug.Conn{params: %{"userId" => user_id_make_listener}} = conn
+
+    user_id = conn.assigns.user_id
+
+    Spek.Conf.set_role(user_id_make_listener, :listener, by: user_id)
+
+    conn
+    |> send_resp(200, Jason.encode!("Hello world"))
+  end
+
+  post "/:id/change-conf-creator" do
+    conn
+    |> send_resp(200, Jason.encode!("hello world"))
+  end
+
+  post "/:id/change-mod-status" do
+    conn
+    |> send_resp(200, Jason.encode!("Hello world"))
+  end
 end

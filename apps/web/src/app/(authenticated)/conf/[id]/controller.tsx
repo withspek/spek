@@ -12,6 +12,7 @@ import { useCurrentConfInfo } from "@/hooks/useCurrentConfInfo";
 import { useSetMute } from "@/hooks/useSetMute";
 import { useDeafStore } from "@/stores/useDeafStore";
 import { useSetDeafen } from "@/hooks/useSetDeafen";
+import { RoomUserPreviewModal } from "@/components/room/RoomUserPreviewModal";
 
 interface Props {
   id: string;
@@ -46,6 +47,7 @@ export const ConfController: React.FC<Props> = ({ id }) => {
           with <span className="text-primary-100">{roomCreator?.username}</span>
         </p>
       </div>
+      <RoomUserPreviewModal {...data} />
       <div className="flex flex-col flex-1">
         <RoomUsersPanel {...data} />
       </div>
