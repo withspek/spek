@@ -1,4 +1,7 @@
 "use client";
+import { useState } from "react";
+import { Button } from "@spek/ui";
+import { useRouter } from "next/navigation";
 
 import { useConn } from "@/hooks/useConn";
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
@@ -7,11 +10,8 @@ import { ThreadsFeed } from "@/components/community/threads-feed";
 import { MembersList } from "@/components/community/members-list";
 import { ActionButton } from "./action-button";
 import { SettingsIcon } from "@/icons";
-import { useRouter } from "next/navigation";
 import { ChannelsList } from "@/components/community/ChannelsList";
 import { CenterLoader } from "@/components/CenterLoader";
-import { useState } from "react";
-import { Button } from "@spek/ui";
 import { CreateRoomModal } from "@/components/room/CreateRoomModal";
 import { CreateInput } from "@/components/community/create-input";
 import { RoomsFeed } from "@/components/community/rooms-feed";
@@ -79,9 +79,11 @@ export const CommunityPageController: React.FC<Props> = ({ slug }: Props) => {
               {
                 content: (
                   <>
-                    <Button type="button" onClick={handleCreateRoomModal}>
-                      New room
-                    </Button>
+                    {user && data.community.isMember ? (
+                      <Button type="button" onClick={handleCreateRoomModal}>
+                        New room
+                      </Button>
+                    ) : null}
                     <RoomsFeed communityId={data.community.id} />
                     {createRoomModal && (
                       <CreateRoomModal

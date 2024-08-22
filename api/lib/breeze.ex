@@ -35,6 +35,7 @@ defmodule Breeze do
   forward("/api/v1/confs", to: Routes.V1.Confs)
 
   forward("/misc", to: Routes.Misc)
+  forward("/api/public", to: Routes.Public)
 
   match _ do
     conn

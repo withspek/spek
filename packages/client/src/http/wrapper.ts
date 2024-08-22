@@ -92,7 +92,10 @@ export const wrap = (connection: Connection) => ({
       confs: Conf[];
       nextCursor: number | null;
     }> =>
-      connection.send(`/api/v1/confs/${communityId}?cursor=${cursor}`, "GET"),
+      connection.send(
+        `/api/public/confs/${communityId}?cursor=${cursor}`,
+        "GET"
+      ),
     joinConfAndGetInfo: (confId: string): Promise<JoinConfAndGetInfoResponse> =>
       connection.send(`/api/v1/confs/${confId}/join_and_get_info`, "POST"),
   },
