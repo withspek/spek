@@ -46,9 +46,15 @@ export const LeftPanel: React.FC = () => {
           <Icon name="search" onClick={() => setOpen(!open)} />
         </Tooltip>
 
-        <Tooltip content={"Discover"} placement="right">
-          <Icon name="compass" onClick={() => setOpen(!open)} />
-        </Tooltip>
+        <Link
+          className={`${pathname == "/discover" ? "text-accent" : ""}`}
+          href={"/discover"}
+          prefetch={true}
+        >
+          <Tooltip content={"Discover"} placement="right">
+            <Icon name="compass" />
+          </Tooltip>
+        </Link>
 
         <Link
           className={`${pathname == "/direct" ? "text-accent" : ""}`}

@@ -109,7 +109,7 @@ export type SearchReponse = {
   users: User[];
   threads: Thread[];
   communities: Community[];
-  items: User[] & Thread[] & Community[];
+  items: User[] | Thread[] | Community[];
 };
 
 export type Lodge = {

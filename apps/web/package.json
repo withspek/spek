@@ -39,6 +39,7 @@
     "slate": "^0.103.0",
     "slate-history": "^0.100.0",
     "slate-react": "^0.107.1",
+    "use-debounce": "^10.0.0",
     "wakelock-lazy-polyfill": "^1.0.0",
     "yup": "^1.4.0",
     "zustand": "^4.5.2"
