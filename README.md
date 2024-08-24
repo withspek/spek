@@ -1,5 +1,5 @@
 <a href="https://withspek.netlify.app"><p align="center">
-<img height=100 src="https://raw.githubusercontent.com/withspek/spek/staging/.assets/logo.svg"/>
+<img height=100 src="https://raw.githubusercontent.com/withspek/spek/staging/.assets/BlackLogo.svg"/>
 
 </p></a>
 <p align="center">
