@@ -93,6 +93,7 @@ export const DiscoverSearchController: React.FC = () => {
                         index,
                         item,
                       })}
+                      key={item.id}
                     >
                       <UserAvatar user={item} size="mdLg" />
                       <div className="ml-2">
@@ -110,6 +111,7 @@ export const DiscoverSearchController: React.FC = () => {
                         index,
                         item,
                       })}
+                      key={item.id}
                     >
                       <div className="text-primary-100">{item.name}</div>
                       <div className="text-primary-300">{item.description}</div>
@@ -122,6 +124,7 @@ export const DiscoverSearchController: React.FC = () => {
                         index,
                         item,
                       })}
+                      key={item.id}
                     >
                       <div className="text-primary-100">{item.name}</div>
                       <div className="text-primary-300">
