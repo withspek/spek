@@ -164,7 +164,10 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/api/v1/threads/${data.threadId}/send-message`, "POST", {
         ...data,
       }),
-
+    deleteThreadMessage: (messageId: string): Promise<any> =>
+      connection.send(`/api/v1/threads/delete-message`, "DELETE", {
+        messageId,
+      }),
     subscribeToThread: (threadId: string): Promise<{ success: boolean }> =>
       connection.send(`/api/v1/threads/subscribe`, "POST", { threadId }),
     unsubscribeToThread: (threadId: string): Promise<{ success: boolean }> =>

@@ -218,7 +218,7 @@ defmodule Breeze.Routes.V1.Threads do
     resp =
       case Messages.delete_thread_message_by_id(message_id) do
         {:ok, _} ->
-          %{success: true}
+          %{success: true, messageId: message_id}
 
         {:error, changeset_error} ->
           error = Spek.Utils.Errors.changeset_to_first_err_message(changeset_error)
