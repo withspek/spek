@@ -25,7 +25,9 @@ export const DiscoverSearchController: React.FC = () => {
     enabled = true;
   }
 
-  const { data } = useTypeSafeQuery(["search", text], { enabled }, [text]);
+  const { data, isLoading } = useTypeSafeQuery(["search", text], { enabled }, [
+    text,
+  ]);
 
   const { push } = useRouter();
 
@@ -75,6 +77,7 @@ export const DiscoverSearchController: React.FC = () => {
           <SearchBar
             {...getInputProps()}
             placeholder="Search communities, users and threads.."
+            loading={isLoading}
           />
           <ul
             className="absolute w-full bg-primary-800 rounded-b-md overflow-y-auto"

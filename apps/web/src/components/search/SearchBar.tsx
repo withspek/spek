@@ -1,17 +1,19 @@
 import { Input } from "@/ui/input";
-import { Icon } from "@spek/ui";
+import { Icon, Spinner } from "@spek/ui";
 import React from "react";
 
 export interface SearchBarProps
   extends React.ComponentPropsWithoutRef<"input"> {
   inputClassName?: string;
   mobile?: boolean;
+  loading?: boolean;
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
   className = "",
   inputClassName = "",
   mobile = false,
+  loading = false,
   ...props
 }) => {
   return (
@@ -25,6 +27,11 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         </div>
       )}
       <Input className={`${inputClassName} pl-0`} {...props} />
+      {loading && (
+        <div className="h-full mx-4 flex items-center pointer-events-none">
+          <Spinner className="h-5 w-5" />
+        </div>
+      )}
     </div>
   );
 };
