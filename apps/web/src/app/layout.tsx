@@ -6,6 +6,11 @@ import { ProgressBar } from "@/components/ProgressBar";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://withspek.netlify.app"),
+  icons: {
+    icon: "/logo.svg",
+    shortcut: "/logo.svg",
+    apple: "/logo.svg",
+  },
   title: { default: "Spek - Powerful commmunities", template: "%s / Spek" },
   description: "Real-time developer communities open to the public internet.",
 };
