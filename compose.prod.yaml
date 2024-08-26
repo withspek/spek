@@ -3,6 +3,7 @@ services:
     networks:
       - speknet
     image: caddy:latest
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
