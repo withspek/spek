@@ -42,7 +42,7 @@ const Message: React.FC<{
 
   return (
     <div
-      className={`group relative hover:bg-primary-900 cursor-pointer flex w-full items-center rounded-md px-2 py-1 gap-3`}
+      className={`group relative hover:bg-primary-900 cursor-pointer flex w-full items-start rounded-md px-2 py-1 gap-3`}
     >
       <ApiPreloadLink route="profile" data={{ id: message.user.id }}>
         <Avatar
