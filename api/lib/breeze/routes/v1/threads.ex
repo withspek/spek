@@ -212,20 +212,67 @@ defmodule Breeze.Routes.V1.Threads do
     end
   end
 
-  delete "/delete-message" do
-    %Plug.Conn{params: %{"messageId" => message_id}} = conn
+  delete "/:id/messages/delete" do
+    %Plug.Conn{params: %{"messageId" => message_id, "cursor" => cursor, "id" => thread_id}} = conn
 
     resp =
       case Messages.delete_thread_message_by_id(message_id) do
         {:ok, _} ->
-          %{success: true, messageId: message_id}
+          ThreadSession.broadcast_ws(thread_id, %{
+            op: "delete_thread_message",
+            d: %{messageId: message_id, cursor: cursor}
+          })
+
+          %{success: true}
 
         {:error, changeset_error} ->
           error = Spek.Utils.Errors.changeset_to_first_err_message(changeset_error)
-          %{error: error, success: true}
+          %{error: error, success: false}
       end
 
     conn
     |> send_resp(200, Jason.encode!(resp))
+  end
+
+  post "/:id/messages/create-thread" do
+    %Plug.Conn{
+      params: %{
+        "id" => _thread_id,
+        "messageId" => message_id,
+        "channelId" => channel_id,
+        "communityId" => community_id
+      }
+    } = conn
+
+    if Map.has_key?(conn.assigns, :user_id) do
+      user_id = conn.assigns.user_id
+
+      thread = Messages.create_thread_from_message(message_id, user_id, channel_id, community_id)
+
+      ThreadSession.start_supervised(thread_id: thread.id)
+
+      conn
+      |> send_resp(200, Jason.encode!(%{thread: thread}))
+    else
+      conn
+      |> send_resp(402, Jason.encode!(%{error: "UNAUTHORIZED"}))
+    end
+  end
+
+  put "/:id/messages/update" do
+    %Plug.Conn{params: %{"id" => _thread_id, "messageId" => message_id, "text" => new_text}} =
+      conn
+
+    if Map.has_key?(conn.assigns, :user_id) do
+      user_id = conn.assigns.user_id
+
+      message = Messages.update_message(user_id, message_id, new_text)
+
+      conn
+      |> send_resp(200, Jason.encode!(%{message: message}))
+    else
+      conn
+      |> send_resp(402, Jason.encode!(%{error: "UNAUTHORIZED"}))
+    end
   end
 end

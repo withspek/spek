@@ -100,12 +100,13 @@ defmodule Telescope.Access.Channels do
       as: :sub,
       on: sub.threadId == th.id and sub.subscriberId == ^user_id
     )
-    |> select_merge([sub: sub], %{
-      youSubscribed: not is_nil(sub.subscriberId)
+    |> join(:inner, [th], u in User, as: :creator, on: th.creatorId == u.id)
+    |> select_merge([sub: sub, creator: c], %{
+      youSubscribed: not is_nil(sub.subscriberId),
+      creator: c
     })
     |> limit([th], 1)
     |> Repo.one()
-    |> Repo.preload(:creator)
   end
 
   def search_thread_name(start_of_name) do

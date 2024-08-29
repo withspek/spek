@@ -49,6 +49,16 @@ export const useMainWsHandler = () => {
         }));
       }),
 
+      conn.addListener<any>(
+        "delete_thread_message",
+        ({ messageId, cursor }) => {
+          updateQuery(["getThreadMessages", cursor], (x) => ({
+            messages: x.messages.filter((m) => m.id !== messageId),
+            nextCursor: x.nextCursor,
+          }));
+        }
+      ),
+
       conn.addListener<any>("new_lodge_message", ({ message }) => {
         updateQuery(["getLodgeMessages", 0], (x) => ({
           messages: [message, ...x.messages],

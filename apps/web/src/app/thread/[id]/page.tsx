@@ -16,10 +16,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id;
 
   const thread: Thread = await defaultQueryFn({
-    queryKey: `/api/v1/threads/${id}`,
+    queryKey: `api/v1/threads/${id}`,
   });
 
-  const ogImage = `${WEBAPP_URL}/thread/og?title=${thread.name}&creatorAvatar=${thread.creator.avatarUrl}`;
+  const ogImage = `${WEBAPP_URL}/thread/og?title=${thread.name}`;
 
   return {
     title: thread.name,
@@ -37,7 +37,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     twitter: {
       card: "summary_large_image",
       title: thread.name,
-      creator: thread.creator.displayName,
       images: [ogImage],
     },
   };

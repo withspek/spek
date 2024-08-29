@@ -4,7 +4,6 @@ import { NextRequest } from "next/server";
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
   const threadTitle = searchParams.get("title");
-  const creatorAvatar = searchParams.get("creatorAvatar");
 
   return new ImageResponse(
     (
@@ -21,13 +20,6 @@ export async function GET(req: NextRequest) {
           backgroundColor: "#09090b",
         }}
       >
-        <img
-          src={creatorAvatar!}
-          alt={threadTitle!}
-          width={96}
-          height={96}
-          style={{ borderRadius: "100%", marginLeft: 190, marginRight: 190 }}
-        />
         <div
           style={{
             marginLeft: 190,

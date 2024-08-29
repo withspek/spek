@@ -21,4 +21,9 @@ defmodule Telescope.Access.Messages do
     {Enum.slice(messages, 0, -1 + @fetch_limit),
      if(length(messages) == @fetch_limit, do: -1 + offset + @fetch_limit, else: nil)}
   end
+
+  def get_message_by_id(message_id) do
+    from(m in Message, where: m.id == ^message_id, limit: 1)
+    |> Repo.one()
+  end
 end

@@ -1,16 +1,9 @@
-import { Avatar, Icon, showToast } from "@spek/ui";
-import { format } from "date-fns";
 import { useInView } from "react-intersection-observer";
-import { Message as ThreadMessage } from "@spek/client";
-import React, { useEffect, useMemo, useState } from "react";
-import Markdor from "@withspek/markdor";
+import React, { useEffect, useState } from "react";
 
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
-import { ApiPreloadLink } from "../ApiPreloadLink";
-import { confirmModal } from "../ConfirmModal";
 import { useConn } from "@/hooks/useConn";
-import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
-import { useTypeSafeUpdateQuery } from "@/hooks/useTypeSafeUpdateQuery";
+import { Message } from "./Message";
 
 interface MessagesListProps {
   threadId: string;
@@ -24,75 +17,6 @@ interface PageProps {
   isLastPage: boolean;
   isOnlyPage: boolean;
 }
-
-const Message: React.FC<{
-  message: ThreadMessage;
-  iAmMod: boolean;
-  userId: string;
-  currentCursor: number;
-}> = ({ message, iAmMod, userId, currentCursor }) => {
-  const dt = useMemo(
-    () => new Date(message.inserted_at),
-    [message.inserted_at]
-  );
-  const { mutateAsync: deleteThreadMessage } = useTypeSafeMutation(
-    "deleteThreadMessage"
-  );
-  const updateQuery = useTypeSafeUpdateQuery();
-
-  return (
-    <div
-      className={`group relative hover:bg-primary-900 cursor-pointer flex w-full items-start rounded-md px-2 py-1 gap-3`}
-    >
-      <ApiPreloadLink route="profile" data={{ id: message.user.id }}>
-        <Avatar
-          imageSrc={message.user.avatarUrl}
-          size={"md"}
-          alt={message.user.displayName}
-        />
-      </ApiPreloadLink>
-      <div className="flex flex-col gap-1">
-        <p className="font-bold text-sm">
-          {message.user.displayName}
-          <span className="font-normal ml-3 text-sm">
-            {format(dt, "MMM dd HH:mm")}
-          </span>
-        </p>
-        {Markdor.markdownToReact(message.text)}
-      </div>
-      {iAmMod || userId == message.user.id ? (
-        <div className="hidden absolute group-hover:flex gap-2 py-1 px-3 border-primary-700 border bg-primary-800 -top-2 right-0 rounded-md">
-          <Icon name="pencil-line" size={16} />
-          <Icon name="plug-zap" size={16} />
-          <Icon
-            name="trash"
-            className="text-red-400"
-            size={16}
-            onClick={() => {
-              confirmModal("Are you want to delete this message?", async () => {
-                const resp: any = await deleteThreadMessage([message.id]);
-
-                if (!resp.success && "error" in resp) {
-                  showToast(resp.error, "error");
-                } else if (resp.success) {
-                  updateQuery(
-                    ["getThreadMessages", currentCursor],
-                    (oldData) => ({
-                      messages: oldData.messages.filter(
-                        (m) => m.id !== resp.messageId
-                      ),
-                      nextCursor: oldData.nextCursor,
-                    })
-                  );
-                }
-              });
-            }}
-          />
-        </div>
-      ) : null}
-    </div>
-  );
-};
 
 const Page = ({
   threadId,
@@ -131,9 +55,9 @@ const Page = ({
         <Message
           key={m.id}
           message={m}
-          iAmMod={currentThread?.creator.id === userId}
           userId={userId}
           currentCursor={cursor}
+          currentThread={currentThread!}
         />
       ))}
       {data.nextCursor && isLastPage ? (

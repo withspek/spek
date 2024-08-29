@@ -21,7 +21,6 @@ defmodule Telescope.Schemas.Thread do
     end
   end
 
-  @derive {Jason.Encoder, only: ~w(id name creator youSubscribed peoplePreviewList inserted_at)a}
   @primary_key {:id, :binary_id, []}
   schema "threads" do
     field(:name, :string)
@@ -47,5 +46,18 @@ defmodule Telescope.Schemas.Thread do
     thread
     |> cast(params, [:name])
     |> validate_required([:name])
+  end
+
+  defimpl Jason.Encoder do
+    @fields ~w(
+      id name creator channelId communityId youSubscribed
+      peoplePreviewList inserted_at updated_at
+    )a
+
+    def encode(user, opts) do
+      user
+      |> Map.take(@fields)
+      |> Jason.Encoder.encode(opts)
+    end
   end
 end
