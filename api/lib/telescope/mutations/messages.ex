@@ -40,6 +40,7 @@ defmodule Telescope.Mutations.Messages do
     people_inside = [
       %{
         id: user.id,
+        avatarUrl: user.id,
         username: user.username,
         displayName: user.displayName,
         bio: user.bio

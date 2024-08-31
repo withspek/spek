@@ -12,7 +12,7 @@ export const HomeController: React.FC<ControllerProps> = () => {
   return (
     <div className="flex flex-col flex-1">
       <h2>Feed</h2>
-      <div className="flex flex-col gap-4 mt-3">
+      <div className="flex flex-col gap-4 my-3">
         {cursors.map((c, i) => (
           <ThreadsList
             key={c}
