@@ -7,6 +7,10 @@
 # The directory Mix downloads your dependencies sources to.
 /deps/
 
+# Language servers
+.elixir_ls
+.lexical
+
 .envrc
 spek.env
 .env

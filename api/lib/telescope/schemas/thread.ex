@@ -24,7 +24,8 @@ defmodule Telescope.Schemas.Thread do
   @primary_key {:id, :binary_id, []}
   schema "threads" do
     field(:name, :string)
-    field(:youSubscribed, :boolean, default: false, virtual: true)
+    field(:you_subscribed, :boolean, default: false, virtual: true)
+    field(:unread_messages_count, :integer, default: 0, virtual: true)
 
     belongs_to(:creator, User, foreign_key: :creatorId, type: :binary_id)
     belongs_to(:channel, Channel, foreign_key: :channelId, type: :binary_id)
@@ -50,7 +51,7 @@ defmodule Telescope.Schemas.Thread do
 
   defimpl Jason.Encoder do
     @fields ~w(
-      id name creator channelId communityId youSubscribed
+      id name creator channelId communityId you_subscribed
       peoplePreviewList inserted_at updated_at
     )a
 

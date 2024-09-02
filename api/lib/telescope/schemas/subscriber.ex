@@ -7,6 +7,8 @@ defmodule Telescope.Schemas.Subscriber do
 
   @primary_key {:id, :binary_id, []}
   schema "subscribers" do
+    field(:last_message_id, :binary_id)
+
     # the thread you are subscribed to
     belongs_to(:thread, Thread, foreign_key: :threadId, type: :binary_id)
     # the person who is subscribed

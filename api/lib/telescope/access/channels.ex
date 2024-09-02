@@ -102,7 +102,7 @@ defmodule Telescope.Access.Channels do
     )
     |> join(:inner, [th], u in User, as: :creator, on: th.creatorId == u.id)
     |> select_merge([sub: sub, creator: c], %{
-      youSubscribed: not is_nil(sub.subscriberId),
+      you_subscribed: not is_nil(sub.subscriberId),
       creator: c
     })
     |> limit([th], 1)
