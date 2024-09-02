@@ -2,7 +2,6 @@ import { useInView } from "react-intersection-observer";
 import React, { useEffect, useState } from "react";
 
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
-import { useConn } from "@/hooks/useConn";
 import { Message } from "./Message";
 
 interface MessagesListProps {
@@ -11,7 +10,6 @@ interface MessagesListProps {
 
 interface PageProps {
   threadId: string;
-  userId: string;
   cursor: number;
   onLoadMore: (cursor: number) => void;
   isLastPage: boolean;
@@ -20,7 +18,6 @@ interface PageProps {
 
 const Page = ({
   threadId,
-  userId,
   cursor,
   isLastPage,
   isOnlyPage,
@@ -55,7 +52,6 @@ const Page = ({
         <Message
           key={m.id}
           message={m}
-          userId={userId}
           currentCursor={cursor}
           currentThread={currentThread!}
         />
@@ -82,13 +78,12 @@ Page.displayName = "Page";
 export const MessagesList: React.FC<MessagesListProps> = ({ threadId }) => {
   const [cursors, setCursors] = useState<number[]>([0]);
   const { ref, inView } = useInView({ threshold: 0 });
-  const { user } = useConn();
 
   useEffect(() => {
     if (!inView) {
       window.scroll({ behavior: "smooth", top: 0 });
     }
-  }, []);
+  }, [inView]);
 
   return (
     <div className="flex flex-1 gap-4 w-full justify-end overflow-y-auto">
@@ -96,7 +91,6 @@ export const MessagesList: React.FC<MessagesListProps> = ({ threadId }) => {
         {cursors.map((c, i) => (
           <Page
             key={c}
-            userId={user.id}
             cursor={c}
             threadId={threadId}
             onLoadMore={(nc) => setCursors([...cursors, nc])}
