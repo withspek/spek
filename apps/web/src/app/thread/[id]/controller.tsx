@@ -61,7 +61,7 @@ export const ThreadPageController: React.FC<ThreadPageControllerProps> = ({
         ) : (
           <div className="px-3">
             <Link
-              href={`/login`}
+              href={`/`}
               className="flex justify-center gap-5 items-center bg-primary-800 hover:bg-primary-700 px-3 py-3 text-lg text-center rounded-md cursor-pointer"
             >
               <Icon name="rocket" />
