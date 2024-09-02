@@ -42,10 +42,6 @@ export const LeftPanel: React.FC = () => {
           </Tooltip>
         </Link>
 
-        <Tooltip content={"Search"} placement="right">
-          <Icon name="search" onClick={() => setOpen(!open)} />
-        </Tooltip>
-
         <Link
           className={`${pathname == "/discover" ? "text-accent" : ""}`}
           href={"/discover"}
@@ -54,6 +50,16 @@ export const LeftPanel: React.FC = () => {
           <Tooltip content={"Discover"} placement="right">
             <Icon name="compass" />
           </Tooltip>
+        </Link>
+
+        <Link
+          className={`relative ${pathname == "/notifications" ? "text-accent" : ""}`}
+          href={`/notifications`}
+        >
+          <Tooltip content={"Notifcations"} placement="right">
+            <Icon name="bell" onClick={() => setOpen(!open)} />
+          </Tooltip>
+          <span className="absolute h-2 w-2 bg-accent rounded-full left-0 -top-1"></span>
         </Link>
 
         <Link

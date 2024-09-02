@@ -111,8 +111,9 @@ defmodule Telescope.Mutations.Lodges do
   end
 
   def create_lodge_message(lodge_id, user_id, text) do
-    DmMessage.changeset(%DmMessage{user_id: user_id, text: text, lodge_id: lodge_id})
-    |> Repo.insert!()
-    |> Repo.preload(:user)
+    %DmMessage{}
+    |> DmMessage.changeset(%{user_id: user_id, text: text, lodge_id: lodge_id})
+    |> Ecto.Changeset.put_assoc(:user, Repo.get(User, user_id))
+    |> Repo.insert()
   end
 end

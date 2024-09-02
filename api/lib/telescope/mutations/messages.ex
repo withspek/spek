@@ -56,6 +56,5 @@ defmodule Telescope.Mutations.Messages do
     }
     |> Thread.changeset()
     |> Repo.insert!(returning: true)
-    |> Repo.preload(:creator)
   end
 end

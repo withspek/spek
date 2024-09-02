@@ -45,7 +45,7 @@ export const DiscoverSearchController: React.FC = () => {
           return;
         }
 
-        push(`/c/${selection.id}`);
+        push(`/thread/${selection.id}`);
       }}
       onInputValueChange={(v) => {
         setText(v);
@@ -121,7 +121,7 @@ export const DiscoverSearchController: React.FC = () => {
                     </li>
                   ) : (
                     <li
-                      className={`flex p-3 ${highlightedIndex === index ? "bg-primary-700" : "bg-primary-800"} ${data.items.length - 1 === index ? "rounded-b-md" : ""}`}
+                      className={`flex flex-col p-3 ${highlightedIndex === index ? "bg-primary-700" : "bg-primary-800"} ${data.items.length - 1 === index ? "rounded-b-md" : ""}`}
                       {...getItemProps({
                         key: item.id,
                         index,
@@ -131,7 +131,10 @@ export const DiscoverSearchController: React.FC = () => {
                     >
                       <div className="text-primary-100">{item.name}</div>
                       <div className="text-primary-300">
-                        {item.peoplePreviewList.join(",")}
+                        @
+                        {item.peoplePreviewList
+                          .map((u) => u.username)
+                          .join(",")}
                       </div>
                     </li>
                   )

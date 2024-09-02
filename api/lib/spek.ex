@@ -29,13 +29,16 @@ defmodule Spek do
 
     opts = [strategy: :one_for_one, name: Spek.Supervisor]
 
-    # TODO: make these into tasks
-
     case Supervisor.start_link(children, opts) do
       {:ok, pid} ->
-        start_lodges()
-        start_threads()
-        start_rabbits()
+        [
+          &start_lodges/0,
+          &start_threads/0,
+          &start_rabbits/0
+        ]
+        |> Task.async_stream(fn fun -> fun.() end, max_concurrency: 3)
+        |> Enum.to_list()
+
         {:ok, pid}
 
       error ->

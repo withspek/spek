@@ -139,12 +139,21 @@ defmodule Breeze.Routes.V1.Lodges do
         text = conn.body_params["text"]
         user_id = conn.assigns.user_id
 
-        message = Lodges.create_lodge_message(lodge_id, user_id, text)
+        case Lodges.create_lodge_message(lodge_id, user_id, text) do
+          {:ok, message} ->
+            LodgeSession.broadcast_ws(lodge_id, %{op: "new_lodge_message", d: %{message: message}})
 
-        LodgeSession.broadcast_ws(lodge_id, %{op: "new_lodge_message", d: %{message: message}})
+            conn
+            |> send_resp(200, Jason.encode!(message))
 
-        conn
-        |> send_resp(200, Jason.encode!(message))
+          {:error, changeset_error} ->
+            error = Spek.Utils.Errors.changeset_to_first_err_message(changeset_error)
+
+            LodgeSession.broadcast_ws(lodge_id, %{op: "error", d: error})
+
+            conn
+            |> send_resp(200, Jason.encode!(%{error: error}))
+        end
 
       false ->
         conn

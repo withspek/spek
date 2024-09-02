@@ -54,9 +54,18 @@ defmodule Telescope.Schemas.Thread do
       peoplePreviewList inserted_at updated_at
     )a
 
+    defp transform_creator(fields = %{creator: %Ecto.Association.NotLoaded{}}) do
+      Map.delete(fields, :creator)
+    end
+
+    defp transform_creator(fields) do
+      fields
+    end
+
     def encode(user, opts) do
       user
       |> Map.take(@fields)
+      |> transform_creator()
       |> Jason.Encoder.encode(opts)
     end
   end
