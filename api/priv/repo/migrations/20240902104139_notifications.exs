@@ -7,6 +7,7 @@ defmodule Telescope.Repo.Migrations.Notifications do
       add(:message, :string, null: false)
       add(:type, :integer, default: 1)
       add(:read, :boolean, default: false)
+      add(:parent_id, :binary_id)
 
       add(:user_id, references(:users, on_delete: :delete_all, type: :uuid), null: false)
 

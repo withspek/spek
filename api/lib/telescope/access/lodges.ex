@@ -65,10 +65,19 @@ defmodule Telescope.Access.Lodges do
         where: m.lodge_id == ^lodge_id,
         limit: ^@fetch_limit,
         offset: ^offset,
+        join: u in User,
+        on: u.id == m.user_id,
+        select: %DmMessage{
+          id: m.id,
+          text: m.text,
+          inserted_at: m.inserted_at,
+          updated_at: m.updated_at,
+          user_id: m.user_id,
+          user: u
+        },
         order_by: [desc: m.inserted_at]
       )
       |> Repo.all()
-      |> Repo.preload(:user)
 
     {Enum.slice(messages, 0, -1 + @fetch_limit),
      if(length(messages) == @fetch_limit, do: -1 + offset + @fetch_limit, else: nil)}

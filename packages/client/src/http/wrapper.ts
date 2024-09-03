@@ -11,6 +11,7 @@ import {
   TopThread,
   User,
   Conf,
+  Notification,
 } from "../entities";
 import { Connection } from "./raw";
 import {
@@ -64,6 +65,8 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/misc/search?query=${query}`, "GET"),
     getUserLodges: (): Promise<Lodge[]> =>
       connection.send(`/api/v1/users/@me/lodges`, "GET"),
+    getUserNotifications: (): Promise<{ notifications: Notification[] }> =>
+      connection.send(`/api/v1/users/@me/notifications`, "GET"),
     getUserCommunities: (
       cursor: number
     ): Promise<{ communities: Community[]; nextCursor: number }> =>
@@ -243,5 +246,9 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/api/v1/confs/add-speaker`, "POST", { userId }),
     setListener: (userId: string): Promise<any> =>
       connection.send(`/api/v1/confs/set-listener`, "POST", { userId }),
+    markNotificationAsRead: (notificationId: string): Promise<any> =>
+      connection.send(`/api/v1/users/@me/notifications/read`, "POST", {
+        notificationId,
+      }),
   },
 });

@@ -12,6 +12,8 @@ export interface User {
   online: boolean;
   lastOnline: string;
   gitlabUrl: string;
+  unread_notifications: number;
+  unread_lodge_messages: number;
   current_conf: CurrentConf | null;
   current_conf_id: UUID | null;
   inserted_at: string;
@@ -66,7 +68,7 @@ export type Thread = {
   name: string;
   creator: User;
   communityId: string;
-  youSubscribed: boolean;
+  you_subscribed: boolean;
   channelId: string;
   peoplePreviewList: UserPreview[];
   inserted_at: string;
@@ -154,4 +156,15 @@ export type CurrentConf = Conf & {
   deafMap: BooleanMap;
   activeSpeakerMap: BooleanMap;
   autoSpeaker: boolean;
+};
+
+export type Notification = {
+  id: string;
+  type: number;
+  message: string;
+  read: boolean;
+  parent_id: string;
+  user_id: string;
+  inserted_at: string;
+  updated_at: string;
 };

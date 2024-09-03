@@ -11,22 +11,24 @@ defmodule Telescope.Schemas.Notification do
 
   alias Telescope.Schemas.User
 
+  @derive {Jason.Encoder, only: ~w(id type message read parent_id inserted_at updated_at)a}
   @primary_key {:id, :binary_id, []}
   @timestamps_opts [:utc_datetime_usec]
   schema "notifications" do
     field(:type, :integer, default: 1)
     field(:message, :string)
     field(:read, :boolean, default: false)
+    field(:parent_id, :binary_id)
 
     belongs_to(:user, User, foreign_key: :user_id, type: :binary_id)
 
     timestamps()
   end
 
-  def changest(notification, params \\ %{}) do
+  def changeset(notification, params \\ %{}) do
     notification
-    |> cast(params, [:type, :message, :read])
-    |> validate_required([:type, :message])
+    |> cast(params, [:type, :message, :read, :user_id, :parent_id])
+    |> validate_required([:type, :message, :user_id, :parent_id])
   end
 
   def edit_changeset(notification, params \\ %{}) do

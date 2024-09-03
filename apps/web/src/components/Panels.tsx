@@ -57,9 +57,11 @@ export const LeftPanel: React.FC = () => {
           href={`/notifications`}
         >
           <Tooltip content={"Notifcations"} placement="right">
-            <Icon name="bell" onClick={() => setOpen(!open)} />
+            <Icon name="bell" />
           </Tooltip>
-          <span className="absolute h-2 w-2 bg-accent rounded-full left-0 -top-1"></span>
+          {user && user.unread_notifications > 0 ? (
+            <span className="absolute h-2 w-2 bg-accent rounded-full left-0 -top-1"></span>
+          ) : null}
         </Link>
 
         <Link

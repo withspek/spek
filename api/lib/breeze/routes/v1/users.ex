@@ -1,6 +1,7 @@
 defmodule Breeze.Routes.V1.Users do
   use Plug.Router
 
+  alias Telescope.Notifications
   alias Telescope.Communities
   alias Telescope.Users
   alias Telescope.Lodges
@@ -119,6 +120,37 @@ defmodule Breeze.Routes.V1.Users do
 
       conn
       |> send_resp(200, Jason.encode!(%{communities: communities, nextCursor: nextCursor}))
+    else
+      conn
+      |> send_resp(401, Jason.encode!(%{error: "UNAUTHORIZED"}))
+    end
+  end
+
+  get "/@me/notifications" do
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+
+    if has_user_id do
+      user_id = conn.assigns.user_id
+
+      notifications = Users.get_user_notifications(user_id)
+
+      conn
+      |> send_resp(200, Jason.encode!(%{notifications: notifications}))
+    else
+      conn
+      |> send_resp(401, Jason.encode!(%{error: "UNAUTHORIZED"}))
+    end
+  end
+
+  post "/@me/notifications/read" do
+    has_user_id = Map.has_key?(conn.assigns, :user_id)
+    %Plug.Conn{params: %{"notificationId" => noti_id}} = conn
+
+    if has_user_id do
+      Notifications.mark_as_read(noti_id)
+
+      conn
+      |> send_resp(200, Jason.encode!(%{success: true}))
     else
       conn
       |> send_resp(401, Jason.encode!(%{error: "UNAUTHORIZED"}))

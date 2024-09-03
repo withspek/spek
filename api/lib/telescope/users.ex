@@ -20,4 +20,5 @@ defmodule Telescope.Users do
   defdelegate tuple_get_current_conf_id(user_id), to: Telescope.Access.Users
   defdelegate get_current_conf_id(user_id), to: Telescope.Access.Users
   defdelegate get_users_in_current_conf(user_id), to: Telescope.Access.Users
+  defdelegate get_user_notifications(user_id), to: Telescope.Access.Users
 end

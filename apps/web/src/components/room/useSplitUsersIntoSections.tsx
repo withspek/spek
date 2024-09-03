@@ -79,7 +79,7 @@ export const useSplitUsersIntoSections = ({
           });
         }}
       >
-        <Icon name="megaphone" />
+        <Icon name="hand" />
       </div>
     );
   }

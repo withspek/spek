@@ -6,6 +6,7 @@ defmodule Telescope.Queries.Users do
 
   import Ecto.Query, warn: false
 
+  alias Telescope.Schemas.Notification
   alias Telescope.Schemas.User
 
   def start do
@@ -66,5 +67,17 @@ defmodule Telescope.Queries.Users do
         current_conf_id: nil
       ]
     )
+  end
+
+  def notification_info(query) do
+    query
+    |> join(:left, [u], n in Notification,
+      as: :notifications,
+      on: n.user_id == u.id and n.read == false
+    )
+    |> group_by([n], n.id)
+    |> select_merge([notifications: n], %{
+      unread_notifications: count(n)
+    })
   end
 end

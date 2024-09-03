@@ -3,12 +3,14 @@ defmodule Telescope.Access.Users do
 
   alias Telescope.Schemas.Conf
   alias Telescope.Queries.Users, as: Query
+  alias Telescope.Queries.Nofitications, as: NotificationsQuery
   alias Telescope.Repo
   alias Telescope.Schemas.User
 
   def get_by_user_id(user_id) do
     Query.start()
     |> Query.filter_by_id(user_id)
+    |> Query.notification_info()
     |> Query.limit_one()
     |> Repo.one()
   end
@@ -18,6 +20,12 @@ defmodule Telescope.Access.Users do
     |> Query.filter_by_username(username)
     |> Query.limit_one()
     |> Repo.one()
+  end
+
+  def get_user_notifications(user_id) do
+    NotificationsQuery.start()
+    |> NotificationsQuery.filter_by_user_id(user_id)
+    |> Repo.all()
   end
 
   def search_username(<<first_letter>> <> rest) when first_letter == ?@ do

@@ -38,6 +38,7 @@ defmodule Telescope.Schemas.User do
     field(:lastOnline, :utc_datetime_usec)
     field(:conf_permissions, :map, virtual: true)
     field(:unread_lodge_messages, :integer, default: 0, virtual: true)
+    field(:unread_notifications, :integer, default: 0, virtual: true)
 
     belongs_to(:current_conf, Conf, foreign_key: :current_conf_id, type: :binary_id)
 
@@ -68,6 +69,7 @@ defmodule Telescope.Schemas.User do
       email githubUrl online lastOnline contributions
       inserted_at updated_at gitlabUrl conf_permissions
       current_conf_id current_conf unread_lodge_messages
+      unread_notifications
     )a
 
     defp transform_current_conf(fields = %{current_conf: %Ecto.Association.NotLoaded{}}) do

@@ -3,6 +3,7 @@ defmodule Telescope.Access.Messages do
 
   import Ecto.Query
 
+  alias Telescope.Schemas.User
   alias Telescope.Schemas.Message
   alias Telescope.Repo
   alias Telescope.Queries.Messages, as: Query, warn: false
@@ -13,10 +14,19 @@ defmodule Telescope.Access.Messages do
         where: m.threadId == ^threadId,
         limit: ^@fetch_limit,
         offset: ^offset,
+        join: u in User,
+        on: u.id == m.userId,
+        select: %Message{
+          id: m.id,
+          text: m.text,
+          inserted_at: m.inserted_at,
+          updated_at: m.updated_at,
+          userId: m.userId,
+          user: u
+        },
         order_by: [desc: m.inserted_at]
       )
       |> Repo.all()
-      |> Repo.preload(:user)
 
     {Enum.slice(messages, 0, -1 + @fetch_limit),
      if(length(messages) == @fetch_limit, do: -1 + offset + @fetch_limit, else: nil)}

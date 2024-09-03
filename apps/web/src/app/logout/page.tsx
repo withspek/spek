@@ -20,8 +20,11 @@ export default function Logout() {
 
   return (
     <div className="flex w-full h-full justify-center items-center">
-      <Button onClick={() => setTokens({ accessToken: "", refreshToken: "" })}>
-        click hare if you don't get automatically redirected
+      <Button
+        onClick={() => setTokens({ accessToken: "", refreshToken: "" })}
+        className="underline"
+      >
+        click here if you don't get automatically redirected
       </Button>
     </div>
   );

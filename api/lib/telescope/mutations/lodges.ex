@@ -25,6 +25,22 @@ defmodule Telescope.Mutations.Lodges do
 
     LodgeSession.start_supervised(lodge_id: lodge.id)
 
+    Enum.filter(recipients, &(&1.id !== owner_id))
+    |> Enum.each(fn user ->
+      notification =
+        Telescope.Notifications.create_notification(%{
+          type: 1,
+          message: "You were added into a direct message group",
+          user_id: user.id,
+          parent_id: lodge.id
+        })
+
+      Pulse.UserSession.send_ws(user.id, nil, %{
+        op: "new_notification",
+        d: %{notification: notification}
+      })
+    end)
+
     lodge
   end
 
