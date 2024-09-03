@@ -58,6 +58,11 @@ export const NotificationsController: React.FC<Props> = () => {
           </Link>
         ) : null
       )}
+      {data?.notifications.length! < 1 && (
+        <div className="flex my-4 justify-center items-center">
+          <p>Sorry but you have any empty inbox 😔</p>
+        </div>
+      )}
     </div>
   );
 };
