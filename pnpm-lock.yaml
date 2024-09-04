@@ -36,8 +36,8 @@ importers:
         specifier: ^3.4.0
         version: 3.4.0
       '@withspek/markdor':
-        specifier: ^0.15.0
-        version: 0.15.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^0.15.2
+        version: 0.15.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       config:
         specifier: workspace:*
         version: link:../../packages/config
@@ -2642,8 +2642,8 @@ packages:
   '@webassemblyjs/wast-printer@1.12.1':
     resolution: {integrity: sha512-+X4WAlOisVWQMikjbcvY2e0rwPsKQ9F688lksZhBcPycBBuii3O7m8FACbDMWDojpAqvjIncrG8J0XHKyQfVeA==}
 
-  '@withspek/markdor@0.15.0':
-    resolution: {integrity: sha512-kDkqNU/WujNVGmFGcI3MD+z1QwFy/zGbo5ggrxHailtXCX30oUIvz9j1f0bQhKxKJWaJsyW/mg2T0p9x6AQT3g==}
+  '@withspek/markdor@0.15.2':
+    resolution: {integrity: sha512-SUfYwq12xvf7mDm1MwznYQh9BjuekCH/4ZxVc1EE8SZWejPK/A7vIpRbTpWEBFRhcp/d6+zd8wZkLYXwGutClg==}
     peerDependencies:
       react: '>= 18'
       react-dom: '>= 18'
@@ -9764,7 +9764,7 @@ snapshots:
       '@webassemblyjs/ast': 1.12.1
       '@xtuc/long': 4.2.2
 
-  '@withspek/markdor@0.15.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@withspek/markdor@0.15.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)

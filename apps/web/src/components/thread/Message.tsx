@@ -1,15 +1,15 @@
-import Markdor from "@withspek/markdor";
 import { Avatar, Icon, showToast } from "@spek/ui";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { format } from "date-fns";
 import { Thread, Message as ThreadMessage } from "@spek/client";
 
+import { useConn } from "@/hooks/useConn";
+import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
+import { markdown } from "@/utils/markdown";
 import { EditThreadMessageModal } from "./EditThreadMessageModal";
 import { confirmModal } from "../ConfirmModal";
 import { ApiPreloadLink } from "../ApiPreloadLink";
-import { useConn } from "@/hooks/useConn";
-import { useTypeSafeMutation } from "@/hooks/useTypeSafeMutation";
 
 interface Props {
   message: ThreadMessage;
@@ -58,7 +58,7 @@ export const Message: React.FC<Props> = ({
             {format(dt, "MMM dd HH:mm")}
           </span>
         </p>
-        {Markdor.markdownToReact(message.text)}
+        {markdown(message.text)}
       </div>
       {(user && currentThread.creator.id == user.id) ||
       (user && user.id == message.user.id) ? (

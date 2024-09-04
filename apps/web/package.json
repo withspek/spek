@@ -18,7 +18,7 @@
     "@tsparticles/engine": "^3.4.0",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.4.0",
-    "@withspek/markdor": "^0.15.0",
+    "@withspek/markdor": "^0.15.2",
     "config": "workspace:*",
     "date-fns": "^3.3.1",
     "downshift": "^9.0.4",

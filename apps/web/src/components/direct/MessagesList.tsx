@@ -1,11 +1,8 @@
-import { format } from "date-fns";
-import React, { useEffect, useMemo, useState } from "react";
-import Markdor from "@withspek/markdor";
-import { UserAvatar } from "@spek/ui";
-import { LodgeMessage } from "@spek/client";
+import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 import { useTypeSafeQuery } from "@/hooks/useTypeSafeQuery";
+import { Message } from "./Message";
 
 interface MessagesListProps {
   lodgeId: string;
@@ -18,36 +15,6 @@ interface PageProps {
   isLastPage: boolean;
   isOnlyPage: boolean;
 }
-
-const Message: React.FC<{ message: LodgeMessage }> = ({ message }) => {
-  const dt = useMemo(
-    () => new Date(message.inserted_at),
-    [message.inserted_at]
-  );
-
-  return (
-    <div className={`flex flex-1 items-start px-3 rounded-md py-4 gap-3`}>
-      <UserAvatar
-        user={{
-          avatarUrl: message.user.avatarUrl,
-          displayName: message.user.displayName,
-          username: message.user.username,
-        }}
-        size={"md"}
-        alt={message.user.displayName}
-      />
-      <div className="flex flex-col gap-1">
-        <p className="font-bold text-sm">
-          {message.user.displayName}
-          <span className="font-normal ml-3 text-sm">
-            {format(dt, "MMM dd HH:mm")}
-          </span>
-        </p>
-        {Markdor.markdownToReact(message.text)}
-      </div>
-    </div>
-  );
-};
 
 const Page: React.FC<PageProps> = ({
   lodgeId,
