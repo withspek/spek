@@ -26,7 +26,7 @@ const Page: React.FC<PageProps> = ({
   const { data, isLoading } = useTypeSafeQuery(
     ["getLodgeMessages", cursor],
     { staleTime: Infinity, refetchOnMount: "always" },
-    [lodgeId, cursor]
+    [lodgeId, cursor],
   );
 
   if (isLoading) {
@@ -71,7 +71,7 @@ export const MessagesList: React.FC<MessagesListProps> = ({ lodgeId }) => {
     if (!inView) {
       window.scroll({ behavior: "smooth", top: 0 });
     }
-  }, []);
+  }, [inView]);
 
   return (
     <div className="flex flex-col flex-1 justify-end overflow-y-auto">
