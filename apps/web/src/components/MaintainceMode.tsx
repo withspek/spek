@@ -1,3 +1,5 @@
+"use client";
+
 import { useMediaQuery } from "@spek/ui";
 
 export const MaintainceMode: React.FC = () => {
