@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "./providers";
 import { ProgressBar } from "@/components/ProgressBar";
+import { MaintainceMode } from "@/components/MaintainceMode";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://withspek.netlify.app"),
@@ -24,6 +25,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <div id="__app">
+          <MaintainceMode />
           <ProgressBar />
           <Providers>{children}</Providers>
         </div>
