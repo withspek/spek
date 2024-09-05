@@ -70,8 +70,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({
             useCurrentConfIdStore.getState().setCurrentConfId(null);
             // the index page nulls the conn
             // if you switch this, make sure to null the conn at the new location
-            replace("/");
-            // TODO: do something better
+            replace("/connection-taken");
           },
           onClearTokens: () => {
             console.log("clearing tokens...");
