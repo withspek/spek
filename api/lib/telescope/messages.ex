@@ -6,7 +6,7 @@ defmodule Telescope.Messages do
   # MUTATIONS
   defdelegate create_thread_message(data), to: Telescope.Mutations.Messages
   defdelegate delete_thread_message_by_id(message_id), to: Telescope.Mutations.Messages
-  defdelegate update_message(user_id, message_id, new_text), to: Telescope.Mutations.Messages
+  defdelegate update_message(data, message_id), to: Telescope.Mutations.Messages
 
   defdelegate create_thread_from_message(message_id, user_id, channel_id, community_id),
     to: Telescope.Mutations.Messages

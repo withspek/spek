@@ -39,7 +39,7 @@ export const useMainWsHandler = () => {
               isMod: false,
             }));
           }
-        }
+        },
       ),
 
       conn.addListener<any>("new_thread_message", ({ message }) => {
@@ -56,8 +56,15 @@ export const useMainWsHandler = () => {
             messages: x.messages.filter((m) => m.id !== messageId),
             nextCursor: x.nextCursor,
           }));
-        }
+        },
       ),
+
+      conn.addListener<any>("update_thread_message", ({ message, cursor }) => {
+        updateQuery(["getThreadMessages", cursor], (x) => ({
+          messages: x.messages.map((m) => (m.id === message.id ? message : m)),
+          nextCursor: x.nextCursor,
+        }));
+      }),
 
       conn.addListener<any>("new_lodge_message", ({ message }) => {
         updateQuery(["getLodgeMessages", 0], (x) => ({
@@ -94,9 +101,9 @@ export const useMainWsHandler = () => {
                     numPeopleInside: data.conf.num_people_inside + 1,
                   },
                   users: [...data.users.filter((x) => x.id !== user.id), user],
-                }
+                },
           );
-        }
+        },
       ),
 
       conn.addListener<any>(
@@ -108,9 +115,9 @@ export const useMainWsHandler = () => {
               : {
                   ...data,
                   activeSpeakerMap,
-                }
+                },
           );
-        }
+        },
       ),
 
       conn.addListener<any>("speaker_added", ({ userId, confId, muteMap }) => {
@@ -131,12 +138,12 @@ export const useMainWsHandler = () => {
                         ...u,
                         conf_permissions: mergeConfPermissions(
                           u.conf_permissions,
-                          { is_speaker: true }
+                          { is_speaker: true },
                         ),
                       }
-                    : u
+                    : u,
                 ),
-              }
+              },
         );
       }),
 
@@ -155,14 +162,14 @@ export const useMainWsHandler = () => {
                           ...u,
                           conf_permissions: mergeConfPermissions(
                             u.conf_permissions,
-                            { is_speaker: false, asked_to_speak: false }
+                            { is_speaker: false, asked_to_speak: false },
                           ),
                         }
-                      : u
+                      : u,
                   ),
-                }
+                },
           );
-        }
+        },
       ),
 
       conn.addListener<any>("hand_raised", ({ userId, confId }) => {
@@ -177,12 +184,12 @@ export const useMainWsHandler = () => {
                         ...u,
                         conf_permissions: mergeConfPermissions(
                           u.conf_permissions,
-                          { asked_to_speak: true }
+                          { asked_to_speak: true },
                         ),
                       }
-                    : u
+                    : u,
                 ),
-              }
+              },
         );
       }),
 

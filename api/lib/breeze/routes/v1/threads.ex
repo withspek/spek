@@ -260,16 +260,40 @@ defmodule Breeze.Routes.V1.Threads do
   end
 
   put "/:id/messages/update" do
-    %Plug.Conn{params: %{"id" => _thread_id, "messageId" => message_id, "text" => new_text}} =
+    %Plug.Conn{
+      params: %{
+        "id" => thread_id,
+        "messageId" => message_id,
+        "text" => new_text,
+        "cursor" => cursor
+      }
+    } =
       conn
 
     if Map.has_key?(conn.assigns, :user_id) do
       user_id = conn.assigns.user_id
 
-      message = Messages.update_message(user_id, message_id, new_text)
+      data = %{
+        text: new_text,
+        userId: user_id
+      }
 
-      conn
-      |> send_resp(200, Jason.encode!(%{message: message}))
+      case Messages.update_message(data, message_id) do
+        {:ok, message} ->
+          ThreadSession.broadcast_ws(thread_id, %{
+            op: "update_thread_message",
+            d: %{message: message, cursor: cursor}
+          })
+
+          conn
+          |> send_resp(200, Jason.encode!(%{message: message, cursor: cursor}))
+
+        {:error, changeset} ->
+          error = Spek.Utils.Errors.changeset_to_first_err_message(changeset)
+
+          conn
+          |> send_resp(200, Jason.encode!(%{error: error}))
+      end
     else
       conn
       |> send_resp(402, Jason.encode!(%{error: "UNAUTHORIZED"}))

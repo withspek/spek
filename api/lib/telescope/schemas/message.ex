@@ -21,4 +21,10 @@ defmodule Telescope.Schemas.Message do
     |> cast(params, [:text, :userId, :threadId])
     |> validate_required([:text, :userId, :threadId])
   end
+
+  def edit_changeset(message, params \\ %{}) do
+    message
+    |> cast(params, [:text, :userId])
+    |> validate_required([:text, :userId])
+  end
 end

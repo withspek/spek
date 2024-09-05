@@ -13,7 +13,8 @@ interface SlateEditorProps {
   placeholder?: string;
   value: Descendant[];
   setValue: Dispatch<SetStateAction<Descendant[]>>;
-  onSubmit: () => void;
+  onSubmit?: () => void;
+  disableSubmit?: boolean;
 }
 
 export const SlateEditor: React.FC<SlateEditorProps> = ({
@@ -22,6 +23,7 @@ export const SlateEditor: React.FC<SlateEditorProps> = ({
   value,
   className,
   placeholder,
+  disableSubmit = false,
 }) => {
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
   const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
@@ -31,9 +33,9 @@ export const SlateEditor: React.FC<SlateEditorProps> = ({
   }, [editor]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === "Enter" && !event.shiftKey) {
+    if (event.key === "Enter" && !event.shiftKey && !disableSubmit) {
       event.preventDefault();
-      onSubmit();
+      onSubmit?.();
 
       Transforms.delete(editor, {
         at: {

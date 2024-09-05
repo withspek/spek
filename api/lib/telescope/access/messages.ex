@@ -3,7 +3,6 @@ defmodule Telescope.Access.Messages do
 
   import Ecto.Query
 
-  alias Telescope.Schemas.User
   alias Telescope.Schemas.Message
   alias Telescope.Repo
   alias Telescope.Queries.Messages, as: Query, warn: false
@@ -14,16 +13,8 @@ defmodule Telescope.Access.Messages do
         where: m.threadId == ^threadId,
         limit: ^@fetch_limit,
         offset: ^offset,
-        join: u in User,
-        on: u.id == m.userId,
-        select: %Message{
-          id: m.id,
-          text: m.text,
-          inserted_at: m.inserted_at,
-          updated_at: m.updated_at,
-          userId: m.userId,
-          user: u
-        },
+        join: u in assoc(m, :user),
+        preload: [user: u],
         order_by: [desc: m.inserted_at]
       )
       |> Repo.all()
@@ -32,8 +23,14 @@ defmodule Telescope.Access.Messages do
      if(length(messages) == @fetch_limit, do: -1 + offset + @fetch_limit, else: nil)}
   end
 
+  @spec get_message_by_id(any()) :: any()
   def get_message_by_id(message_id) do
-    from(m in Message, where: m.id == ^message_id, limit: 1)
+    from(m in Message,
+      where: m.id == ^message_id,
+      limit: 1,
+      join: u in assoc(m, :user),
+      preload: [user: u]
+    )
     |> Repo.one()
   end
 end

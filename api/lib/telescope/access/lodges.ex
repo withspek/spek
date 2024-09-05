@@ -65,16 +65,8 @@ defmodule Telescope.Access.Lodges do
         where: m.lodge_id == ^lodge_id,
         limit: ^@fetch_limit,
         offset: ^offset,
-        join: u in User,
-        on: u.id == m.user_id,
-        select: %DmMessage{
-          id: m.id,
-          text: m.text,
-          inserted_at: m.inserted_at,
-          updated_at: m.updated_at,
-          user_id: m.user_id,
-          user: u
-        },
+        join: u in assoc(m, :user),
+        preload: [user: u],
         order_by: [desc: m.inserted_at]
       )
       |> Repo.all()

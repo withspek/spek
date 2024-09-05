@@ -28,7 +28,7 @@ export const wrap = (connection: Connection) => ({
     getAllCommnunities: (): Promise<Community[]> =>
       connection.send("/api/v1/metrics/communities", "GET"),
     getCommunity: (
-      slug: string
+      slug: string,
     ): Promise<{ community: CommunityWithPermissions; channels: Channel[] }> =>
       connection.send(`/api/v1/communities/${slug}`, "GET"),
     getChannel: (id: string): Promise<{ channel: Channel }> =>
@@ -46,16 +46,16 @@ export const wrap = (connection: Connection) => ({
     getThread: (threadId: string): Promise<Thread> =>
       connection.send(`/api/v1/threads/${threadId}`, "GET"),
     getTopActiveThreads: (
-      cursor: number
+      cursor: number,
     ): Promise<{ threads: TopThread[]; nextCursor: number | null }> =>
       connection.send(`/api/v1/threads?cursor=${cursor}`, "GET"),
     getThreadMessages: (
       threadId: string,
-      cursor: number = 0
+      cursor: number = 0,
     ): Promise<{ messages: Message[]; nextCursor: number | null }> =>
       connection.send(
         `/api/v1/threads/${threadId}/messages?cursor=${cursor}`,
-        "GET"
+        "GET",
       ),
     getUserProfile: (userId: string): Promise<{ user: User }> =>
       connection.send(`/api/v1/users/${userId}`, "GET"),
@@ -68,7 +68,7 @@ export const wrap = (connection: Connection) => ({
     getUserNotifications: (): Promise<{ notifications: Notification[] }> =>
       connection.send(`/api/v1/users/@me/notifications`, "GET"),
     getUserCommunities: (
-      cursor: number
+      cursor: number,
     ): Promise<{ communities: Community[]; nextCursor: number }> =>
       connection.send(`/api/v1/users/@me/communities?cursor=${cursor}`, "GET"),
     getLodgeMembers: (lodgeId: string): Promise<Lodge[]> =>
@@ -77,7 +77,7 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/api/v1/lodges/${lodgeId}/join-info`, "GET"),
     getLodgeMessages: (
       lodgeId: string,
-      cursor: number = 0
+      cursor: number = 0,
     ): Promise<{
       messages: LodgeMessage[];
       nextCursor: number | null;
@@ -85,19 +85,19 @@ export const wrap = (connection: Connection) => ({
     }> =>
       connection.send(
         `/api/v1/lodges/${lodgeId}/messages?cursor=${cursor}`,
-        "GET"
+        "GET",
       ),
 
     getTopPublicConfs: (
       communityId: string,
-      cursor: number = 0
+      cursor: number = 0,
     ): Promise<{
       confs: Conf[];
       nextCursor: number | null;
     }> =>
       connection.send(
         `/api/public/confs/${communityId}?cursor=${cursor}`,
-        "GET"
+        "GET",
       ),
     joinConfAndGetInfo: (confId: string): Promise<JoinConfAndGetInfoResponse> =>
       connection.send(`/api/v1/confs/${confId}/join_and_get_info`, "POST"),
@@ -178,7 +178,18 @@ export const wrap = (connection: Connection) => ({
         "POST",
         {
           ...data,
-        }
+        },
+      ),
+    updateThreadMessage: (data: {
+      threadId: string;
+      messageId: string;
+      text: string;
+      cursor: number;
+    }) =>
+      connection.send(
+        `/api/v1/threads/${data.threadId}/messages/update`,
+        "PUT",
+        { ...data },
       ),
     deleteThreadMessage: (data: {
       messageId: string;
@@ -190,7 +201,7 @@ export const wrap = (connection: Connection) => ({
         "DELETE",
         {
           ...data,
-        }
+        },
       ),
     subscribeToThread: (threadId: string): Promise<{ success: boolean }> =>
       connection.send(`/api/v1/threads/subscribe`, "POST", { threadId }),
@@ -203,14 +214,14 @@ export const wrap = (connection: Connection) => ({
       connection.send(`/api/v1/lodges/${lodgeId}`, "DELETE"),
     addLodgeRecipient: (
       lodgeId: string,
-      userId: string
+      userId: string,
     ): Promise<{ success: boolean }> =>
       connection.send(`/api/v1/lodges/${lodgeId}/add-recipient`, "POST", {
         userId,
       }),
     removeLodgeRecipient: (
       lodgeId: string,
-      userId: string
+      userId: string,
     ): Promise<{ success: boolean }> =>
       connection.send(`/api/v1/lodges/${lodgeId}/remove-recipient`, "POST", {
         userId,
@@ -226,7 +237,7 @@ export const wrap = (connection: Connection) => ({
 
     leaveLodge: (
       lodgeId: string,
-      userId: string
+      userId: string,
     ): Promise<{ success: boolean }> =>
       connection.send(`/api/v1/lodges/${lodgeId}/leave`, "POST", {
         userId,

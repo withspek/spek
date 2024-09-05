@@ -25,14 +25,14 @@ export const Message: React.FC<Props> = ({
   const { user } = useConn();
   const dt = useMemo(
     () => new Date(message.inserted_at),
-    [message.inserted_at]
+    [message.inserted_at],
   );
   const [showEdit, setShowEdit] = useState(false);
   const { mutateAsync: deleteThreadMessage } = useTypeSafeMutation(
-    "deleteThreadMessage"
+    "deleteThreadMessage",
   );
   const { mutateAsync: createThread } = useTypeSafeMutation(
-    "createThreadFromMessage"
+    "createThreadFromMessage",
   );
   const { push } = useRouter();
 
@@ -81,7 +81,7 @@ export const Message: React.FC<Props> = ({
                   ]);
 
                   push(`/thread/${resp.thread.id}`);
-                }
+                },
               );
             }}
           />
@@ -107,7 +107,13 @@ export const Message: React.FC<Props> = ({
           />
         </div>
       ) : null}
-      <EditThreadMessageModal isOpen={showEdit} onOpenChange={handleShowEdit} />
+      <EditThreadMessageModal
+        isOpen={showEdit}
+        onOpenChange={handleShowEdit}
+        message={message}
+        threadId={currentThread.id}
+        currentCursor={currentCursor}
+      />
     </div>
   );
 };

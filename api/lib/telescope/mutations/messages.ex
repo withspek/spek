@@ -1,6 +1,4 @@
 defmodule Telescope.Mutations.Messages do
-  import Ecto.Query
-
   alias Telescope.Schemas.Message
   alias Telescope.Schemas.Thread
   alias Telescope.Repo
@@ -21,16 +19,11 @@ defmodule Telescope.Mutations.Messages do
     %Message{id: message_id} |> Repo.delete()
   end
 
-  def update_message(user_id, message_id, new_text) do
-    from(m in Message,
-      where: m.userId == ^user_id and m.id == ^message_id,
-      update: [
-        set: [
-          text: ^new_text
-        ]
-      ]
-    )
-    |> Repo.update_all([])
+  def update_message(data, message_id) do
+    message_id
+    |> Messages.get_message_by_id()
+    |> Message.edit_changeset(data)
+    |> Repo.update()
   end
 
   def create_thread_from_message(message_id, user_id, channel_id, community_id) do
