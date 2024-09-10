@@ -36,7 +36,7 @@ defmodule Spek do
           &start_threads/0,
           &start_rabbits/0
         ]
-        |> Task.async_stream(fn fun -> fun.() end, max_concurrency: 3)
+        |> Task.async_stream(fn fun -> fun.() end)
         |> Enum.to_list()
 
         {:ok, pid}
