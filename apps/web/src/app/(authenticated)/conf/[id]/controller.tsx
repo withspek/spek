@@ -1,63 +1,62 @@
-"use client";
-import { Button, Icon } from "@spek/ui";
-import { useRouter } from "next/navigation";
+"use client"
+import { Button, Icon } from "@spek/ui"
+import { useRouter } from "next/navigation"
 
-import { CenterLoader } from "@/components/CenterLoader";
-import { useGetConfByQueryParam } from "@/components/room/useGetRoomByQueryParam";
-import { useCurrentConfIdStore } from "@/stores/useCurentConfIdStore";
-import { useMuteStore } from "@/stores/useMuteStore";
-import { RoomUsersPanel } from "@/components/room/RoomUsersPanel";
-import { useLeaveConf } from "@/hooks/useLeaveConf";
-import { useCurrentConfInfo } from "@/hooks/useCurrentConfInfo";
-import { useSetMute } from "@/hooks/useSetMute";
-import { useDeafStore } from "@/stores/useDeafStore";
-import { useSetDeafen } from "@/hooks/useSetDeafen";
-import { RoomUserPreviewModal } from "@/components/room/RoomUserPreviewModal";
+import { CenterLoader } from "@/components/CenterLoader"
+import { useGetConfByQueryParam } from "@/components/room/useGetRoomByQueryParam"
+import { useCurrentConfIdStore } from "@/stores/useCurentConfIdStore"
+import { useMuteStore } from "@/stores/useMuteStore"
+import { RoomUsersPanel } from "@/components/room/RoomUsersPanel"
+import { useLeaveConf } from "@/hooks/useLeaveConf"
+import { useCurrentConfInfo } from "@/hooks/useCurrentConfInfo"
+import { useSetMute } from "@/hooks/useSetMute"
+import { useDeafStore } from "@/stores/useDeafStore"
+import { useSetDeafen } from "@/hooks/useSetDeafen"
+import { RoomUserPreviewModal } from "@/components/room/RoomUserPreviewModal"
+import { RoomHeader } from "@/components/room/RoomHeader"
 
 interface Props {
-  id: string;
+  id: string
 }
 
 export const ConfController: React.FC<Props> = ({ id }) => {
-  const { isLoading, data } = useGetConfByQueryParam(id);
-  const { currentConfId } = useCurrentConfIdStore();
-  const { isLoading: leaveLoading, leaveConf } = useLeaveConf();
-  const { canSpeak } = useCurrentConfInfo();
-  const { muted } = useMuteStore();
-  const { deafened } = useDeafStore();
-  const { push } = useRouter();
-  const setMute = useSetMute();
-  const setDeafen = useSetDeafen();
+  const { isLoading, data } = useGetConfByQueryParam(id)
+  const { currentConfId } = useCurrentConfIdStore()
+  const { isLoading: leaveLoading, leaveConf } = useLeaveConf()
+  const { canSpeak } = useCurrentConfInfo()
+  const { muted } = useMuteStore()
+  const { deafened } = useDeafStore()
+  const { push } = useRouter()
+  const setMute = useSetMute()
+  const setDeafen = useSetDeafen()
 
   if (isLoading || !currentConfId) {
-    return <CenterLoader />;
+    return <CenterLoader />
   }
 
   if (!data || "error" in data) {
-    return null;
+    return null
   }
 
-  const roomCreator = data.users.find((u) => u.id === data.conf.creator_id);
+  const roomCreator = data.users.find((u) => u.id === data.conf.creator_id)
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className="flex flex-col gap-2">
-        <p className="font-semibold text-xl truncate">{data.conf.name}</p>
-        <p className="text-primary-500">
-          with <span className="text-primary-100">{roomCreator?.username}</span>
-        </p>
-      </div>
+    <div className="flex flex-col h-screen overflow-y-hidden">
+      <RoomHeader
+        description={data.conf.description}
+        name={data.conf.name}
+        roomCreator={roomCreator}
+        numPeopleInside={data.conf.num_people_inside}
+      />
       <RoomUserPreviewModal {...data} />
-      <div className="flex flex-col flex-1">
-        <RoomUsersPanel {...data} />
-      </div>
-      <div className="sticky bottom-0 pb-7 ">
+      <RoomUsersPanel {...data} />
+      <div className="sticky bottom-0 mb-5 bg-primary-900 p-2 rounded-b-md">
         <div className="flex gap-3">
           <div
             className="flex justify-center items-center h-10 w-10 rounded-md cursor-pointer bg-primary-900"
             onClick={() => {
               if (canSpeak) {
-                setMute(!muted);
+                setMute(!muted)
               }
             }}
           >
@@ -73,8 +72,8 @@ export const ConfController: React.FC<Props> = ({ id }) => {
             <Button
               loading={leaveLoading}
               onClick={() => {
-                push("/home");
-                leaveConf();
+                push("/home")
+                leaveConf()
               }}
             >
               Leave Room
@@ -83,5 +82,5 @@ export const ConfController: React.FC<Props> = ({ id }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
