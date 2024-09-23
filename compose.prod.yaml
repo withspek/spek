@@ -25,6 +25,9 @@ services:
     image: irere/horizon:latest
     env_file:
       - horizon.env
+    ports:
+      - "40000-49999:40000-49999/tcp"
+      - "40000-49999:40000-49999/udp"
   postgres:
     networks:
       - speknet
