@@ -37,4 +37,3 @@ services:
       RABBITMQ_ERLANG_COOKIE: erlang_dev_only_cookie
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
-  adminer:
