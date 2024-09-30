@@ -19,12 +19,12 @@ services:
     image: irere/spek:latest
     env_file:
       - spek.env
-  horizon:
-    networks:
-      - speknet
-    image: irere/horizon:latest
-    env_file:
-      - horizon.env
+  # horizon:
+  #   networks:
+  #     - speknet
+  #   image: irere/horizon:latest
+  #   env_file:
+  #     - horizon.env
   postgres:
     networks:
       - speknet
