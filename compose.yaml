@@ -31,6 +31,9 @@ services:
     depends_on:
       - api
       - rabbitmq
+    ports:
+      - "40000-49999:40000-49999/tcp"
+      - "40000-49999:40000-49999/udp"
   postgres:
     image: postgres:13-alpine
     restart: unless-stopped
