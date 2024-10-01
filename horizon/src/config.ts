@@ -2,7 +2,7 @@ import {
   RtpCodecCapability,
   TransportListenInfo,
   WorkerLogTag,
-} from "mediasoup/node/lib/types";
+} from "mediasoup/node/lib/types"
 
 export const config = {
   mediasoup: {
@@ -39,4 +39,4 @@ export const config = {
       initialAvailableOutgoingBitrate: 800000,
     },
   },
-} as const;
+} as const

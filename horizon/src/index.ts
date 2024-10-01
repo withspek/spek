@@ -1,46 +1,50 @@
-import "dotenv/config";
-import debugModule from "debug";
-import { Router, Worker } from "mediasoup/node/lib/types";
+import "dotenv/config"
+import debugModule from "debug"
+import { Router, Worker } from "mediasoup/node/lib/types"
 
-import { Confs } from "./ConfState";
-import { startMediasoup } from "./lib/startMediasoup";
-import { startRabbitmq } from "./startRabbitmq";
-import { createConsumer } from "./lib/createConsumer";
-import { closePeer } from "./lib/closePeer";
-import { deleteConf } from "./lib/deleteConf";
-import { createTransport, transportToOptions } from "./lib/createTransport";
+import { Confs } from "./ConfState"
+import { startMediasoup } from "./lib/startMediasoup"
+import { startRabbitmq } from "./startRabbitmq"
+import { createConsumer } from "./lib/createConsumer"
+import { closePeer } from "./lib/closePeer"
+import { deleteConf } from "./lib/deleteConf"
+import { createTransport, transportToOptions } from "./lib/createTransport"
 
-const log = debugModule("horizon:index");
-const errLog = debugModule("horizon:ERROR");
+const log = debugModule("horizon:index")
+const errLog = debugModule("horizon:ERROR")
 
-const confs: Confs = {};
+const confs: Confs = {}
 
 async function main() {
   // start mediasoup
-  console.log("starting mediasoup");
-  let workers: { worker: Worker; router: Router }[];
+  console.log("starting mediasoup")
+  // log environment variables
+  console.log("WEBRTC_LISTEN_IP: ", process.env.WEBRTC_LISTEN_IP)
+  console.log("A_IP: ", process.env.A_IP)
+
+  let workers: { worker: Worker; router: Router }[]
 
   try {
-    workers = await startMediasoup();
+    workers = await startMediasoup()
   } catch (err) {
-    console.log(err);
-    throw err;
+    console.log(err)
+    throw err
   }
 
-  let workerIdx = 0;
+  let workerIdx = 0
 
   const getNextWorker = () => {
-    const w = workers[workerIdx];
-    workerIdx++;
-    workerIdx %= workers.length;
-    return w;
-  };
+    const w = workers[workerIdx]
+    workerIdx++
+    workerIdx %= workers.length
+    return w
+  }
 
   const createConf = () => {
-    const { router, worker } = getNextWorker();
+    const { router, worker } = getNextWorker()
 
-    return { worker, router, state: {} };
-  };
+    return { worker, router, state: {} }
+  }
 
   await startRabbitmq({
     "@get-recv-tracks": async (
@@ -50,29 +54,29 @@ async function main() {
       errBack
     ) => {
       if (!confs[confId]?.state[myPeerId]?.recvTransport) {
-        errBack();
-        return;
+        errBack()
+        return
       }
 
-      const { router, state } = confs[confId];
-      const transport = state[myPeerId].recvTransport;
+      const { router, state } = confs[confId]
+      const transport = state[myPeerId].recvTransport
 
       if (!transport) {
-        errBack();
-        return;
+        errBack()
+        return
       }
 
-      const consumerParametersArr = [];
+      const consumerParametersArr = []
 
       for (const theirPeerId of Object.keys(state)) {
-        const peerState = state[theirPeerId];
+        const peerState = state[theirPeerId]
 
         if (theirPeerId === myPeerId || !peerState || !peerState.producer) {
-          continue;
+          continue
         }
 
         try {
-          const { producer } = peerState;
+          const { producer } = peerState
           consumerParametersArr.push(
             await createConsumer(
               router,
@@ -82,10 +86,10 @@ async function main() {
               myPeerId,
               state[theirPeerId]
             )
-          );
+          )
         } catch (e) {
-          errLog(e.message);
-          continue;
+          errLog(e.message)
+          continue
         }
       }
 
@@ -93,7 +97,7 @@ async function main() {
         op: "@get-recv-tracks-done",
         uid,
         d: { consumerParametersArr, confId },
-      });
+      })
     },
     "@send-track": async (
       {
@@ -112,33 +116,33 @@ async function main() {
       errBack
     ) => {
       if (!(confId in confs)) {
-        errBack();
-        return;
+        errBack()
+        return
       }
-      const { state } = confs[confId];
+      const { state } = confs[confId]
 
       const {
         sendTransport,
         producer: previousProducer,
         consumers,
-      } = state[myPeerId];
-      const transport = sendTransport;
+      } = state[myPeerId]
+      const transport = sendTransport
 
       if (!transport) {
-        errBack();
-        return;
+        errBack()
+        return
       }
 
       try {
         if (previousProducer) {
-          previousProducer.close();
-          consumers.forEach((c) => c.close());
+          previousProducer.close()
+          consumers.forEach((c) => c.close())
           // @todo give some time for frontends to get update, but this can be removed
           send({
             cid: confId,
             op: "close_consumer",
             d: { producerId: previousProducer.id, confId },
-          });
+          })
         }
 
         const producer = await transport.produce({
@@ -146,18 +150,18 @@ async function main() {
           rtpParameters,
           paused,
           appData: { ...appData, peerId: myPeerId, transportId },
-        });
+        })
 
-        confs[confId].state[myPeerId].producer = producer;
+        confs[confId].state[myPeerId].producer = producer
 
         for (const theirPeerId of Object.keys(state)) {
           if (theirPeerId === myPeerId) {
-            continue;
+            continue
           }
-          const peerTransport = state[theirPeerId]?.recvTransport;
+          const peerTransport = state[theirPeerId]?.recvTransport
 
           if (!peerTransport) {
-            continue;
+            continue
           }
 
           try {
@@ -168,14 +172,14 @@ async function main() {
               peerTransport,
               myPeerId,
               state[theirPeerId]
-            );
+            )
             send({
               uid: theirPeerId,
               op: "new-peer-speaker",
               d: { ...d, confId },
-            });
+            })
           } catch (e) {
-            errLog(e.message);
+            errLog(e.message)
           }
         }
         send({
@@ -185,7 +189,7 @@ async function main() {
             id: producer.id,
             confId,
           },
-        });
+        })
       } catch (e) {
         send({
           op: `@send-track-${direction}-done`,
@@ -194,14 +198,14 @@ async function main() {
             error: e.message,
             confId,
           },
-        });
+        })
         send({
           op: `error`,
           uid,
           d: "error connecting to voice server | " + e.message,
-        });
+        })
 
-        return;
+        return
       }
     },
     "@connect-transport": async (
@@ -211,101 +215,101 @@ async function main() {
       errBack
     ) => {
       if (!confs[confId]?.state[peerId]) {
-        errBack();
-        return;
+        errBack()
+        return
       }
 
-      const { state } = confs[confId];
+      const { state } = confs[confId]
 
       const transport =
         direction === "recv"
           ? state[peerId].recvTransport
-          : state[peerId].sendTransport;
+          : state[peerId].sendTransport
 
       if (!transport) {
-        errBack();
-        return;
+        errBack()
+        return
       }
 
-      log("connect-transport", peerId, transport.appData);
+      log("connect-transport", peerId, transport.appData)
 
       try {
-        await transport.connect({ dtlsParameters });
+        await transport.connect({ dtlsParameters })
       } catch (e) {
-        console.log(e);
+        console.log(e)
         send({
           op: `@connect-transport-${direction}-done` as const,
           uid,
           d: { error: e.message, confId },
-        });
+        })
         send({
           op: "error",
           d: "error connecting to voice server | " + e.message,
           uid,
-        });
-        return;
+        })
+        return
       }
 
       send({
         op: `@connect-transport-${direction}-done` as const,
         uid,
         d: { confId },
-      });
+      })
     },
     "close-peer": async ({ confId, peerId, kicked }, uid, send) => {
       if (confId in confs) {
         if (peerId in confs[confId].state) {
-          closePeer(confs[confId].state[peerId]);
-          delete confs[confId].state[peerId];
+          closePeer(confs[confId].state[peerId])
+          delete confs[confId].state[peerId]
         }
 
         if (Object.keys(confs[confId].state).length == 0) {
-          deleteConf(confId, confs);
+          deleteConf(confId, confs)
         }
-        send({ op: "you_left_conf", d: { confId, kicked: !!kicked }, uid });
+        send({ op: "you_left_conf", d: { confId, kicked: !!kicked }, uid })
       }
     },
     "create-conf": async ({ confId }, uid, send) => {
       if (!(confId in confs)) {
-        confs[confId] = createConf();
+        confs[confId] = createConf()
       }
-      send({ op: "conf-created", d: { confId }, uid });
+      send({ op: "conf-created", d: { confId }, uid })
     },
     "destroy-conf": async ({ confId }) => {
       if (confId in confs) {
         for (const peer of Object.values(confs[confId].state)) {
-          closePeer(peer);
+          closePeer(peer)
         }
-        deleteConf(confId, confs);
+        deleteConf(confId, confs)
       }
     },
     "remove-speaker": async ({ confId, peerId }) => {
       if (confId in confs) {
-        const peer = confs[confId].state[peerId];
-        peer?.producer?.close();
-        peer?.sendTransport?.close();
+        const peer = confs[confId].state[peerId]
+        peer?.producer?.close()
+        peer?.sendTransport?.close()
       }
     },
     "join-as-speaker": async ({ confId, peerId }, uid, send) => {
       if (!(confId in confs)) {
-        confs[confId] = createConf();
+        confs[confId] = createConf()
       }
-      log("join-as-new-peer", peerId);
+      log("join-as-new-peer", peerId)
 
-      const { state, router } = confs[confId];
+      const { state, router } = confs[confId]
       const [recvTransport, sendTransport] = await Promise.all([
         createTransport("recv", router, peerId),
         createTransport("send", router, peerId),
-      ]);
+      ])
       if (state[peerId]) {
-        closePeer(state[peerId]);
+        closePeer(state[peerId])
       }
       confs[confId].state[peerId] = {
         recvTransport: recvTransport,
         sendTransport: sendTransport,
         consumers: [],
         producer: null,
-      };
+      }
 
       send({
         op: "you-joined-as-speaker",
@@ -317,17 +321,17 @@ async function main() {
           sendTransportOptions: transportToOptions(sendTransport),
         },
         uid,
-      });
+      })
     },
     "join-as-new-peer": async ({ confId, peerId }, uid, send) => {
       if (!(confId in confs)) {
-        confs[confId] = createConf();
+        confs[confId] = createConf()
       }
-      log("join-as-new-peer", peerId);
-      const { state, router } = confs[confId];
-      const recvTransport = await createTransport("recv", router, peerId);
+      log("join-as-new-peer", peerId)
+      const { state, router } = confs[confId]
+      const recvTransport = await createTransport("recv", router, peerId)
       if (state[peerId]) {
-        closePeer(state[peerId]);
+        closePeer(state[peerId])
       }
 
       confs[confId].state[peerId] = {
@@ -335,7 +339,7 @@ async function main() {
         consumers: [],
         producer: null,
         sendTransport: null,
-      };
+      }
 
       send({
         op: "you-joined-as-peer",
@@ -346,19 +350,19 @@ async function main() {
           recvTransportOptions: transportToOptions(recvTransport),
         },
         uid,
-      });
+      })
     },
     "add-speaker": async ({ confId, peerId }, uid, send, errBack) => {
       if (!confs[confId]?.state[peerId]) {
-        errBack();
-        return;
+        errBack()
+        return
       }
-      log("add-speaker", peerId);
+      log("add-speaker", peerId)
 
-      const { router } = confs[confId];
-      const sendTransport = await createTransport("send", router, peerId);
-      confs[confId].state[peerId].sendTransport?.close();
-      confs[confId].state[peerId].sendTransport = sendTransport;
+      const { router } = confs[confId]
+      const sendTransport = await createTransport("send", router, peerId)
+      confs[confId].state[peerId].sendTransport?.close()
+      confs[confId].state[peerId].sendTransport = sendTransport
 
       send({
         op: "you-are-now-a-speaker",
@@ -367,9 +371,9 @@ async function main() {
           confId,
         },
         uid,
-      });
+      })
     },
-  });
+  })
 }
 
-main();
+main()

@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { combine } from "zustand/middleware";
+import { create } from "zustand"
+import { combine } from "zustand/middleware"
 
 export const useAudioTracks = create(
   combine(
@@ -11,4 +11,4 @@ export const useAudioTracks = create(
         set((s) => ({ tracks: [...s.tracks, track] })),
     })
   )
-);
+)
